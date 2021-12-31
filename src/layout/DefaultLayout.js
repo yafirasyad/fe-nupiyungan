@@ -1,7 +1,11 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
+import { useUser } from 'src/context/UserContext'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
 
 const DefaultLayout = () => {
+  const { state: userState } = useUser() 
+  
   return (
     <div>
       <AppSidebar />

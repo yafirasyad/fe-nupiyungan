@@ -5,7 +5,7 @@ const DataIndividu = React.lazy(() => import('./views/pendataan/data-individu/Da
 const DataKK = React.lazy(() => import('./views/pendataan/data-kk/DataKK'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-
+const Logout = React.lazy(() => import('./views/pages/logout/Logout'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -30,7 +30,7 @@ const Dropdowns = React.lazy(() => import('./views/buttons/dropdowns/Dropdowns')
 //Forms
 const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
 const FloatingLabels = React.lazy(() => import('./views/forms/floating-labels/FloatingLabels'))
-const FormControl = React.lazy(() => import('./views/forms/form-control/FormControl'))
+const FormIndividu = React.lazy(() => import('./views/forms/individu/FormIndividu'))
 const InputGroup = React.lazy(() => import('./views/forms/input-group/InputGroup'))
 const Layout = React.lazy(() => import('./views/forms/layout/Layout'))
 const Range = React.lazy(() => import('./views/forms/range/Range'))
@@ -80,8 +80,8 @@ const routes = [
   { path: '/buttons/dropdowns', name: 'Dropdowns', component: Dropdowns },
   { path: '/buttons/button-groups', name: 'Button Groups', component: ButtonGroups },
   { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/forms', name: 'Forms', component: FormControl, exact: true },
-  { path: '/forms/form-control', name: 'Form Control', component: FormControl },
+  { path: '/forms', name: 'Forms', component: FormIndividu, exact: true },
+  { path: '/forms/form-control', name: 'Form Control', component: FormIndividu },
   { path: '/forms/select', name: 'Select', component: Select },
   { path: '/forms/checks-radios', name: 'Checks & Radios', component: ChecksRadios },
   { path: '/forms/range', name: 'Range', component: Range },
