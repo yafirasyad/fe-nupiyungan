@@ -1,9 +1,329 @@
 /* eslint-disable react/jsx-no-undef */
-import React from 'react'
+import React, { useState } from 'react'
 import { CButton, CCard, CCardBody, CCol, CForm, CFormInput, CFormLabel, CRow } from '@coreui/react'
 import { DocsCallout, DocsExample } from 'src/components'
+import { httpClient } from 'src/util/Api'
 
 const Select = () => {
+  
+  const [noKk, setNoKk] = useState('')
+  const [namaKepala, setNamaKepala] = useState('')
+  const [tempatTinggal, setTempatTinggal] = useState('')
+  const [luasLahan, setLuasLahan] = useState(0)
+  const [luasRumah, setLuasRumah] = useState(0)
+  const [lantai, setLantai] = useState('')
+  const [dinding, setDinding] = useState('')
+  const [atap, setAtap] = useState('')
+  const [jendela, setJendela] = useState('')
+  const [mck, setMcK] = useState('')
+  const [penerangan, setPenerangan] = useState('')
+  const [energiMasak, setEnergiMasak] = useState('')
+  const [pembuangan, setPembuangan] = useState('')
+  const [sumberAirMandi, setSumberAirMandi] = useState('')
+  const [sumberAirMinum, setSumberAirMinum] = useState('')
+  const [rumahDibawahSutet, setRumahDibawahSutet] = useState(0)
+  const [rumahBantaranSungai, setRumahBantaranSungai] = useState(0)
+  const [kondisiRumah, setKondisiRumah] = useState('Kumuh')
+  const [bltDesa, setBltDesa] = useState(0)
+  const [pkh, setPkh] = useState(0)
+  const [bantuanSosialTunai, setBantuanSosialTunai] = useState(0)
+  const [bantuanPresiden, setBantuanPresiden] = useState(0)
+  const [bantuanUmkm, setBantuanUmkm] = useState(0)
+  const [bantuanPekerja, setBantuanPekerja] = useState(0)
+  const [bantuanPendidikan, setBantuanPendidikan] = useState(0)
+  const [aksesKerja, setAksesKerja] = useState('Mudah')
+  const [aksesLahan, setAksesLahan] = useState('Mudah')
+  const [aksesSekolah, setAksesSekolah] = useState('Mudah')
+  const [aksesKesehatan, setAksesKesehatan] = useState('Mudah')
+
+  // Akses Pendidikan
+  const [paud, setPaud] = useState({
+    fasilitas: 'PAUD',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [tk, setTk] = useState({
+    fasilitas: 'TK/RA',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [sd, setSd] = useState({
+    fasilitas: 'SD/MI/Sederajat',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [smp, setSmp] = useState({
+    fasilitas: 'SMP/MTs/Sederajat',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [sma, setSma] = useState({
+    fasilitas: 'SMA/MA/Sederajat',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [pt, setPt] = useState({
+    fasilitas: 'Perguruan Tinggi',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [pesantren, setPesantren] = useState({
+    fasilitas: 'Pesantren',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [seminari, setSeminari] = useState({
+    fasilitas: 'Seminari',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [keagamaanLain, setKeagamaanLain] = useState({
+    fasilitas: 'Pendidikan Keagamaan lain',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+
+  // Akses Kesehatan
+  const [rs, setRs] = useState({
+    fasilitas: 'Rumah Sakit',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [rsb, setRsb] = useState({
+    fasilitas: 'Rumah Sakit Bersalin',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [poliklinik, setPoliklinik] = useState({
+    fasilitas: 'Poliklinik',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [puskesmas, setPuskesmas] = useState({
+    fasilitas: 'Puskesmas',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [puskesmasBantu, setPuskesmasBantu] = useState({
+    fasilitas: 'Puskesmas Pembantu',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [polindes, setPolindes] = useState({
+    fasilitas: 'Polindes',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [poskesdes, setPoskesdes] = useState({
+    fasilitas: 'Poskesdes',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [posyandu, setPosyandu] = useState({
+    fasilitas: 'Posyandu',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+  const [apotek, setApotek] = useState({
+    fasilitas: 'Apotek',
+    jarak: 0,
+    waktu: 0,
+    kemudahan: 'Mudah',
+  })
+
+  const [otherModeTempatTinggal, setOtherModeTempatTinggal] = useState('')
+  const [otherTempatTinggal, setOtherTempatTinggal] = useState('')
+
+  const handleTempatTinggalChange = (e) => {
+    if (e.target.value === 'Other') {
+      setOtherModeTempatTinggal(true)
+      setTempatTinggal(otherTempatTinggal)
+    }else {
+      setOtherModeTempatTinggal(false)
+      setTempatTinggal(e.target.value)
+    }
+  }
+
+  const [otherModeLantai, setOtherModeLantai] = useState('')
+  const [otherLantai, setOtherLantai] = useState('')
+  const handleJenisLantaiChange = (e) => {
+    if (e.target.value === 'Other') {
+      setOtherModeLantai(true)
+      setLantai(otherLantai)
+    }else {
+      setOtherModeLantai(false)
+      setLantai(e.target.value)
+    }
+  }
+
+  const [otherModeDinding, setOtherModeDinding] = useState('')
+  const [otherDinding, setOtherDinding] = useState('')
+  const handleDindingChange = (e) => {
+    console.log(e.target.value)
+    if (e.target.value === 'Other') {
+      setOtherModeDinding(true)
+      setDinding(otherDinding)
+    }else {
+      setOtherModeDinding(false)
+      setDinding(e.target.value)
+    }
+  }
+
+  const [otherModeAtap, setOtherModeAtap] = useState('')
+  const [otherAtap, setOtherAtap] = useState('')
+  const handleAtapChange = (e) => {
+    if (e.target.value === 'Other') {
+      setOtherModeAtap(true)
+      setAtap(otherAtap)
+    }else {
+      setOtherModeAtap(false)
+      setAtap(e.target.value)
+    }
+  }
+  
+  const [otherModePenerangan, setOtherModePenerangan] = useState('')
+  const [otherPenerangan, setOtherPenerangan] = useState('')
+  const handlePeneranganChange = (e) => {
+    if (e.target.value === 'Other') {
+      setOtherModePenerangan(true)
+      setPenerangan(otherPenerangan)
+    }else {
+      setOtherModePenerangan(false)
+      setPenerangan(e.target.value)
+    }
+  }
+
+  const [otherModeEnergiMasak, setOtherModeEnergiMasak] = useState('')
+  const [otherEnergiMasak, setOtherEnergiMasak] = useState('')
+  const handleEnergiMasakChange = (e) => {
+    if (e.target.value === 'Other') {
+      setOtherModeEnergiMasak(true)
+      setEnergiMasak(otherEnergiMasak)
+    }else {
+      setOtherModeEnergiMasak(false)
+      setEnergiMasak(e.target.value)
+    }
+  }
+
+  const [otherModeSumberAirMandi, setOtherModeSumberAirMandi] = useState('')
+  const [otherSumberAirMandi, setOtherSumberAirMandi] = useState('')
+  const handleSumberAirMandiChange = (e) => {
+    if (e.target.value === 'Other') {
+      setOtherModeSumberAirMandi(true)
+      setSumberAirMandi(otherSumberAirMandi)
+    }else {
+      setOtherModeSumberAirMandi(false)
+      setSumberAirMandi(e.target.value)
+    }
+  }
+
+  const [otherModeSumberAirMinum, setOtherModeSumberAirMinum] = useState('')
+  const [otherSumberAirMinum, setOtherSumberAirMinum] = useState('')
+  const handleSumberAirMinumChange = (e) => {
+    if (e.target.value === 'Other') {
+      setOtherModeSumberAirMinum(true)
+      setSumberAirMinum(otherSumberAirMinum)
+    }else {
+      setOtherModeSumberAirMinum(false)
+      setSumberAirMinum(e.target.value)
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const akses_fasilitas_kesehatan = [
+      rs,
+      rsb,
+      poliklinik,
+      puskesmas,
+      puskesmasBantu,
+      polindes,
+      poskesdes,
+      posyandu,
+      apotek
+    ]
+
+    const akses_fasilitas_pendidikan = [
+      paud,
+      tk,
+      sd,
+      smp,
+      sma,
+      pt,
+      pesantren,
+      seminari,
+      keagamaanLain
+    ]
+    const family = {
+      no_kk: noKk,
+      nama_kepala: namaKepala,
+      tempat_tinggal: tempatTinggal,
+      luas_lahan: luasLahan,
+      luas_rumah: luasRumah,
+      jenis_lantai: lantai,
+      dinding: dinding,
+      atap: atap,
+      jendela: jendela,
+      mck: mck,
+      penerangan: penerangan,
+      energi_masak: energiMasak,
+      pembuangan: pembuangan,
+      sumber_air_mandi: sumberAirMandi,
+      sumber_air_minum: sumberAirMinum,
+      rumah_dibawah_sutet: rumahDibawahSutet,
+      rumah_bantaran_sungai: rumahBantaranSungai,
+      kondisi_rumah: kondisiRumah,
+      blt_desa: bltDesa,
+      pkh: pkh,
+      bantuan_sosial_tunai: bantuanSosialTunai,
+      bantuan_presiden: bantuanPresiden,
+      bantuan_umkm: bantuanUmkm,
+      bantuan_pekerja: bantuanPekerja,
+      akses_fasilitas_kesehatan: akses_fasilitas_kesehatan,
+      akses_fasilitas_pendidikan: akses_fasilitas_pendidikan,
+      akses_kerja: aksesKerja,
+      akses_lahan: aksesLahan,
+      akses_sekolah: aksesSekolah,
+      akses_kesehatan: aksesKesehatan,
+      kondisi_rumah: kondisiRumah,
+      bantuan_pendidikan: bantuanPendidikan,
+    }
+    console.log('jalan')
+    console.log(family)
+    httpClient.post('/families',
+      family,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+     ).then(res => {
+      console.log("Berhasil")
+      console.log(res.data)
+     }).catch(err => {
+      console.log("Gagal")
+      console.log(err.response.data)
+     })
+  }
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -11,25 +331,32 @@ const Select = () => {
       </CCol>
       <CCol xs={12}>
         <CCard className="mb-4">
-          {/* <CCardHeader>
-            <strong>React Form Control</strong>
-          </CCardHeader> */}
           <CCardBody>
             <DocsExample href="forms/form-control">
-              <CForm>
+              <CForm onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <h3>Data KK</h3>
                   <br></br>
                   <CFormLabel htmlFor="nomorkkdatakk">
                     <h6>Nomor Kartu Keluarga (16 Digit)</h6>
                   </CFormLabel>
-                  <CFormInput type="text" id="nomorkkdatakk" />
+                  <CFormInput 
+                    type="text" 
+                    id="nomorkkdatakk" 
+                    value={noKk}
+                    onChange={(e) => setNoKk(e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="namakepalakeluarga">
                     <h6>Nama Kepala Keluarga</h6>
                   </CFormLabel>
-                  <CFormInput type="text" id="namakepalakeluarga" />
+                  <CFormInput 
+                    type="text" 
+                    id="namakepalakeluarga"
+                    value={namaKepala}
+                    onChange={(e) => setNamaKepala(e.target.value)} 
+                  />
                 </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="pekerjaanutama">
@@ -40,8 +367,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="miliksendiri"
+                      name="tempattinggal"
+                      value="Milik Sendiri"
+                      onChange={handleTempatTinggalChange}
                     />
                     <label className="form-check-label" htmlFor="miliksendiri">
                       Milik Sendiri
@@ -51,8 +380,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="kontrak"
+                      name="tempattinggal"
+                      value="Kontrak"
+                      onChange={handleTempatTinggalChange}
                     />
                     <label className="form-check-label" htmlFor="kontrak">
                       Kontrak/Sewa
@@ -62,8 +393,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="bebassewa"
+                      name="tempattinggal"
+                      value="Bebas Sewa"
+                      onChange={handleTempatTinggalChange}
                     />
                     <label className="form-check-label" htmlFor="bebassewa">
                       Bebas Sewa
@@ -73,8 +406,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="dipinjami"
+                      name="tempattinggal"
+                      value="Dipinjami"
+                      onChange={handleTempatTinggalChange}
                     />
                     <label className="form-check-label" htmlFor="dipinjami">
                       Dipinjami
@@ -84,8 +419,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="dinas"
+                      name="tempattinggal"
+                      value="Dinas"
+                      onChange={handleTempatTinggalChange}
                     />
                     <label className="form-check-label" htmlFor="dinas">
                       Dinas
@@ -95,13 +432,23 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="tempattinggalother"
+                      name="tempattinggal"
+                      value="Other"
+                      onChange={handleTempatTinggalChange}
                     />
                     <label className="form-check-label" htmlFor="tempattinggalother">
                       Other :
                     </label>{' '}
-                    <CFormInput type="text" id="tempattinggalother" />
+                    <CFormInput 
+                      type="text" 
+                      id="tempattinggalother" 
+                      onChange={(e) => {
+                        setOtherTempatTinggal(e.target.value)
+                        setTempatTinggal(e.target.value)
+                      }}
+                      disabled={!otherModeTempatTinggal}
+                    />
                     <br></br>
                   </div>
                 </div>
@@ -109,13 +456,23 @@ const Select = () => {
                   <CFormLabel htmlFor="luaslahan">
                     <h6>Luas Lahan Tempat Tinggal (m2)</h6>
                   </CFormLabel>
-                  <CFormInput type="text" id="luaslahan" />
+                  <CFormInput 
+                    type="text" 
+                    id="luaslahan" 
+                    value={luasLahan}
+                    onChange={(e) => setLuasLahan(e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="luasrumah">
                     <h6>Luas Rumah Tempat Tinggal (m2)</h6>
                   </CFormLabel>
-                  <CFormInput type="text" id="luasrumah" />
+                  <CFormInput 
+                    type="text" 
+                    id="luasrumah" 
+                    value={luasRumah}
+                    onChange={(e) => setLuasRumah(e.target.value)}
+                  />
                 </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="jenislantai">
@@ -126,8 +483,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="marmergranit"
+                      name="jenislantai"
+                      value="Marmer/Granit"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="marmergranit">
                       Marmer/granit
@@ -137,8 +496,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="keramik"
+                      name="jenislantai"
+                      value="Keramik"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="keramik">
                       Keramik
@@ -148,8 +509,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="vinil"
+                      name="jenislantai"
+                      value="Vinil"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="vinil">
                       Vinil
@@ -159,8 +522,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="ubintegel"
+                      name="jenislantai"
+                      value="Ubin/Tegel"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="ubintegel">
                       Ubin/Tegel
@@ -170,8 +535,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="kayutinggi"
+                      name="jenislantai"
+                      value="Kayu Tinggi"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="kayutinggi">
                       Kayu/Papan Kualitas Tinggi
@@ -181,8 +548,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="kayurendah"
+                      name="jenislantai"
+                      value="Kayu/Papan Kualitas Rendah"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="kayurendah">
                       Kayu/Papan Kualitas Rendah
@@ -192,8 +561,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="semenbatamerah"
+                      name="jenislantai"
+                      value="Semen/Batam Merah"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="semenbatamerah">
                       Semen/Bata Merah
@@ -203,8 +574,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="bambu"
+                      name="jenislantai"
+                      value="Bambu"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="bambu">
                       Bambu
@@ -214,13 +587,23 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="lantaiother"
+                      name="jenislantai"
+                      value="Other"
+                      onChange={handleJenisLantaiChange}
                     />
                     <label className="form-check-label" htmlFor="lantaiother">
                       Other :
                     </label>{' '}
-                    <CFormInput type="text" id="lantaiother" />
+                    <CFormInput 
+                      type="text" 
+                      id="lantaiother" 
+                      onChange={(e) => {
+                        setOtherLantai(e.target.value)
+                        setLantai(e.target.value)
+                      }}
+                      disabled={!otherModeLantai}
+                    />
                     <br></br>
                   </div>
                 </div>
@@ -233,8 +616,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="semenbeton"
+                      name="dinding"
+                      value="Semen/Beton/Kayu Berkualitas Tinggi"
+                      onChange={handleDindingChange}
                     />
                     <label className="form-check-label" htmlFor="semenbeton">
                       semen/beton/kayu berkualitas tingi
@@ -244,8 +629,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="kayubambu"
+                      name="dinding"
+                      value="Kayu berkualitas rendah/bambu"
+                      onChange={handleDindingChange}
                     />
                     <label className="form-check-label" htmlFor="kayubambu">
                       kayu berkualitas rendah/bambu
@@ -255,13 +642,23 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="dindingother"
+                      name="dinding"
+                      value="Other"
+                      onChange={handleDindingChange}
                     />
                     <label className="form-check-label" htmlFor="dindingother">
                       Other :
                     </label>{' '}
-                    <CFormInput type="text" id="dindingother" />
+                    <CFormInput 
+                      type="text" 
+                      id="dindingother" 
+                      onChange={(e) => {
+                        setOtherDinding(e.target.value)
+                        setDinding(e.target.value)
+                      }}
+                      disabled={!otherModeDinding}
+                    />
                     <br></br>
                   </div>
                 </div>
@@ -274,8 +671,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="adaberfungsi"
+                      name="jendela"
+                      value="Ada, berfungsi"
+                      onChange={(e) => setJendela(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="adaberfungsi">
                       Ada, berfungsi
@@ -285,8 +684,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="adatakberfungsi"
+                      name="jendela"
+                      value="Ada, tak berfungsi"
+                      onChange={(e) => setJendela(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="adatakberfungsi">
                       Ada, tidak berfungsi
@@ -296,8 +697,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="tidakadajendela"
+                      name="jendela"
+                      value="Tidak ada jendela"
+                      onChange={(e) => setJendela(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="tidakadajendela">
                       Tidak ada
@@ -313,8 +716,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="genteng"
+                      name="atap"
+                      value="Genteng"
+                      onChange={handleAtapChange}
                     />
                     <label className="form-check-label" htmlFor="genteng">
                       Genteng
@@ -324,8 +729,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="kayujerami"
+                      name="atap"
+                      value="Kayu/Jerami"
+                      onChange={handleAtapChange}
                     />
                     <label className="form-check-label" htmlFor="kayujerami">
                       Kayu/Jerami
@@ -335,13 +742,23 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="atapother"
+                      name="atap"
+                      value="Other"
+                      onChange={handleAtapChange}
                     />
                     <label className="form-check-label" htmlFor="atapother">
                       Other :
                     </label>{' '}
-                    <CFormInput type="text" id="atapother" />
+                    <CFormInput 
+                      type="text" 
+                      id="atapother" 
+                      onChange={(e) => {
+                        setOtherAtap(e.target.value)
+                        setAtap(e.target.value)
+                      }} 
+                      disabled={!otherModeAtap} 
+                    />
                     <br></br>
                   </div>
                 </div>
@@ -354,8 +771,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="listrikpln"
+                      name="penerangan"
+                      value="Listrik PLN"
+                      onChange={handlePeneranganChange}
                     />
                     <label className="form-check-label" htmlFor="listrikpln">
                       Listrik PLN
@@ -365,8 +784,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="listriknonpln"
+                      name="penerangan"
+                      value="Listrik Non PLN"
+                      onChange={handlePeneranganChange}
                     />
                     <label className="form-check-label" htmlFor="listriknonpln">
                       Listrik Non PLN
@@ -376,8 +797,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="lampuminyak"
+                      name="penerangan"
+                      value="Lampu Minyak"
+                      onChange={handlePeneranganChange}
                     />
                     <label className="form-check-label" htmlFor="lampuminyak">
                       Lampu Minyak
@@ -387,8 +810,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="tidakadapenerangan"
+                      name="penerangan"
+                      value="Tidak Ada Penerangan"
+                      onChange={handlePeneranganChange}
                     />
                     <label className="form-check-label" htmlFor="tidakadapenerangan">
                       Tidak ada
@@ -398,13 +823,23 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="peneranganother"
+                      name="penerangan"
+                      value="Other"
+                      onChange={handlePeneranganChange}
                     />
                     <label className="form-check-label" htmlFor="peneranganother">
                       Other :
                     </label>{' '}
-                    <CFormInput type="text" id="peneranganother" />
+                    <CFormInput 
+                      type="text" 
+                      id="peneranganother" 
+                      onChange={(e) => {
+                        setOtherPenerangan(e.target.value)
+                        setPenerangan(e.target.value)
+                      }}
+                      disabled={!otherModePenerangan}
+                    />
                     <br></br>
                   </div>
                 </div>
@@ -417,8 +852,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="lpg"
+                      name="energi"
+                      value="Gas LPG/Biogas"
+                      onChange={handleEnergiMasakChange}
                     />
                     <label className="form-check-label" htmlFor="lpg">
                       Gas LPG/Biogas
@@ -428,8 +865,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="kayubakar"
+                      name="energi"
+                      value="Kayu Bakar"
+                      onChange={handleEnergiMasakChange} 
                     />
                     <label className="form-check-label" htmlFor="kayubakar">
                       Kayu Bakar
@@ -439,8 +878,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="minyaktanah"
+                      name="energi"
+                      value="Minyak Tanah"
+                      onChange={handleEnergiMasakChange}
                     />
                     <label className="form-check-label" htmlFor="minyaktanah">
                       Minyak Tanah
@@ -450,13 +891,23 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="energiother"
+                      name="energi"
+                      value="Other"
+                      onChange={handleEnergiMasakChange}
                     />
                     <label className="form-check-label" htmlFor="energiother">
                       Other :
                     </label>{' '}
-                    <CFormInput type="text" id="energiother" />
+                    <CFormInput 
+                      type="text" 
+                      id="energiother" 
+                      onChange={(e) => {
+                        setOtherEnergiMasak(e.target.value)
+                        setEnergiMasak(e.target.value)
+                      }}
+                      disabled={!otherModeEnergiMasak}
+                    />
                     <br></br>
                   </div>
                 </div>
@@ -469,8 +920,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="dikebun"
+                      name="pembuangan"
+                      value="Kebun/sungai/drainase"
+                      onChange={(e) => setPembuangan(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="dikebun">
                       Di kebun/sungai/drainase
@@ -480,8 +933,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="dibakar"
+                      name="pembuangan"
+                      value="Dibakar"
+                      onChange={(e) => setPembuangan(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="dibakar">
                       Dibakar
@@ -491,8 +946,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="sampahangkut"
+                      name="pembuangan"
+                      value="Sampah diangkut reguler"
+                      onChange={(e) => setPembuangan(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="sampahangkut">
                       Tempat sampah diangkut reguler
@@ -502,8 +959,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="tidakadatempatsampah"
+                      name="pembuangan"
+                      value="Tidak ada"
+                      onChange={(e) => setPembuangan(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="tidakadatempatsampah">
                       Tidak ada
@@ -520,8 +979,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="sendiri"
+                      name="mck"
+                      value="Sendiri"
+                      onChange={(e) => setMcK(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="sendiri">
                       Sendiri
@@ -531,8 +992,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="berkelompok"
+                      name="mck"
+                      value="Berkelompok/tetangga"
+                      onChange={(e) => setMcK(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="berkelompok">
                       berkelompok/tetangga
@@ -542,8 +1005,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="mckumum"
+                      name="mck"
+                      value="MCK umum"
+                      onChange={(e) => setMcK(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="mckumum">
                       MCK umum
@@ -553,8 +1018,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="tidakadamck"
+                      name="mck"
+                      value="Tidak ada"
+                      onChange={(e) => setMcK(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="tidakadamck">
                       Tidak ada
@@ -571,8 +1038,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="sumur"
+                      name="sumberairmandi"
+                      value="Sumur"
+                      onChange={handleSumberAirMandiChange}
                     />
                     <label className="form-check-label" htmlFor="sumur">
                       Mata Air Sumur
@@ -582,8 +1051,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="ledeng"
+                      name="sumberairmandi"
+                      value="Ledeng/perpiaan berbayar"
+                      onChange={handleSumberAirMandiChange}
                     />
                     <label className="form-check-label" htmlFor="ledeng">
                       ledeng/perpiaan berbayar
@@ -593,8 +1064,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="sungaidanau"
+                      name="sumberairmandi"
+                      value="Sungai/danau/embung"
+                      onChange={handleSumberAirMandiChange}
                     />
                     <label className="form-check-label" htmlFor="sungaidanau">
                       sungai, danau, embung
@@ -604,8 +1077,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="tadahairhujan"
+                      name="sumberairmandi"
+                      value="Tadah air hujan"
+                      onChange={handleSumberAirMandiChange}
                     />
                     <label className="form-check-label" htmlFor="tadahairhujan">
                       tadah air hujan
@@ -615,13 +1090,24 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="airmandiother"
+                      name="sumberairmandi"
+                      value="Other"
+                      onChange={handleSumberAirMandiChange}
                     />
                     <label className="form-check-label" htmlFor="airmandiother">
                       Other :
                     </label>{' '}
-                    <CFormInput type="text" id="airmandiother" />
+                    <CFormInput 
+                      type="text" 
+                      id="airmandiother" 
+                      name="sumberairmandiother"
+                      onChange={(e) => {
+                        setOtherSumberAirMandi(e.target.value);
+                        setSumberAirMandi(e.target.value);
+                      }}
+                      disabled={!otherModeSumberAirMandi}
+                    />
                     <br></br>
                   </div>
                 </div>
@@ -634,8 +1120,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="sumurminum"
+                      name="sumberairminum"
+                      value="Sumur"
+                      onChange={handleSumberAirMinumChange}
                     />
                     <label className="form-check-label" htmlFor="sumurminum">
                       Mata Air Sumur
@@ -645,8 +1133,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="ledengminum"
+                      name="sumberairminum"
+                      value="Ledeng/perpiaan berbayar"
+                      onChange={handleSumberAirMinumChange}
                     />
                     <label className="form-check-label" htmlFor="ledengminum">
                       ledeng/perpiaan berbayar
@@ -656,8 +1146,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="sungaidanauminum"
+                      name="sumberairminum"
+                      value="Sungai/danau/embung"
+                      onChange={handleSumberAirMinumChange}
                     />
                     <label className="form-check-label" htmlFor="sungaidanauminum">
                       sungai, danau, embung
@@ -667,8 +1159,10 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="tadahairhujanminum"
+                      name="sumberairminum"
+                      value="Tadah air hujan"
+                      onChange={handleSumberAirMinumChange}
                     />
                     <label className="form-check-label" htmlFor="tadahairhujanminum">
                       tadah air hujan
@@ -678,13 +1172,24 @@ const Select = () => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
                       id="airminumother"
+                      name="sumberairminum"
+                      value="Other"
+                      onChange={handleSumberAirMinumChange}
                     />
                     <label className="form-check-label" htmlFor="airminumother">
                       Other :
                     </label>{' '}
-                    <CFormInput type="text" id="airminumother" />
+                    <CFormInput 
+                      type="text" 
+                      id="airminumother" 
+                      name="sumberairminum"
+                      onChange={(e) => {
+                        setOtherSumberAirMinum(e.target.value);
+                        setSumberAirMinum(e.target.value);
+                      }}
+                      disabled={!otherModeSumberAirMinum}
+                    />
                     <br></br>
                   </div>
                 </div>
@@ -693,23 +1198,38 @@ const Select = () => {
                   <CFormLabel htmlFor="rumahsutet">
                     Rumah berada di bawah sutet/sutt/suttas &nbsp;
                   </CFormLabel>
-                  <select id="rumahsutet" name="rumahsutet">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="rumahsutet" 
+                    name="rumahsutet"
+                    value={rumahDibawahSutet}
+                    onChange={(e) => setRumahDibawahSutet(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="rumahsungai">
                     Rumah berada di bantaran sungai &nbsp;
                   </CFormLabel>
-                  <select id="rumahsungai" name="rumahsungai">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="rumahsungai" 
+                    name="rumahsungai"
+                    value={rumahBantaranSungai}
+                    onChange={(e) => setRumahBantaranSungai(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="kondisirumah">
                     secara keseluruhan kondisi rumah &nbsp;
                   </CFormLabel>
-                  <select id="kondisirumah" name="kondisirumah">
+                  <select 
+                    id="kondisirumah" 
+                    name="kondisirumah"
+                    value={kondisiRumah}
+                    onChange={(e) => setKondisiRumah(e.target.value)}
+                  >
                     <option value="kumuh">Kumuh</option>
                     <option value="tidak kumuh">Tidak Kumuh</option>
                   </select>
@@ -721,55 +1241,81 @@ const Select = () => {
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="bltdanadesa">BLT dana desa &nbsp;</CFormLabel>
-                  <select id="bltdanadesa" name="bltdanadesa">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="bltdanadesa" 
+                    name="bltdanadesa"
+                    value={bltDesa}
+                    onChange={(e) => setBltDesa(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="keluargaharapan">Program Keluarga Harapan &nbsp;</CFormLabel>
-                  <select id="keluargaharapan" name="keluargaharapan">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
-                  </select>
-                  <br></br>
-                  <CFormLabel htmlFor="tunawicara">Tunawicara &nbsp;</CFormLabel>
-                  <select id="tunawicara" name="tunawicara">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="keluargaharapan"
+                    name="keluargaharapan"
+                    value={pkh}
+                    onChange={(e) => setPkh(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="bantaunsosialtunai">Bantuan Sosial Tunai &nbsp;</CFormLabel>
-                  <select id="bantaunsosialtunai" name="bantaunsosialtunai">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="bantaunsosialtunai" name="bantaunsosialtunai"
+                    value={bantuanSosialTunai}
+                    onChange={(e) => setBantuanSosialTunai(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="bantuanpresiden">Bantuan Presiden &nbsp;</CFormLabel>
-                  <select id="bantuanpresiden" name="bantuanpresiden">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="bantuanpresiden" 
+                    name="bantuanpresiden"
+                    value={bantuanPresiden}
+                    onChange={(e) => setBantuanPresiden(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="bantuanumkm">Bantuan UMKM &nbsp;</CFormLabel>
-                  <select id="bantuanumkm" name="bantuanumkm">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="bantuanumkm" 
+                    name="bantuanumkm"
+                    value={bantuanUmkm}
+                    onChange={(e) => setBantuanUmkm(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="bantuanuntukpekerja">
                     Bantuan untuk Pekerja &nbsp;
                   </CFormLabel>
-                  <select id="bantuanuntukpekerja" name="bantuanuntukpekerja">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="bantuanuntukpekerja" name="bantuanuntukpekerja"
+                    value={bantuanPekerja}
+                    onChange={(e) => setBantuanPekerja(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="bantuanpendidikananak">
                     Bantuan pendidikan anak &nbsp;
                   </CFormLabel>
-                  <select id="bantuanpendidikananak" name="bantuanpendidikananak">
-                    <option value="ya">Ya</option>
-                    <option value="tidak">Tidak</option>
+                  <select 
+                    id="bantuanpendidikananak" name="bantuanpendidikananak"
+                    value={bantuanPendidikan}
+                    onChange={(e) => setBantuanPendidikan(e.target.value)}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
                   </select>
                   <br></br>
                   <br></br>
@@ -783,17 +1329,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakpaud">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakpaud" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakpaud" 
+                      value={paud.jarak}
+                      onChange={(e) => setPaud({...paud, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhpaud">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhpaud" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhpaud"
+                      value={paud.waktu}
+                      onChange={(e) => setPaud({...paud, waktu: e.target.value})} 
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanpaud">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanpaud" />
+                    <select 
+                      id="kemudahanpaud"
+                      name="kemudahanpaud"
+                      value={paud.kemudahan}
+                      onChange={(e) => setPaud({...paud, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="tkra">
@@ -803,17 +1367,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jaraktkra">
                     Jarak(km):
-                    <CFormInput type="text" id="jaraktkra" />
+                    <CFormInput 
+                      type="text" 
+                      id="jaraktkra" 
+                      value={tk.jarak}
+                      onChange={(e) => setTk({...tk, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhtkra">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhtkra" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhtkra" 
+                      value={tk.waktu}
+                      onChange={(e) => setTk({...tk, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahantkra">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahantkra" />
+                    <select 
+                      id="kemudahantk"
+                      name="kemudahantk"
+                      value={tk.kemudahan}
+                      onChange={(e) => setTk({...tk, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="sdmi">
@@ -823,17 +1405,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jaraksdmi">
                     Jarak(km):
-                    <CFormInput type="text" id="jaraksdmi" />
+                    <CFormInput 
+                      type="text" 
+                      id="jaraksdmi" 
+                      value={sd.jarak}
+                      onChange={(e) => setSd({...sd, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhsdmi">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhsdmi" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhsdmi" 
+                      value={sd.waktu}
+                      onChange={(e) => setSd({...sd, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahansdmi">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahansdmi" />
+                    <select 
+                      id="kemudahansd"
+                      name="kemudahansd"
+                      value={sd.kemudahan}
+                      onChange={(e) => setSd({...sd, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="smpmts">
@@ -843,17 +1443,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jaraksmpmts">
                     Jarak(km):
-                    <CFormInput type="text" id="jaraksmpmts" />
+                    <CFormInput 
+                      type="text" 
+                      id="jaraksmpmts" 
+                      value={smp.jarak}
+                      onChange={(e) => setSmp({...smp, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhsmpmts">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhsmpmts" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhsmpmts" 
+                      value={smp.waktu}
+                      onChange={(e) => setSmp({...smp, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahansmpmts">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahansmpmts" />
+                    <select 
+                      id="kemudahansmp"
+                      name="kemudahansmp"
+                      value={smp.kemudahan}
+                      onChange={(e) => setSmp({...smp, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="smama">
@@ -863,17 +1481,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jaraksmama">
                     Jarak(km):
-                    <CFormInput type="text" id="jaraksmama" />
+                    <CFormInput 
+                      type="text" 
+                      id="jaraksmama" 
+                      value={sma.jarak}
+                      onChange={(e) => setSma({...sma, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhsmama">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhsmama" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhsmama" 
+                      value={sma.waktu}
+                      onChange={(e) => setSma({...sma, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahansmama">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahansmama" />
+                    <select 
+                      id="kemudahansma"
+                      name="kemudahansma"
+                      value={sma.kemudahan}
+                      onChange={(e) => setSma({...sma, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="ptn">
@@ -883,17 +1519,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakptn">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakptn" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakptn" 
+                      value={pt.jarak}
+                      onChange={(e) => setPt({...pt, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhptn">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhptn" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhpt" 
+                      value={pt.waktu}
+                      onChange={(e) => setPt({...pt, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanptn">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanptn" />
+                    <select 
+                      id="kemudahanpt"
+                      name="kemudahanpt"
+                      value={pt.kemudahan}
+                      onChange={(e) => setPt({...pt, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="pstrn">
@@ -903,17 +1557,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakpstrn">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakpstrn" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakpstrn" 
+                      value={pesantren.jarak}
+                      onChange={(e) => setPesantren({...pesantren, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhpstrn">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhpstrn" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhpstrn" 
+                      value={pesantren.waktu}
+                      onChange={(e) => setPesantren({...pesantren, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanpstrn">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanpstrn" />
+                    <select 
+                      id="kemudahanpstrn"
+                      name="kemudahanpstrn"
+                      value={pesantren.kemudahan}
+                      onChange={(e) => setPesantren({...pesantren, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="seminari">
@@ -923,17 +1595,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakseminari">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakseminari" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakseminari" 
+                      value={seminari.jarak}
+                      onChange={(e) => setSeminari({...seminari, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhseminari">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhseminari" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhseminari" 
+                      value={seminari.waktu}
+                      onChange={(e) => setSeminari({...seminari, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanseminari">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanseminari" />
+                    <select 
+                      id="kemudahanseminari"
+                      name="kemudahanseminari"
+                      value={seminari.kemudahan}
+                      onChange={(e) => setSeminari({...seminari, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="ppai">
@@ -943,17 +1633,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakppai">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakppai" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakppai" 
+                      value={keagamaanLain.jarak}
+                      onChange={(e) => setKeagamaanLain({...keagamaanLain, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhppai">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhppai" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhppai" 
+                      value={keagamaanLain.waktu}
+                      onChange={(e) => setKeagamaanLain({...keagamaanLain, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanppai">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanppai" />
+                    <select 
+                      id="kemudahanppai"
+                      name="kemudahanppai"
+                      value={keagamaanLain.kemudahan}
+                      onChange={(e) => setKeagamaanLain({...keagamaanLain, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                 </div>
                 <br></br>
@@ -966,17 +1674,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakrumahsakit">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakrumahsakit" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakrumahsakit" 
+                      value={rs.jarak}
+                      onChange={(e) => setRs({...rs, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhrumahsakit">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhrumahsakit" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhrumahsakit" 
+                      value={rs.waktu}
+                      onChange={(e) => setRs({...rs, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanrumahsakit">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanrumahsakit" />
+                    <select 
+                      id="kemudahanrumahsakit"
+                      name="kemudahanrumahsakit"
+                      value={rs.kemudahan}
+                      onChange={(e) => setRs({...rs, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="rsbersalin">
@@ -986,17 +1712,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakrsbersalin">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakrsbersalin" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakrsbersalin" 
+                      value={rsb.jarak}
+                      onChange={(e) => setRsb({...rsb, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhrsbersalin">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhrsbersalin" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhrsbersalin" 
+                      value={rsb.waktu}
+                      onChange={(e) => setRsb({...rsb, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanrsbersalin">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanrsbersalin" />
+                    <select 
+                      id="kemudahanrsbersalin"
+                      name="kemudahanrsbersalin"
+                      value={rsb.kemudahan}
+                      onChange={(e) => setRsb({...rs, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="poliklinik">
@@ -1006,17 +1750,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakpoliklinik">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakpoliklinik" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakpoliklinik" 
+                      value={poliklinik.jarak}
+                      onChange={(e) => setPoliklinik({...poliklinik, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhpoliklinik">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhpoliklinik" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhpoliklinik" 
+                      value={poliklinik.waktu}
+                      onChange={(e) => setPoliklinik({...poliklinik, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanpoliklinik">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanpoliklinik" />
+                    <select 
+                      id="kemudahanpoliklinik"
+                      name="kemudahanpoliklinik"
+                      value={poliklinik.kemudahan}
+                      onChange={(e) => setPoliklinik({...poliklinik, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="puskesmas">
@@ -1026,17 +1788,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakpuskesmas">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakpuskesmas" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakpuskesmas" 
+                      value={puskesmas.jarak}
+                      onChange={(e) => setPuskesmas({...puskesmas, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhpuskesmas">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhpuskesmas" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhpuskesmas" 
+                      value={puskesmas.waktu}
+                      onChange={(e) => setPuskesmas({...puskesmas, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanpuskesmas">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanpuskesmas" />
+                    <select 
+                      id="kemudahanpuskesmas"
+                      name="kemudahanpuskesmas"
+                      value={puskesmas.kemudahan}
+                      onChange={(e) => setPuskesmas({...poliklinik, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="pustu">
@@ -1046,17 +1826,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakpustu">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakpustu" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakpustu" 
+                      value={puskesmasBantu.jarak}
+                      onChange={(e) => setPuskesmasBantu({...puskesmasBantu, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhpustu">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhpustu" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhpustu" 
+                      value={puskesmasBantu.waktu}
+                      onChange={(e) => setPuskesmasBantu({...puskesmasBantu, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanpustu">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanpustu" />
+                    <select 
+                      id="kemudahanpustu"
+                      name="kemudahanpustu"
+                      value={puskesmasBantu.kemudahan}
+                      onChange={(e) => setPuskesmasBantu({...puskesmasBantu, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="polindes">
@@ -1066,17 +1864,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakpolindes">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakpolindes" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakpolindes" 
+                      value={polindes.jarak}
+                      onChange={(e) => setPolindes({...polindes, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhpolindes">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhpolindes" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhpolindes" 
+                      value={polindes.waktu}
+                      onChange={(e) => setPolindes({...polindes, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanpolindes">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanpolindes" />
+                    <select 
+                      id="kemudahanpolindes"
+                      name="kemudahanpolindes"
+                      value={polindes.kemudahan}
+                      onChange={(e) => setPolindes({...polindes, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="poskesdes">
@@ -1086,17 +1902,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakposkesdes">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakposkesdes" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakposkesdes" 
+                      value={poskesdes.jarak}
+                      onChange={(e) => setPoskesdes({...poskesdes, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhposkesdes">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhposkesdes" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhposkesdes" 
+                      value={poskesdes.waktu}
+                      onChange={(e) => setPoskesdes({...poskesdes, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanposkesdes">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanposkesdes" />
+                    <select 
+                      id="kemudahanposkesdes"
+                      name="kemudahanposkesdes"
+                      value={poskesdes.kemudahan}
+                      onChange={(e) => setPoskesdes({...poskesdes, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="posyandu">
@@ -1106,17 +1940,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakposyandu">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakposyandu" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakposyandu" 
+                      value={posyandu.jarak}
+                      onChange={(e) => setPosyandu({...posyandu, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhposyandu">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhposyandu" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhposyandu" 
+                      value={posyandu.waktu}
+                      onChange={(e) => setPosyandu({...posyandu, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanposyandu">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanposyandu" />
+                    <select 
+                      id="kemudahanposyandu"
+                      name="kemudahanposyandu"
+                      value={posyandu.kemudahan}
+                      onChange={(e) => setPosyandu({...posyandu, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                   <br></br>
                   <CFormLabel htmlFor="apotek">
@@ -1126,17 +1978,35 @@ const Select = () => {
                   <br></br>
                   <CFormLabel htmlFor="jarakapotek">
                     Jarak(km):
-                    <CFormInput type="text" id="jarakapotek" />
+                    <CFormInput 
+                      type="text" 
+                      id="jarakapotek" 
+                      value={apotek.jarak}
+                      onChange={(e) => setApotek({...apotek, jarak: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="waktutempuhapotek">
                     Waktu Tempuh (jam):
-                    <CFormInput type="text" id="waktutempuhapotek" />
+                    <CFormInput 
+                      type="text" 
+                      id="waktutempuhapotek" 
+                      value={apotek.waktu}
+                      onChange={(e) => setApotek({...apotek, waktu: e.target.value})}
+                    />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <CFormLabel htmlFor="kemudahanapotek">
                     Mudah/Sulit?:
-                    <CFormInput type="text" id="kemudahanapotek" />
+                    <select 
+                      id="kemudahanapotek"
+                      name="kemudahanapotek"
+                      value={apotek.kemudahan}
+                      onChange={(e) => setApotek({...apotek, kemudahan: e.target.value})}
+                    >
+                      <option value="Mudah">Mudah</option>
+                      <option value="Sulit">Sulit</option>
+                    </select>
                   </CFormLabel>
                 </div>
                 <br></br>
@@ -1145,27 +2015,47 @@ const Select = () => {
                   <hr></hr>
                   <CFormLabel htmlFor="aksessarpras"></CFormLabel>
                   <CFormLabel htmlFor="lokasiputama">Lokasi Pekerjaan Utama &nbsp;</CFormLabel>
-                  <select id="lokasiputama" name="lokasiputama">
-                    <option value="mudah">Mudah</option>
-                    <option value="sulit">Sulit</option>
+                  <select 
+                    id="lokasiputama" 
+                    name="lokasiputama"
+                    value={aksesKerja}
+                    onChange={(e) => setAksesKerja(e.target.value)}
+                  >
+                    <option value="Mudah">Mudah</option>
+                    <option value="Sulit">Sulit</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="lahanpertanian">Lahan pertanian &nbsp;</CFormLabel>
-                  <select id="lahanpertaniani" name="lahanpertanian">
-                    <option value="mudah">Mudah</option>
-                    <option value="sulit">Sulit</option>
+                  <select 
+                    id="lahanpertaniani" 
+                    name="lahanpertanian"
+                    value={aksesLahan}
+                    onChange={(e) => setAksesLahan(e.target.value)}
+                  >
+                    <option value="Mudah">Mudah</option>
+                    <option value="Sulit">Sulit</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="sekolahsarana">Sekolah &nbsp;</CFormLabel>
-                  <select id="sekolahsarana" name="sekolahsarana">
-                    <option value="mudah">Mudah</option>
-                    <option value="sulit">Sulit</option>
+                  <select 
+                    id="sekolahsarana" 
+                    name="sekolahsarana"
+                    value={aksesSekolah}
+                    onChange={(e) => setAksesSekolah(e.target.value)}  
+                  >
+                    <option value="Mudah">Mudah</option>
+                    <option value="Sulit">Sulit</option>
                   </select>
                   <br></br>
                   <CFormLabel htmlFor="faskes">Fasilitas Kesehatan &nbsp;</CFormLabel>
-                  <select id="faskes" name="faskes">
-                    <option value="mudah">Mudah</option>
-                    <option value="sulit">Sulit</option>
+                  <select 
+                    id="faskes" 
+                    name="faskes"
+                    value={aksesKesehatan}
+                    onChange={(e) => setAksesKesehatan(e.target.value)}
+                  >
+                    <option value="Mudah">Mudah</option>
+                    <option value="Sulit">Sulit</option>
                   </select>
                 </div>
                 <div className="col-auto">

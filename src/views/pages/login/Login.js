@@ -8,6 +8,7 @@ import {
   CCol,
   CContainer,
   CForm,
+  CFormFeedback,
   CFormInput,
   CInputGroup,
   CInputGroupText,
@@ -16,23 +17,63 @@ import {
 import CIcon from '@coreui/icons-react'
 import logonu from 'src/assets/images/logonu.jpg'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-
-// var bgimg = {
-//   position:'absolute',
-//   width: '100%',
-//   height: '100%',
-//   backgroundImage: `url(${logonu})`,
-//   objectFit: 'cover',
-//   filter: 'brightness(50%)',
-//   userSelect: 'none',
-//   pointerEvents: 'none',
-// }
-// filter: 'brightness(50%)',
-// backgroundColor: 'transparent',
-// shadowOpacity: 0,
-// style={{ filter: 'brightness(50%)' }}
+import { useState } from 'react'
+import axios from 'axios'
+import ErrorMessage from 'src/components/custom/ErrorMessage'
+import { useEffect } from 'react'
+import { isLogin } from 'src/util/Auth'
+import { Redirect } from 'react-router-dom'
+import { httpClient } from 'src/util/Api'
+import { useUser } from 'src/context/UserContext'
 
 const Login = () => {
+
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMsgPass, setErrorMsgPass] = useState('')
+  const [errorMsgUsername, setErrorMsgUsername] = useState('')
+  const { state: userState, setUser } = useUser()
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(username, password, process.env.REACT_APP_DEV_API_URL)
+    httpClient.post(
+      '/users/login', 
+      {
+        email: username,
+        password: password
+      }
+    ).then(res => {
+      console.log(res.data.data)
+      cleanError()
+      localStorage.setItem('token', res.data.data.token)
+      setUser({
+        id: res.data.data.id,
+        name: res.data.data.name,
+        email: res.data.data.email,
+        role: res.data.data.role,
+      })
+    }).catch(err => {
+      if (err.response.data.meta.message == 'Email not found') {
+        cleanError()
+        setErrorMsgUsername('Username/email salah')
+      }
+
+      if (err.response.data.meta.message == 'Wrong password') {
+        cleanError()
+        setErrorMsgPass('Password salah')
+      }
+    })
+  }
+
+  const cleanError = () => {
+    setErrorMsgPass('')
+    setErrorMsgUsername('')
+  }
+
+  if(isLogin()){
+    console.log(isLogin())
+    return <Redirect to='/dashboard' />
+  }
   return (
     <div className="min-vh-100 d-flex flex-row align-items-center">
       <img
@@ -54,15 +95,22 @@ const Login = () => {
             <CCardGroup>
               <CCard style={{ filter: 'brightness(100%)', opacity: '0.95' }} styleclassName="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={handleSubmit}>
                     <h1>Login</h1>
                     <p className="text-medium-emphasis">Sign In to your account</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput 
+                        placeholder="Username" 
+                        autoComplete="username" 
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} 
+                        required
+                      />
                     </CInputGroup>
+                    <ErrorMessage text={errorMsgUsername} visible={errorMsgUsername}/>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
@@ -71,11 +119,15 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
                       />
                     </CInputGroup>
+                    <ErrorMessage text={errorMsgPass} visible={errorMsgPass}/>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="px-4" type='submit'>
                           Login
                         </CButton>
                       </CCol>

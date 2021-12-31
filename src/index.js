@@ -6,10 +6,12 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { Provider } from 'react-redux'
 import store from './store'
-
+import { UserProvider, defaultState as defaultStateUser, UserReducer } from './context/UserContext'
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <UserProvider initialState={defaultStateUser} reducer={UserReducer}>
+      <App />
+    </UserProvider>
   </Provider>,
   document.getElementById('root'),
 )
