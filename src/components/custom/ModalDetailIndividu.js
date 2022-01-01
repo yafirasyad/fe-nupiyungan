@@ -149,7 +149,7 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                         <h6>Jaminan sosial ketenagakerjaan: </h6>
                     </CCol>
                     <CCol>
-                        <p>{item.jaminan_sosial_ketenagakerjaan}</p>
+                        <p>{item.jaminan_sosial_ketenagakerjaan ? 'Ya' : 'Tidak'}</p>
                     </CCol>
                 </CRow>
                 <CRow>
@@ -157,7 +157,7 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                         <h6>Jaminan sosial kesehatan: </h6>
                     </CCol>
                     <CCol>
-                        <p>{item.jaminan_sosial_kesehatan}</p>
+                        <p>{item.jaminan_sosial_kesehatan ? 'Ya' : 'Tidak'}</p>
                     </CCol>
                 </CRow>
                 <CRow>
@@ -205,7 +205,7 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                         <h6>Siskamling: </h6>
                     </CCol>
                     <CCol>
-                        <p>{item.siskamlin}</p>
+                        <p>{item.siskamling}</p>
                     </CCol>
                 </CRow>
                 <CRow>

@@ -54,17 +54,18 @@ import { httpClient } from 'src/util/Api'
 import ModalDetailIndividu from 'src/components/custom/ModalDetailIndividu'
 import ModalDelete from 'src/components/custom/ModalDelete'
 import Loader from 'src/components/custom/Loader'
+import { useData } from 'src/context/DataContext'
+import { Link, Redirect } from 'react-router-dom'
 
 // const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const DataIndividu = () => {
-
-  const [data, setData] = useState([])
   const [detailMode, setDetailMode] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [deleteMode, setDeleteMode] = useState(false)
   const [selectedData, setSelectedData] = useState({})
+  const {state: dataState, setDataIndividu, setEditMode, selectData} = useData()
   const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
@@ -72,6 +73,8 @@ const DataIndividu = () => {
   useEffect(() => {
     console.log('DataIndividu')
     getDataPerson()
+    console.log('===Data dari context===')
+    console.log(dataState.individu)
   }, [])
 
   const getDataPerson = () => {
@@ -80,8 +83,7 @@ const DataIndividu = () => {
         Authorization: 'Bearer ' + localStorage.getItem('token'),
       },
     }).then(res => {
-      console.log(res.data.data)
-      setData(res.data.data)
+      setDataIndividu(res.data.data)
       setIsLoading(false)
     }).catch(err => {
       console.log(err.response)
@@ -112,6 +114,23 @@ const DataIndividu = () => {
               >
                 detil
               </CButton>
+              <Link 
+                to={'/forms/form-control'}
+                onClick={() => {
+                  setEditMode(true)
+                  selectData(item)
+                }}
+              >
+                <CButton 
+                  color="primary"
+                  style={{
+                    marginRight: '2px', 
+                    marginLeft: '2px', 
+                  }}
+                >
+                    edit
+                </CButton>
+              </Link>
               <CButton 
                 color="danger"
                 style={{
@@ -125,6 +144,7 @@ const DataIndividu = () => {
               >
                 hapus
               </CButton>
+              
             </div>
           </CTableDataCell>
         </CTableRow>
@@ -147,7 +167,7 @@ const DataIndividu = () => {
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-info py-1 px-3">
                         <div className="text-medium-emphasis small">Jumlah Data</div>
-                        <div className="fs-5 fw-semibold">{data.length}</div>
+                        <div className="fs-5 fw-semibold">{dataState.individu.length}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
@@ -177,11 +197,11 @@ const DataIndividu = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {data.map((item, index) => renderTable(item, index))}
+            {dataState.individu.map((item, index) => renderTable(item, index))}
           </CTableBody>
         </CTable>
       </CRow>
-      {data.length == 0 && !isLoading  ? (
+      {dataState.individu.length == 0 && !isLoading  ? (
         <p className='text-center'>Tidak ada data</p>
       ) : ''}
       <Loader visible={isLoading} />

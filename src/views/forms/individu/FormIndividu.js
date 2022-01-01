@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-undef */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -15,6 +15,7 @@ import {
 import { DocsCallout, DocsExample, FormLabel } from 'src/components'
 import axios from 'axios'
 import { httpClient } from 'src/util/Api'
+import { useData } from 'src/context/DataContext'
 
 const FormIndividu = () => {
   const [otherModeAgama, setOtherModeAgama] = useState(false)
@@ -48,9 +49,9 @@ const FormIndividu = () => {
   const [pestaRakyat, setPestaRakyat] = useState(0)
   const [bahasaRumah, setBahasaRumah] = useState('')
   const [bahasaFormal, setBahasaFormal] = useState('')
-  const [jamsostek, setJamsostek] = useState(false)
-  const [jamsoskes, setJamsoskes] = useState(false)
-  
+  const [jamsostek, setJamsostek] = useState(0)
+  const [jamsoskes, setJamsoskes] = useState(0)
+  const { state: dataState, setEditMode } = useData();
  
   const [penyakit, setPenyakit] = useState({
     muntaber: 0,
@@ -115,20 +116,36 @@ const FormIndividu = () => {
       jaminan_sosial_ketenagakerjaan: jamsostek,
       jaminan_sosial_kesehatan: jamsoskes,
     }
-    httpClient.post('/persons', {
-      ...person,
-      penyakit: penyakit,
-      disabilitas: disabilitas,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      }
-    }).then(res => {
-      console.log(res.data)
-    }).catch(err => {
-      console.log(err.response)
-    })
+    if (dataState.isEditMode) {
+      httpClient.put(`/persons/${dataState.selectedData.id}`, {
+        ...person,
+        penyakit: penyakit,
+        disabilitas: disabilitas,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      }).then(res => {
+        console.log(res.data)
+      }).catch(err => {
+        console.log(err.response)
+      })
+    }else {
+      httpClient.post('/persons', {
+        ...person,
+        penyakit: penyakit,
+        disabilitas: disabilitas,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        }
+      }).then(res => {
+        console.log(res.data)
+      }).catch(err => {
+        console.log(err.response)
+      })
+    }
   }
 
   const handleChangePendidikan = (e) => {
@@ -165,6 +182,53 @@ const FormIndividu = () => {
       // setPerson({...person, agama: e.target.value})
     }
   }
+
+  useEffect(() => {
+    if(dataState.isEditMode){
+      setNik(dataState.selectedData.nik)
+      setNoKk(dataState.selectedData.no_kk)
+      setNama(dataState.selectedData.nama)
+      setJenisKelamin(dataState.selectedData.jenis_kelamin)
+      setTempatLahir(dataState.selectedData.tempat_lahir)
+      setTanggalLahir(dataState.selectedData.tanggal_lahir)
+      setStatus(dataState.selectedData.status)
+      setAgama(dataState.selectedData.agama)
+      setSuku(dataState.selectedData.suku)
+      setWargaNegara(dataState.selectedData.warga_negara)
+      setNoHp(dataState.selectedData.no_hp)
+      setEmail(dataState.selectedData.email)
+      setFacebook(dataState.selectedData.facebook)
+      setInstagram(dataState.selectedData.instagram)
+      setKondisiPekerjaan(dataState.selectedData.kondisi_pekerjaan)
+      setPekerjaanUtama(dataState.selectedData.pekerjaan_utama)
+      setPenghasilanSetahun(dataState.selectedData.penghasilan_setahun)
+      setPendidikan(dataState.selectedData.pendidikan)
+      setKerjaBakti(dataState.selectedData.kerja_bakti)
+      setSiskamling(dataState.selectedData.siskamling)
+      setPestaRakyat(dataState.selectedData.pesta_rakyat)
+      setBahasaRumah(dataState.selectedData.bahasa_rumah)
+      setBahasaFormal(dataState.selectedData.bahasa_formal)
+      setJamsostek(dataState.selectedData.jaminan_sosial_ketenagakerjaan)
+      setJamsoskes(dataState.selectedData.jaminan_sosial_kesehatan)
+      setPenyakit(dataState.selectedData.penyakit)
+      setDisabilitas(dataState.selectedData.disabilitas)
+
+      setOtherAgama(agama !== 'Islam' && agama !== 'Kristen' && dataState.isEditMode ? dataState.selectedData.agama : '')
+      setOtherModeAgama(agama !== 'Islam' && agama !== 'Kristen' && dataState.isEditMode ? true : false)
+
+      setOtherPekerjaan(pekerjaanUtama!== 'Petani' && pekerjaanUtama!== 'Guru' && pekerjaanUtama!== 'Guru Agama' && pekerjaanUtama!== 'Pedagang' && pekerjaanUtama!== 'PNS' && pekerjaanUtama!== 'TNI' && pekerjaanUtama!== 'Pegawai Kantor Desa' && pekerjaanUtama!== 'Swasta' && dataState.isEditMode ? dataState.selectedData.pekerjaan_utama : '')
+      setOtherModePekerjaan(pekerjaanUtama!== 'Petani' && pekerjaanUtama!== 'Guru' && pekerjaanUtama!== 'Guru Agama' && pekerjaanUtama!== 'Pedagang' && pekerjaanUtama!== 'PNS' && pekerjaanUtama!== 'TNI' && pekerjaanUtama!== 'Pegawai Kantor Desa' && pekerjaanUtama!== 'Swasta' && dataState.isEditMode ? true : false)
+    
+      setOtherPendidikan(pendidikan !== 'Tidak Sekolah' && pendidikan !== 'SD' && pendidikan !== 'SMP' && pendidikan !== 'SMA' && pendidikan !== 'Diploma' && pendidikan !== 'Sarjana' && pendidikan !== 'Magister' && pendidikan !== 'Doktor' && pendidikan !== 'Pesantren' && dataState.isEditMode ? dataState.selectedData.pendidikan : '')
+      setOtherModePendidikan(pendidikan !== 'Tidak Sekolah' && pendidikan !== 'SD' && pendidikan !== 'SMP' && pendidikan !== 'SMA' && pendidikan !== 'Diploma' && pendidikan !== 'Sarjana' && pendidikan !== 'Magister' && pendidikan !== 'Doktor' && pendidikan !== 'Pesantren' && dataState.isEditMode ? true : false)
+
+      console.log(dataState.selectedData)
+    }
+    return () => {
+      setEditMode(false)
+    }
+  }, [])
+  
   return (
     <CRow>
       <CCol xs={12}>
@@ -271,6 +335,7 @@ const FormIndividu = () => {
                       id="islam"
                       name="agama"
                       onChange={handleChangeAgama}
+                      checked={agama === 'Islam'}
                     />
                     <label className="form-check-label" htmlFor="islam">
                       Islam
@@ -285,6 +350,7 @@ const FormIndividu = () => {
                       name="agama"
                       value='Kristen'
                       onChange={handleChangeAgama}
+                      checked={agama === 'Kristen'}
                     />
                     <label className="form-check-label" htmlFor="kristen">
                       Kristen
@@ -299,6 +365,7 @@ const FormIndividu = () => {
                       value='Other'
                       name="agama"
                       onChange={handleChangeAgama}
+                      checked={agama !== 'Islam' && agama !== 'Kristen' && dataState.isEditMode}
                     />
                     <label className="form-check-label" htmlFor="agamaother">
                       Other :
@@ -409,6 +476,7 @@ const FormIndividu = () => {
                       value='Petani'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Petani'}
                     />
                     <label className="form-check-label" htmlFor="petani">
                       Petani
@@ -423,6 +491,7 @@ const FormIndividu = () => {
                       value='Guru'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Guru'}
                     />
                     <label className="form-check-label" htmlFor="guru">
                       Guru
@@ -437,6 +506,7 @@ const FormIndividu = () => {
                       value='Guru Agama'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Guru Agama'}
                     />
                     <label className="form-check-label" htmlFor="guruagama">
                       Guru Agama
@@ -451,6 +521,7 @@ const FormIndividu = () => {
                       value='Pedagang'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Pedagang'}
                     />
                     <label className="form-check-label" htmlFor="pedagang">
                       Pedagang
@@ -465,6 +536,7 @@ const FormIndividu = () => {
                       value='PNS'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'PNS'}
                     />
                     <label className="form-check-label" htmlFor="pns">
                       PNS
@@ -479,6 +551,7 @@ const FormIndividu = () => {
                       value='TNI'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'TNI'}
                     />
                     <label className="form-check-label" htmlFor="tni">
                       TNI
@@ -493,6 +566,7 @@ const FormIndividu = () => {
                       value='Pegawai Kantor Desa'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Pegawai Kantor Desa'}
                     />
                     <label className="form-check-label" htmlFor="pegawaikantordesa">
                       Pegawai Kantor Desa
@@ -507,6 +581,7 @@ const FormIndividu = () => {
                       value='Swasta'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Swasta'}
                     />
                     <label className="form-check-label" htmlFor="swasta">
                       Swasta
@@ -521,6 +596,7 @@ const FormIndividu = () => {
                       value='Other'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama!== 'Petani' && pekerjaanUtama!== 'Guru' && pekerjaanUtama!== 'Guru Agama' && pekerjaanUtama!== 'Pedagang' && pekerjaanUtama!== 'PNS' && pekerjaanUtama!== 'TNI' && pekerjaanUtama!== 'Pegawai Kantor Desa' && pekerjaanUtama!== 'Swasta' && dataState.isEditMode}
                     />
                     <label className="form-check-label" htmlFor="pekerjaanother">
                       Other :
@@ -528,6 +604,7 @@ const FormIndividu = () => {
                     <CFormInput 
                       type="text" 
                       id="pekerjaanother" 
+                      value={otherPekerjaan}
                       onChange={(e) => {
                         setOtherPekerjaan(e.target.value)
                         setPekerjaanUtama(e.target.value)
@@ -911,6 +988,7 @@ const FormIndividu = () => {
                         value='Tidak Sekolah'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Tidak Sekolah'}
                       />
                       <label className="form-check-label" htmlFor="tidaksekolah">
                         Tidak Sekolah
@@ -925,6 +1003,7 @@ const FormIndividu = () => {
                       value='SD'
                       name='pendidikan'
                       onChange={handleChangePendidikan}
+                      checked={pendidikan === 'SD'}
                     />
                     <label className="form-check-label" htmlFor="sd">
                       SD/Sederajat
@@ -939,6 +1018,7 @@ const FormIndividu = () => {
                         value='SMP'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'SMP'}
                       />
                       <label className="form-check-label" htmlFor="smp">
                         SMP/Sederajat
@@ -953,6 +1033,7 @@ const FormIndividu = () => {
                         value='SMA'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'SMA'}
                       />
                       <label className="form-check-label" htmlFor="sma">
                         SMA/Sederajat
@@ -967,6 +1048,7 @@ const FormIndividu = () => {
                         value='Diploma'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Diploma'}
                       />
                       <label className="form-check-label" htmlFor="diploma">
                         Diploma I - III
@@ -981,6 +1063,7 @@ const FormIndividu = () => {
                         value='Sarjana'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Sarjana'}
                       />
                       <label className="form-check-label" htmlFor="sarjana">
                         Sarjana (S1)
@@ -995,6 +1078,7 @@ const FormIndividu = () => {
                         value='Magister'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Magister'}
                       />
                       <label className="form-check-label" htmlFor="magister">
                         Magister (S2)
@@ -1009,6 +1093,7 @@ const FormIndividu = () => {
                         value='Doktor'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Doktor'}
                       />
                       <label className="form-check-label" htmlFor="doktor">
                         Doktor (S3)
@@ -1023,6 +1108,7 @@ const FormIndividu = () => {
                         value='Pesantren'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Pesantren'}
                       />
                       <label className="form-check-label" htmlFor="pesantren">
                         Pesantren
@@ -1037,6 +1123,7 @@ const FormIndividu = () => {
                         value='Other'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan !== 'Tidak Sekolah' && pendidikan !== 'SD' && pendidikan !== 'SMP' && pendidikan !== 'SMA' && pendidikan !== 'Diploma' && pendidikan !== 'Sarjana' && pendidikan !== 'Magister' && pendidikan !== 'Doktor' && pendidikan !== 'Pesantren' && dataState.isEditMode}
                       />
                       <label className="form-check-label" htmlFor="pendidikanother">
                         Other :
@@ -1044,6 +1131,7 @@ const FormIndividu = () => {
                       <CFormInput 
                         type="text" 
                         id="pendidikananother" 
+                        value={otherPendidikan}
                         onChange={(e) => {
                           setOtherPendidikan(e.target.value)
                           setPendidikan(e.target.value)
