@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-undef */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -10,27 +10,48 @@ import {
   CFormInput,
   CFormLabel,
   CFormTextarea,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
   CRow,
 } from '@coreui/react'
 import { DocsCallout, DocsExample, FormLabel } from 'src/components'
 import axios from 'axios'
 import { httpClient } from 'src/util/Api'
-
+import { useData } from 'src/context/DataContext'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+import ModalSubmitState from 'src/components/custom/ModalSubmitState'
+import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import Spinner from 'src/components/custom/Spinner'
+import Loader from 'src/components/custom/Loader'
+import ErrorMessage from 'src/components/custom/ErrorMessage'
+import InputDesa from 'src/components/custom/InputDesa'
 const FormIndividu = () => {
+  const [updateSuccess, setUpdateSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorNik, setErrorNik] = useState(false)
+  const [modalMessage, setModalMessage] = useState('')
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const [otherModeAgama, setOtherModeAgama] = useState(false)
   const [otherAgama, setOtherAgama] = useState('')
   const [otherModePekerjaan, setOtherModePekerjaan] = useState(false)
   const [otherPekerjaan, setOtherPekerjaan] = useState('')
   const [otherModePendidikan, setOtherModePendidikan] = useState(false)
   const [otherPendidikan, setOtherPendidikan] = useState('')
-
+  const history = useHistory()
   // Person
+  const [desa, setDesa] = useState(1)
+  const [dusun, setDusun] = useState(1)
   const [nik, setNik] = useState('')
   const [noKk, setNoKk] = useState('')
   const [nama, setNama] = useState('')
   const [jenisKelamin, setJenisKelamin] = useState('Laki')
   const [tempatLahir, setTempatLahir] = useState('')
-  const [tanggalLahir, setTanggalLahir] = useState('01-02-2021')
+  const [tanggalLahir, setTanggalLahir] = useState(new Date())
   const [status, setStatus] = useState('Kawin')
   const [agama, setAgama] = useState('')
   const [suku, setSuku] = useState('')
@@ -48,9 +69,9 @@ const FormIndividu = () => {
   const [pestaRakyat, setPestaRakyat] = useState(0)
   const [bahasaRumah, setBahasaRumah] = useState('')
   const [bahasaFormal, setBahasaFormal] = useState('')
-  const [jamsostek, setJamsostek] = useState(false)
-  const [jamsoskes, setJamsoskes] = useState(false)
-  
+  const [jamsostek, setJamsostek] = useState(0)
+  const [jamsoskes, setJamsoskes] = useState(0)
+  const { state: dataState, setEditMode } = useData();
  
   const [penyakit, setPenyakit] = useState({
     muntaber: 0,
@@ -88,7 +109,10 @@ const FormIndividu = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setIsLoading(true)
     const person = {
+      desa_id: desa,
+      dusun_id: dusun,
       nik: nik,
       no_kk: noKk,
       nama: nama,
@@ -115,20 +139,51 @@ const FormIndividu = () => {
       jaminan_sosial_ketenagakerjaan: jamsostek,
       jaminan_sosial_kesehatan: jamsoskes,
     }
-    httpClient.post('/persons', {
-      ...person,
-      penyakit: penyakit,
-      disabilitas: disabilitas,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      }
-    }).then(res => {
-      console.log(res.data)
-    }).catch(err => {
-      console.log(err.response)
-    })
+    if (dataState.isEditMode) {
+      httpClient.put(`/persons/${dataState.selectedDataIndividu.id}`, {
+        ...person,
+        penyakit: penyakit,
+        disabilitas: disabilitas,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      }).then(res => {
+        setModalMessage('Data berhasil diubah')
+        setIsModalVisible(true)
+        setIsLoading(false)
+        setUpdateSuccess(true)
+        cleanState()
+      }).catch(err => {
+        console.log(err.response)
+        if(err.response.data.errors.nik) setErrorNik(true)
+        setModalMessage('Data gagal diubah')
+        setIsModalVisible(true)
+        setIsLoading(false)
+      })
+    }else {
+      httpClient.post('/persons', {
+        ...person,
+        penyakit: penyakit,
+        disabilitas: disabilitas,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        }
+      }).then(res => {
+        setModalMessage('Data berhasil ditambahkan')
+        setIsModalVisible(true)
+        setIsLoading(false)
+        cleanState()
+      }).catch(err => {
+        console.log(err.response.data)
+        if(err.response.data.errors.nik) setErrorNik(true)
+        setModalMessage('Data gagal ditambahkan')
+        setIsModalVisible(true)
+        setIsLoading(false)
+      })
+    }
   }
 
   const handleChangePendidikan = (e) => {
@@ -165,8 +220,141 @@ const FormIndividu = () => {
       // setPerson({...person, agama: e.target.value})
     }
   }
+
+  const cleanState = () => {
+    setOtherAgama('')
+    setOtherModeAgama(false)
+    setOtherAgama('')
+    setOtherModeAgama(false)
+    setOtherPekerjaan('')
+    setOtherModePekerjaan(false)
+    setOtherPendidikan('')
+    setOtherModePendidikan(false)
+
+    // Person 
+    setNik('')
+    setNoKk('')
+    setNama('')
+    setJenisKelamin('Laki')
+    setTempatLahir('')
+    setTanggalLahir(new Date())
+    setStatus('Kawin')
+    setAgama('')
+    setSuku('')
+    setWargaNegara('WNI')
+    setNoHp('')
+    setEmail('')
+    setFacebook('')
+    setInstagram('')
+    setKondisiPekerjaan('Bersekolah')
+    setPekerjaanUtama('')
+    setPenghasilanSetahun(0)
+    setPendidikan('')
+    setKerjaBakti(0)
+    setSiskamling(0)
+    setPestaRakyat(0)
+    setBahasaRumah('')
+    setBahasaFormal('')
+    setJamsostek(0)
+    setJamsoskes(0)
+
+    // Penyakit
+    setPenyakit({
+      muntaber: 0,
+      demam_berdarah: 0,
+      campak: 0,
+      flu_burung: 0,
+      malaria: 0,
+      covid: 0,
+      hepatitis_b: 0,
+      hepatitis_e: 0,
+      difteri: 0,
+      chikungunya: 0,
+      leptospirosis: 0,
+      kolerea: 0,
+      gizi_buruk: 0,
+      jantung: 0,
+      tbc: 0,
+      kanker: 0,
+      diabetes: 0,
+      lumpuh: 0,
+      lainnya: '',
+    })
+
+    // Disabilitas
+    setDisabilitas({
+      tunanetra: 0,
+      tunarungu: 0,
+      tunawicara: 0,
+      tunarungu_wicara: 0,
+      tunadaksa: 0,
+      tunagrahita: 0,
+      tunalaras: 0,
+      cacat_eks_kusta: 0,
+      cacat_ganda: 0,
+    })
+  }
+
+  useEffect(() => {
+    if(dataState.isEditMode){
+      setNik(dataState.selectedDataIndividu.nik)
+      setNoKk(dataState.selectedDataIndividu.no_kk)
+      setNama(dataState.selectedDataIndividu.nama)
+      setJenisKelamin(dataState.selectedDataIndividu.jenis_kelamin)
+      setTempatLahir(dataState.selectedDataIndividu.tempat_lahir)
+      setTanggalLahir(new Date(dataState.selectedDataIndividu.tanggal_lahir))
+      setStatus(dataState.selectedDataIndividu.status)
+      setAgama(dataState.selectedDataIndividu.agama)
+      setSuku(dataState.selectedDataIndividu.suku)
+      setWargaNegara(dataState.selectedDataIndividu.warga_negara)
+      setNoHp(dataState.selectedDataIndividu.no_hp)
+      setEmail(dataState.selectedDataIndividu.email)
+      setFacebook(dataState.selectedDataIndividu.facebook)
+      setInstagram(dataState.selectedDataIndividu.instagram)
+      setKondisiPekerjaan(dataState.selectedDataIndividu.kondisi_pekerjaan)
+      setPekerjaanUtama(dataState.selectedDataIndividu.pekerjaan_utama)
+      setPenghasilanSetahun(dataState.selectedDataIndividu.penghasilan_setahun)
+      setPendidikan(dataState.selectedDataIndividu.pendidikan)
+      setKerjaBakti(dataState.selectedDataIndividu.kerja_bakti)
+      setSiskamling(dataState.selectedDataIndividu.siskamling)
+      setPestaRakyat(dataState.selectedDataIndividu.pesta_rakyat)
+      setBahasaRumah(dataState.selectedDataIndividu.bahasa_rumah)
+      setBahasaFormal(dataState.selectedDataIndividu.bahasa_formal)
+      setJamsostek(dataState.selectedDataIndividu.jaminan_sosial_ketenagakerjaan)
+      setJamsoskes(dataState.selectedDataIndividu.jaminan_sosial_kesehatan)
+      setPenyakit(dataState.selectedDataIndividu.penyakit)
+      setDisabilitas(dataState.selectedDataIndividu.disabilitas)
+
+      
+      setOtherModeAgama(dataState.selectedDataIndividu.agama !== 'Islam' && dataState.selectedDataIndividu.agama !== 'Kristen' ? true : false)
+      console.log(otherModeAgama)
+      setOtherAgama(dataState.selectedDataIndividu.agama !== 'Islam' && dataState.selectedDataIndividu.agama !== 'Kristen' && dataState.isEditMode ? dataState.selectedDataIndividu.agama : '')
+
+      
+      setOtherModePekerjaan(dataState.selectedDataIndividu.pekerjaanUtama!== 'Petani' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Guru' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Guru Agama' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Pedagang' && dataState.selectedDataIndividu.pekerjaanUtama!== 'PNS' && dataState.selectedDataIndividu.pekerjaanUtama!== 'TNI' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Pegawai Kantor Desa' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Swasta' && dataState.isEditMode ? true : false)
+      setOtherPekerjaan(dataState.selectedDataIndividu.pekerjaanUtama!== 'Petani' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Guru' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Guru Agama' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Pedagang' && dataState.selectedDataIndividu.pekerjaanUtama!== 'PNS' && dataState.selectedDataIndividu.pekerjaanUtama!== 'TNI' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Pegawai Kantor Desa' && dataState.selectedDataIndividu.pekerjaanUtama!== 'Swasta' && dataState.isEditMode ? dataState.selectedDataIndividu.pekerjaan_utama : '')
+    
+      
+      setOtherModePendidikan(dataState.selectedDataIndividu.pendidikan !== 'Tidak Sekolah' && dataState.selectedDataIndividu.pendidikan !== 'SD' && dataState.selectedDataIndividu.pendidikan !== 'SMP' && dataState.selectedDataIndividu.pendidikan !== 'SMA' && dataState.selectedDataIndividu.pendidikan !== 'Diploma' && dataState.selectedDataIndividu.pendidikan !== 'Sarjana' && dataState.selectedDataIndividu.pendidikan !== 'Magister' && dataState.selectedDataIndividu.pendidikan !== 'Doktor' && dataState.selectedDataIndividu.pendidikan !== 'Pesantren' && dataState.isEditMode ? true : false)
+      setOtherPendidikan(dataState.selectedDataIndividu.pendidikan !== 'Tidak Sekolah' && dataState.selectedDataIndividu.pendidikan !== 'SD' && dataState.selectedDataIndividu.pendidikan != 'SMP' && dataState.selectedDataIndividu.pendidikan !== 'SMA' && dataState.selectedDataIndividu.pendidikan !== 'Diploma' && dataState.selectedDataIndividu.pendidikan !== 'Sarjana' && dataState.selectedDataIndividu.pendidikan !== 'Magister' && dataState.selectedDataIndividu.pendidikan !== 'Doktor' && dataState.selectedDataIndividu.pendidikan !== 'Pesantren' && dataState.isEditMode ? dataState.selectedDataIndividu.pendidikan : '')
+
+    }
+    return () => {
+      setEditMode(false)
+    }
+  }, [])
+  
   return (
     <CRow>
+      <Loader visible={isLoading}/>
+      <ModalSubmitState visible={isModalVisible} setVisible={setIsModalVisible} message={modalMessage} onClose={dataState.isEditMode ? () => {
+        setIsModalVisible(false)
+        if (updateSuccess) {
+          history.push('/individu')
+        }
+      } : () => {
+        setIsModalVisible(false)
+      }}/>
       <CCol xs={12}>
         <DocsCallout name="Form Control" href="forms/form-control" />
       </CCol>
@@ -189,6 +377,7 @@ const FormIndividu = () => {
                     id="nomorkkdataindividu" 
                     value={noKk}
                     onChange={(e) => setNoKk(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -200,8 +389,11 @@ const FormIndividu = () => {
                     id="nomornikdataindividu" 
                     value={nik}
                     onChange={(e) => setNik(e.target.value)}  
+                    required
                   />
+                  <ErrorMessage text="NIK sudah terdaftar" visible={errorNik}/>
                 </div>
+                <InputDesa selectedDesa={desa} setSelectedDesa={setDesa} selectedDusun={dusun} setSelectedDusun={setDusun}/>
                 {/* <div className="mb-3">
                   <CFormLabel htmlFor="exampleFormControlTextarea1">Example textarea</CFormLabel>
                   <CFormTextarea id="exampleFormControlTextarea1" rows="3"></CFormTextarea>
@@ -215,6 +407,7 @@ const FormIndividu = () => {
                     id="nama" 
                     value={nama}
                     onChange={(e) => setNama(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -226,6 +419,7 @@ const FormIndividu = () => {
                     name="JenisKelamin" 
                     value={jenisKelamin}
                     onChange={(e) => setJenisKelamin(e.target.value)}
+                    required
                   >
                     <option value="Laki">Laki-Laki</option>
                     <option value="Perempuan">Perempuan</option>
@@ -240,6 +434,21 @@ const FormIndividu = () => {
                     id="tempatlahir" 
                     value={tempatLahir}
                     onChange={(e) => setTempatLahir(e.target.value)}  
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <CFormLabel htmlFor="tempatlahir">
+                    <h6>Tanggal Lahir</h6>
+                  </CFormLabel>
+                  <DatePicker
+                    dateFormat={'dd/MM/yyyy'}
+                    selected={tanggalLahir}
+                    onChange={(date) => setTanggalLahir(date)}
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
                   />
                 </div>
                 <div className="mb-3">
@@ -250,7 +459,10 @@ const FormIndividu = () => {
                     id="statusNikah" 
                     name="statuspernikahan"
                     value={status}
-                    onChange={(e) => setStatus(e.target.value)}
+                    onChange={(e) => {
+                      setStatus(e.target.value)
+                      console.log(e.target.value)
+                    }}
                     >
                     <option value="Kawin">Kawin</option>
                     <option value="Tidak Kawin">Tidak Kawin</option>
@@ -271,6 +483,7 @@ const FormIndividu = () => {
                       id="islam"
                       name="agama"
                       onChange={handleChangeAgama}
+                      checked={agama === 'Islam'}
                     />
                     <label className="form-check-label" htmlFor="islam">
                       Islam
@@ -285,6 +498,7 @@ const FormIndividu = () => {
                       name="agama"
                       value='Kristen'
                       onChange={handleChangeAgama}
+                      checked={agama === 'Kristen'}
                     />
                     <label className="form-check-label" htmlFor="kristen">
                       Kristen
@@ -299,6 +513,7 @@ const FormIndividu = () => {
                       value='Other'
                       name="agama"
                       onChange={handleChangeAgama}
+                      checked={agama !== 'Islam' && agama !== 'Kristen' && dataState.isEditMode}
                     />
                     <label className="form-check-label" htmlFor="agamaother">
                       Other :
@@ -343,6 +558,7 @@ const FormIndividu = () => {
                     id="nomorhp" 
                     value={noHp}
                     onChange={(e) => setNoHp(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -354,6 +570,7 @@ const FormIndividu = () => {
                     id="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -365,6 +582,7 @@ const FormIndividu = () => {
                     id="facebook" 
                     value={facebook}
                     onChange={(e) => setFacebook(e.target.value)}  
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -376,6 +594,7 @@ const FormIndividu = () => {
                     id="instagram"
                     value={instagram}
                     onChange={(e) => setInstagram(e.target.value)} 
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -409,6 +628,7 @@ const FormIndividu = () => {
                       value='Petani'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Petani'}
                     />
                     <label className="form-check-label" htmlFor="petani">
                       Petani
@@ -423,6 +643,7 @@ const FormIndividu = () => {
                       value='Guru'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Guru'}
                     />
                     <label className="form-check-label" htmlFor="guru">
                       Guru
@@ -437,6 +658,7 @@ const FormIndividu = () => {
                       value='Guru Agama'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Guru Agama'}
                     />
                     <label className="form-check-label" htmlFor="guruagama">
                       Guru Agama
@@ -451,6 +673,7 @@ const FormIndividu = () => {
                       value='Pedagang'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Pedagang'}
                     />
                     <label className="form-check-label" htmlFor="pedagang">
                       Pedagang
@@ -465,6 +688,7 @@ const FormIndividu = () => {
                       value='PNS'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'PNS'}
                     />
                     <label className="form-check-label" htmlFor="pns">
                       PNS
@@ -479,6 +703,7 @@ const FormIndividu = () => {
                       value='TNI'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'TNI'}
                     />
                     <label className="form-check-label" htmlFor="tni">
                       TNI
@@ -493,6 +718,7 @@ const FormIndividu = () => {
                       value='Pegawai Kantor Desa'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Pegawai Kantor Desa'}
                     />
                     <label className="form-check-label" htmlFor="pegawaikantordesa">
                       Pegawai Kantor Desa
@@ -507,6 +733,7 @@ const FormIndividu = () => {
                       value='Swasta'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama === 'Swasta'}
                     />
                     <label className="form-check-label" htmlFor="swasta">
                       Swasta
@@ -521,6 +748,7 @@ const FormIndividu = () => {
                       value='Other'
                       name='pekerjaan'
                       onChange={handleChangePekerjaan}
+                      checked={pekerjaanUtama!== 'Petani' && pekerjaanUtama!== 'Guru' && pekerjaanUtama!== 'Guru Agama' && pekerjaanUtama!== 'Pedagang' && pekerjaanUtama!== 'PNS' && pekerjaanUtama!== 'TNI' && pekerjaanUtama!== 'Pegawai Kantor Desa' && pekerjaanUtama!== 'Swasta' && dataState.isEditMode}
                     />
                     <label className="form-check-label" htmlFor="pekerjaanother">
                       Other :
@@ -528,6 +756,7 @@ const FormIndividu = () => {
                     <CFormInput 
                       type="text" 
                       id="pekerjaanother" 
+                      value={otherPekerjaan}
                       onChange={(e) => {
                         setOtherPekerjaan(e.target.value)
                         setPekerjaanUtama(e.target.value)
@@ -574,6 +803,7 @@ const FormIndividu = () => {
                       value={penghasilanSetahun}
                       onChange={(e) => setPenghasilanSetahun(e.target.value)}
                       id="penghasilansetahun" 
+                      required
                     />
                   </div>
                   <br></br>
@@ -911,6 +1141,7 @@ const FormIndividu = () => {
                         value='Tidak Sekolah'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Tidak Sekolah'}
                       />
                       <label className="form-check-label" htmlFor="tidaksekolah">
                         Tidak Sekolah
@@ -925,6 +1156,7 @@ const FormIndividu = () => {
                       value='SD'
                       name='pendidikan'
                       onChange={handleChangePendidikan}
+                      checked={pendidikan === 'SD'}
                     />
                     <label className="form-check-label" htmlFor="sd">
                       SD/Sederajat
@@ -939,6 +1171,7 @@ const FormIndividu = () => {
                         value='SMP'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'SMP'}
                       />
                       <label className="form-check-label" htmlFor="smp">
                         SMP/Sederajat
@@ -953,6 +1186,7 @@ const FormIndividu = () => {
                         value='SMA'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'SMA'}
                       />
                       <label className="form-check-label" htmlFor="sma">
                         SMA/Sederajat
@@ -967,6 +1201,7 @@ const FormIndividu = () => {
                         value='Diploma'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Diploma'}
                       />
                       <label className="form-check-label" htmlFor="diploma">
                         Diploma I - III
@@ -981,6 +1216,7 @@ const FormIndividu = () => {
                         value='Sarjana'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Sarjana'}
                       />
                       <label className="form-check-label" htmlFor="sarjana">
                         Sarjana (S1)
@@ -995,6 +1231,7 @@ const FormIndividu = () => {
                         value='Magister'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Magister'}
                       />
                       <label className="form-check-label" htmlFor="magister">
                         Magister (S2)
@@ -1009,6 +1246,7 @@ const FormIndividu = () => {
                         value='Doktor'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Doktor'}
                       />
                       <label className="form-check-label" htmlFor="doktor">
                         Doktor (S3)
@@ -1023,6 +1261,7 @@ const FormIndividu = () => {
                         value='Pesantren'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan === 'Pesantren'}
                       />
                       <label className="form-check-label" htmlFor="pesantren">
                         Pesantren
@@ -1037,6 +1276,7 @@ const FormIndividu = () => {
                         value='Other'
                         name='pendidikan'
                         onChange={handleChangePendidikan}
+                        checked={pendidikan !== 'Tidak Sekolah' && pendidikan !== 'SD' && pendidikan !== 'SMP' && pendidikan !== 'SMA' && pendidikan !== 'Diploma' && pendidikan !== 'Sarjana' && pendidikan !== 'Magister' && pendidikan !== 'Doktor' && pendidikan !== 'Pesantren' && dataState.isEditMode}
                       />
                       <label className="form-check-label" htmlFor="pendidikanother">
                         Other :
@@ -1044,6 +1284,7 @@ const FormIndividu = () => {
                       <CFormInput 
                         type="text" 
                         id="pendidikananother" 
+                        value={otherPendidikan}
                         onChange={(e) => {
                           setOtherPendidikan(e.target.value)
                           setPendidikan(e.target.value)
@@ -1080,11 +1321,12 @@ const FormIndividu = () => {
                       <h6>Kerja bakti setahun terakhir(jumlah)</h6>
                     </CFormLabel>
                     <CFormInput 
-                      type="text" 
+                      type="number" 
                       id="kerjabakti"
                       placeholder='0'
                       value={kerjaBakti}
                       onChange={(e) => setKerjaBakti(e.target.value)} 
+                      required
                     />
                   </div>
                   <div className="mb-3">
@@ -1092,11 +1334,12 @@ const FormIndividu = () => {
                       <h6>Siskamling setahun terakhir(jumlah)</h6>
                     </CFormLabel>
                     <CFormInput 
-                      type="text" 
+                      type="number" 
                       id="siskamling" 
                       placeholder='0'
                       value={siskamling}
                       onChange={(e) => setSiskamling(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="mb-3">
@@ -1104,11 +1347,12 @@ const FormIndividu = () => {
                       <h6>Pesta rakyat setahun terakhir(jumlah)</h6>
                     </CFormLabel>
                     <CFormInput 
-                      type="text" 
+                      type="number" 
                       id="pestarakyat" 
                       placeholder='0'
                       value={pestaRakyat}
                       onChange={(e) => setPestaRakyat(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="col-auto">

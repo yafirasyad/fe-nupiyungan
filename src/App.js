@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import { useUser } from './context/UserContext'
 import './scss/style.scss'
+import "react-datepicker/dist/react-datepicker.css";
 import Logout from './views/pages/logout/Logout'
 const loading = (
   <div className="pt-3 text-center">

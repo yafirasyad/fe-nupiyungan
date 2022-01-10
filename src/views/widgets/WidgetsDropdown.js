@@ -12,15 +12,18 @@ import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import { useData } from 'src/context/DataContext'
 
 const WidgetsDropdown = () => {
+  const {state: dataState} = useData()
+
   return (
     <CRow>
       <CCol sm={6} lg={3}>
         <CWidgetStatsA
           className="mb-4"
           color="primary"
-          value={<>150 </>}
+          value={<>{dataState.individu.length}</>}
           title="Data Individu"
           action={
             <CDropdown alignment="end">
@@ -100,7 +103,7 @@ const WidgetsDropdown = () => {
         <CWidgetStatsA
           className="mb-4"
           color="info"
-          value={<>60</>}
+          value={<>{dataState.kk.length}</>}
           title="Jumlah KK"
           action={
             <CDropdown alignment="end">

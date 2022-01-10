@@ -29,6 +29,9 @@ export const AppSidebarNav = ({ items }) => {
           !rest.items && {
             component: NavLink,
             activeClassName: 'active',
+            isActive: (match, location) => {
+              return location.pathname === rest.to
+            }
           })}
         key={index}
         {...rest}

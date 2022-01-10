@@ -3,9 +3,17 @@ import React, { useState } from 'react'
 import { CButton, CCard, CCardBody, CCol, CForm, CFormInput, CFormLabel, CRow } from '@coreui/react'
 import { DocsCallout, DocsExample } from 'src/components'
 import { httpClient } from 'src/util/Api'
+import Loader from 'src/components/custom/Loader'
+import ModalSubmitState from 'src/components/custom/ModalSubmitState'
+import InputDesa from 'src/components/custom/InputDesa'
 
 const Select = () => {
-  
+  const [isLoading, setIsLoading] = useState(false)
+  const [modalMessage, setModalMessage] = useState('')
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  const [desa, setDesa] = useState(1)
+  const [dusun, setDusun] = useState()
   const [noKk, setNoKk] = useState('')
   const [namaKepala, setNamaKepala] = useState('')
   const [tempatTinggal, setTempatTinggal] = useState('')
@@ -15,7 +23,7 @@ const Select = () => {
   const [dinding, setDinding] = useState('')
   const [atap, setAtap] = useState('')
   const [jendela, setJendela] = useState('')
-  const [mck, setMcK] = useState('')
+  const [mck, setMck] = useState('')
   const [penerangan, setPenerangan] = useState('')
   const [energiMasak, setEnergiMasak] = useState('')
   const [pembuangan, setPembuangan] = useState('')
@@ -148,7 +156,7 @@ const Select = () => {
     kemudahan: 'Mudah',
   })
 
-  const [otherModeTempatTinggal, setOtherModeTempatTinggal] = useState('')
+  const [otherModeTempatTinggal, setOtherModeTempatTinggal] = useState(false)
   const [otherTempatTinggal, setOtherTempatTinggal] = useState('')
 
   const handleTempatTinggalChange = (e) => {
@@ -161,7 +169,7 @@ const Select = () => {
     }
   }
 
-  const [otherModeLantai, setOtherModeLantai] = useState('')
+  const [otherModeLantai, setOtherModeLantai] = useState(false)
   const [otherLantai, setOtherLantai] = useState('')
   const handleJenisLantaiChange = (e) => {
     if (e.target.value === 'Other') {
@@ -173,7 +181,7 @@ const Select = () => {
     }
   }
 
-  const [otherModeDinding, setOtherModeDinding] = useState('')
+  const [otherModeDinding, setOtherModeDinding] = useState(false)
   const [otherDinding, setOtherDinding] = useState('')
   const handleDindingChange = (e) => {
     console.log(e.target.value)
@@ -186,7 +194,7 @@ const Select = () => {
     }
   }
 
-  const [otherModeAtap, setOtherModeAtap] = useState('')
+  const [otherModeAtap, setOtherModeAtap] = useState(false)
   const [otherAtap, setOtherAtap] = useState('')
   const handleAtapChange = (e) => {
     if (e.target.value === 'Other') {
@@ -198,7 +206,7 @@ const Select = () => {
     }
   }
   
-  const [otherModePenerangan, setOtherModePenerangan] = useState('')
+  const [otherModePenerangan, setOtherModePenerangan] = useState(false)
   const [otherPenerangan, setOtherPenerangan] = useState('')
   const handlePeneranganChange = (e) => {
     if (e.target.value === 'Other') {
@@ -210,7 +218,7 @@ const Select = () => {
     }
   }
 
-  const [otherModeEnergiMasak, setOtherModeEnergiMasak] = useState('')
+  const [otherModeEnergiMasak, setOtherModeEnergiMasak] = useState(false)
   const [otherEnergiMasak, setOtherEnergiMasak] = useState('')
   const handleEnergiMasakChange = (e) => {
     if (e.target.value === 'Other') {
@@ -222,7 +230,7 @@ const Select = () => {
     }
   }
 
-  const [otherModeSumberAirMandi, setOtherModeSumberAirMandi] = useState('')
+  const [otherModeSumberAirMandi, setOtherModeSumberAirMandi] = useState(false)
   const [otherSumberAirMandi, setOtherSumberAirMandi] = useState('')
   const handleSumberAirMandiChange = (e) => {
     if (e.target.value === 'Other') {
@@ -234,7 +242,7 @@ const Select = () => {
     }
   }
 
-  const [otherModeSumberAirMinum, setOtherModeSumberAirMinum] = useState('')
+  const [otherModeSumberAirMinum, setOtherModeSumberAirMinum] = useState(false)
   const [otherSumberAirMinum, setOtherSumberAirMinum] = useState('')
   const handleSumberAirMinumChange = (e) => {
     if (e.target.value === 'Other') {
@@ -248,6 +256,7 @@ const Select = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    // setIsLoading(true)
     const akses_fasilitas_kesehatan = [
       rs,
       rsb,
@@ -271,7 +280,10 @@ const Select = () => {
       seminari,
       keagamaanLain
     ]
+
     const family = {
+      desa_id: desa,
+      dusun_id: dusun,
       no_kk: noKk,
       nama_kepala: namaKepala,
       tempat_tinggal: tempatTinggal,
@@ -305,8 +317,7 @@ const Select = () => {
       kondisi_rumah: kondisiRumah,
       bantuan_pendidikan: bantuanPendidikan,
     }
-    console.log('jalan')
-    console.log(family)
+
     httpClient.post('/families',
       family,
       {
@@ -316,16 +327,190 @@ const Select = () => {
         }
       }
      ).then(res => {
-      console.log("Berhasil")
-      console.log(res.data)
+      setIsLoading(false)
+      setModalMessage('Data berhasil ditambahkan')
+      setIsModalVisible(true)
+      cleanState()
      }).catch(err => {
-      console.log("Gagal")
-      console.log(err.response.data)
+      setIsLoading(false)
+      setModalMessage('Data gagal ditambahkan')
+      setIsModalVisible(true)
      })
   }
 
+  const cleanState = () => {
+    setNoKk('')
+    setNamaKepala('')
+    setTempatTinggal('')
+    setLuasLahan(0)
+    setLuasRumah(0)
+    setLantai('')
+    setDinding('')
+    setAtap('')
+    setJendela('')
+    setMck('')
+    setPenerangan('')
+    setEnergiMasak('')
+    setPembuangan('')
+    setSumberAirMandi('')
+    setSumberAirMinum('')
+    setRumahDibawahSutet(0)
+    setRumahBantaranSungai(0)
+    setKondisiRumah('Kumuh')
+    setBltDesa(0)
+    setPkh(0)
+    setBantuanSosialTunai(0)
+    setBantuanPresiden(0)
+    setBantuanUmkm(0)
+    setBantuanPekerja(0)
+    setBantuanPendidikan(0)
+    setAksesKerja('Mudah')
+    setAksesLahan('Mudah')
+    setAksesSekolah('Mudah')
+    setAksesKesehatan('Mudah')
+
+    // Akses Pendidikan
+    setPaud({
+      fasilitas: 'PAUD',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setTk({
+      fasilitas: 'TK/RA',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setSd({
+      fasilitas: 'SD/MI/Sederajat',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setSmp({ 
+      fasilitas: 'SMP/MTs/Sederajat',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setSma({
+      fasilitas: 'SMA/MA/Sederajat',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setPt({
+      fasilitas: 'Perguruan Tinggi',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setPesantren({ 
+      fasilitas: 'Pesantren',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setSeminari({
+      fasilitas: 'Seminari',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setKeagamaanLain({
+      fasilitas: 'Pendidikan Keagamaan lain',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+
+    // Akses Kesehatan
+    setRs({
+      fasilitas: 'Rumah Sakit',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setRsb({
+      fasilitas: 'Rumah Sakit Bersalin',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setPoliklinik({
+      fasilitas: 'Poliklinik',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setPuskesmas({
+      fasilitas: 'Puskesmas',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setPuskesmasBantu({
+      fasilitas: 'Puskesmas Bantu',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setPolindes({
+      fasilitas: 'Polindes',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setPoskesdes({
+      fasilitas: 'Poskesdes',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setPosyandu({
+      fasilitas: 'Posyandu',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+    setApotek({
+      fasilitas: 'Apotek',
+      jarak: 0,
+      waktu: 0,
+      kemudahan: 'Mudah',
+    })
+
+    setOtherModeTempatTinggal(false)
+    setOtherTempatTinggal('')
+
+    setOtherModeLantai(false)
+    setOtherLantai('')
+
+    setOtherModeDinding(false)
+    setOtherDinding('')
+
+    setOtherModeAtap(false)
+    setOtherAtap('')
+
+    setOtherModePenerangan(false)
+    setOtherPenerangan('')
+
+    setOtherModeEnergiMasak(false)
+    setOtherEnergiMasak('')
+
+    setOtherModeSumberAirMandi(false)
+    setOtherSumberAirMandi('')
+
+    setOtherModeSumberAirMinum(false)
+    setOtherSumberAirMinum('')
+  }
   return (
     <CRow>
+      <Loader visible={isLoading} />
+      <ModalSubmitState visible={isModalVisible} setVisible={setIsModalVisible} message={modalMessage} onClose={() => {
+        setIsModalVisible(false)
+      }} />
       <CCol xs={12}>
         <DocsCallout name="Form Control" href="forms/form-control" />
       </CCol>
@@ -345,6 +530,7 @@ const Select = () => {
                     id="nomorkkdatakk" 
                     value={noKk}
                     onChange={(e) => setNoKk(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -356,8 +542,10 @@ const Select = () => {
                     id="namakepalakeluarga"
                     value={namaKepala}
                     onChange={(e) => setNamaKepala(e.target.value)} 
+                    required
                   />
                 </div>
+                <InputDesa selectedDesa={desa} setSelectedDesa={setDesa} selectedDusun={dusun} setSelectedDusun={setDusun}/>
                 <div className="mb-3">
                   <CFormLabel htmlFor="pekerjaanutama">
                     <h6>Tempat Tinggal yang ditempati: &nbsp;</h6>
@@ -461,6 +649,7 @@ const Select = () => {
                     id="luaslahan" 
                     value={luasLahan}
                     onChange={(e) => setLuasLahan(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -472,6 +661,7 @@ const Select = () => {
                     id="luasrumah" 
                     value={luasRumah}
                     onChange={(e) => setLuasRumah(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -982,7 +1172,7 @@ const Select = () => {
                       id="sendiri"
                       name="mck"
                       value="Sendiri"
-                      onChange={(e) => setMcK(e.target.value)}
+                      onChange={(e) => setMck(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="sendiri">
                       Sendiri
@@ -995,7 +1185,7 @@ const Select = () => {
                       id="berkelompok"
                       name="mck"
                       value="Berkelompok/tetangga"
-                      onChange={(e) => setMcK(e.target.value)}
+                      onChange={(e) => setMck(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="berkelompok">
                       berkelompok/tetangga
@@ -1008,7 +1198,7 @@ const Select = () => {
                       id="mckumum"
                       name="mck"
                       value="MCK umum"
-                      onChange={(e) => setMcK(e.target.value)}
+                      onChange={(e) => setMck(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="mckumum">
                       MCK umum
@@ -1021,7 +1211,7 @@ const Select = () => {
                       id="tidakadamck"
                       name="mck"
                       value="Tidak ada"
-                      onChange={(e) => setMcK(e.target.value)}
+                      onChange={(e) => setMck(e.target.value)}
                     />
                     <label className="form-check-label" htmlFor="tidakadamck">
                       Tidak ada
@@ -1334,6 +1524,7 @@ const Select = () => {
                       id="jarakpaud" 
                       value={paud.jarak}
                       onChange={(e) => setPaud({...paud, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1344,6 +1535,7 @@ const Select = () => {
                       id="waktutempuhpaud"
                       value={paud.waktu}
                       onChange={(e) => setPaud({...paud, waktu: e.target.value})} 
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1372,6 +1564,7 @@ const Select = () => {
                       id="jaraktkra" 
                       value={tk.jarak}
                       onChange={(e) => setTk({...tk, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1382,6 +1575,7 @@ const Select = () => {
                       id="waktutempuhtkra" 
                       value={tk.waktu}
                       onChange={(e) => setTk({...tk, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1410,6 +1604,7 @@ const Select = () => {
                       id="jaraksdmi" 
                       value={sd.jarak}
                       onChange={(e) => setSd({...sd, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1420,6 +1615,7 @@ const Select = () => {
                       id="waktutempuhsdmi" 
                       value={sd.waktu}
                       onChange={(e) => setSd({...sd, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1448,6 +1644,7 @@ const Select = () => {
                       id="jaraksmpmts" 
                       value={smp.jarak}
                       onChange={(e) => setSmp({...smp, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1458,6 +1655,7 @@ const Select = () => {
                       id="waktutempuhsmpmts" 
                       value={smp.waktu}
                       onChange={(e) => setSmp({...smp, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1486,6 +1684,7 @@ const Select = () => {
                       id="jaraksmama" 
                       value={sma.jarak}
                       onChange={(e) => setSma({...sma, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1496,6 +1695,7 @@ const Select = () => {
                       id="waktutempuhsmama" 
                       value={sma.waktu}
                       onChange={(e) => setSma({...sma, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1524,6 +1724,7 @@ const Select = () => {
                       id="jarakptn" 
                       value={pt.jarak}
                       onChange={(e) => setPt({...pt, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1534,6 +1735,7 @@ const Select = () => {
                       id="waktutempuhpt" 
                       value={pt.waktu}
                       onChange={(e) => setPt({...pt, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1562,6 +1764,7 @@ const Select = () => {
                       id="jarakpstrn" 
                       value={pesantren.jarak}
                       onChange={(e) => setPesantren({...pesantren, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1572,6 +1775,7 @@ const Select = () => {
                       id="waktutempuhpstrn" 
                       value={pesantren.waktu}
                       onChange={(e) => setPesantren({...pesantren, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1600,6 +1804,7 @@ const Select = () => {
                       id="jarakseminari" 
                       value={seminari.jarak}
                       onChange={(e) => setSeminari({...seminari, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1610,6 +1815,7 @@ const Select = () => {
                       id="waktutempuhseminari" 
                       value={seminari.waktu}
                       onChange={(e) => setSeminari({...seminari, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1638,6 +1844,7 @@ const Select = () => {
                       id="jarakppai" 
                       value={keagamaanLain.jarak}
                       onChange={(e) => setKeagamaanLain({...keagamaanLain, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1648,6 +1855,7 @@ const Select = () => {
                       id="waktutempuhppai" 
                       value={keagamaanLain.waktu}
                       onChange={(e) => setKeagamaanLain({...keagamaanLain, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1679,6 +1887,7 @@ const Select = () => {
                       id="jarakrumahsakit" 
                       value={rs.jarak}
                       onChange={(e) => setRs({...rs, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1689,6 +1898,7 @@ const Select = () => {
                       id="waktutempuhrumahsakit" 
                       value={rs.waktu}
                       onChange={(e) => setRs({...rs, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1717,6 +1927,7 @@ const Select = () => {
                       id="jarakrsbersalin" 
                       value={rsb.jarak}
                       onChange={(e) => setRsb({...rsb, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1727,6 +1938,7 @@ const Select = () => {
                       id="waktutempuhrsbersalin" 
                       value={rsb.waktu}
                       onChange={(e) => setRsb({...rsb, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1755,6 +1967,7 @@ const Select = () => {
                       id="jarakpoliklinik" 
                       value={poliklinik.jarak}
                       onChange={(e) => setPoliklinik({...poliklinik, jarak: e.target.value})}
+                      required  
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1765,6 +1978,7 @@ const Select = () => {
                       id="waktutempuhpoliklinik" 
                       value={poliklinik.waktu}
                       onChange={(e) => setPoliklinik({...poliklinik, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1793,6 +2007,7 @@ const Select = () => {
                       id="jarakpuskesmas" 
                       value={puskesmas.jarak}
                       onChange={(e) => setPuskesmas({...puskesmas, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1803,6 +2018,7 @@ const Select = () => {
                       id="waktutempuhpuskesmas" 
                       value={puskesmas.waktu}
                       onChange={(e) => setPuskesmas({...puskesmas, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1831,6 +2047,7 @@ const Select = () => {
                       id="jarakpustu" 
                       value={puskesmasBantu.jarak}
                       onChange={(e) => setPuskesmasBantu({...puskesmasBantu, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1841,6 +2058,7 @@ const Select = () => {
                       id="waktutempuhpustu" 
                       value={puskesmasBantu.waktu}
                       onChange={(e) => setPuskesmasBantu({...puskesmasBantu, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1869,6 +2087,7 @@ const Select = () => {
                       id="jarakpolindes" 
                       value={polindes.jarak}
                       onChange={(e) => setPolindes({...polindes, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1879,6 +2098,7 @@ const Select = () => {
                       id="waktutempuhpolindes" 
                       value={polindes.waktu}
                       onChange={(e) => setPolindes({...polindes, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1907,6 +2127,7 @@ const Select = () => {
                       id="jarakposkesdes" 
                       value={poskesdes.jarak}
                       onChange={(e) => setPoskesdes({...poskesdes, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1917,6 +2138,7 @@ const Select = () => {
                       id="waktutempuhposkesdes" 
                       value={poskesdes.waktu}
                       onChange={(e) => setPoskesdes({...poskesdes, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1945,6 +2167,7 @@ const Select = () => {
                       id="jarakposyandu" 
                       value={posyandu.jarak}
                       onChange={(e) => setPosyandu({...posyandu, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1955,6 +2178,7 @@ const Select = () => {
                       id="waktutempuhposyandu" 
                       value={posyandu.waktu}
                       onChange={(e) => setPosyandu({...posyandu, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1983,6 +2207,7 @@ const Select = () => {
                       id="jarakapotek" 
                       value={apotek.jarak}
                       onChange={(e) => setApotek({...apotek, jarak: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1993,6 +2218,7 @@ const Select = () => {
                       id="waktutempuhapotek" 
                       value={apotek.waktu}
                       onChange={(e) => setApotek({...apotek, waktu: e.target.value})}
+                      required
                     />
                   </CFormLabel>
                   &nbsp;&nbsp;&nbsp;&nbsp;
