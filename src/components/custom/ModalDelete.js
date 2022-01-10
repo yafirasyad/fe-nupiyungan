@@ -2,38 +2,7 @@ import React from 'react'
 import { CButton, CCol, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle, CRow } from '@coreui/react'
 import { httpClient } from 'src/util/Api'
 
-const ModalDelete = ({item, visible, setVisible, mode}) => {
-    const hapusData = () => {
-        if (mode == 'individu') {
-            httpClient.delete(`/persons/${item}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then(res => {
-                console.log('Berhasil hapus data')
-                console.log(res.data)
-                setVisible(false)
-            }).catch(err => {
-                console.log(err.response)
-                setVisible(false)
-            })  
-        }else {
-            httpClient.delete(`/families/${item}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then(res => {
-                console.log('Berhasil hapus data')
-                console.log(res.data)
-                setVisible(false)
-            }).catch(err => {
-                console.log(err.response)
-                setVisible(false)
-            })
-        }
-    }
+const ModalDelete = ({item, visible, setVisible, deleteFunc}) => {
     return (
         <CModal
         visible={visible}
@@ -48,7 +17,7 @@ const ModalDelete = ({item, visible, setVisible, mode}) => {
             <CModalBody>Anda yakin menghapus data ini?</CModalBody>
             <CModalFooter>
                 <CButton color="secondary" onClick={() => setVisible(false)}>Close</CButton>
-                <CButton color="danger" onClick={hapusData}>Hapus</CButton>
+                <CButton color="danger" onClick={deleteFunc}>Hapus</CButton>
             </CModalFooter>
         </CModal>
     )

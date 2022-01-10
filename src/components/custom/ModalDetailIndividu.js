@@ -1,7 +1,252 @@
 import { CButton, CCol, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle, CRow } from '@coreui/react'
+import moment from 'moment'
 import React from 'react'
 
 const ModalDetailIndividu = ({item, visible, setVisible}) => {
+    const renderPenyakit = (item) => {
+        return (
+            <CRow>
+                <CCol className='mb-3'>
+                    <h5>Penyakit</h5>
+                </CCol>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Campak: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.campak ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Chikungunya </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.chikungunya ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Covid: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.covid ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Demam berdarah: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.demam_berdarah ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Diabetes: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.diabetes ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Difteri: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.difteri ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Flu burung: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.flu_burung ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Gizi buruk: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.gizi_buruk ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Hepatitis B: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.hepatitis_b ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Hepatitis E: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.hepatitis_e? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Jantung: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.jantung ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Kanker: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.kanker ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Kolerea: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.kolerea ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Leptospirosis: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.leptospirosis ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Lumpuh: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.lumpuh ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Malaria: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.malaria ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Muntaber: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.muntaber ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>TBC: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.tbc ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Lainnya: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.lainnya}</p>
+                        </CCol>
+                </CRow>
+            </CRow>
+        )
+    }
+
+    const renderDisabilitas = (item) => {
+        return (
+            <CRow className='mt-3'>
+                <CCol className='mb-3'>
+                    <h5>Disabilitas</h5>
+                </CCol>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Tunadaksa: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.tunadaksa ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Tunagrahita: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.tunagrahita ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Tunalaras: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.tunalaras ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Tunanetra: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.tunanetra ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Tunarungu: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.tunarungu ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Tunawicara: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.tunawicara ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Tunarungu-wicara: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.tunarungu_wicara ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Cacat eks kusta: </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.cacat_eks_kusta ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+                <CRow>
+                        <CCol className="ms-3">
+                            <h6>Cacat ganda </h6>
+                        </CCol>
+                        <CCol>
+                            <p>{item?.cacat_ganda ? 'Ya' : 'Tidak'}</p>
+                        </CCol>
+                </CRow>
+            </CRow>
+        )
+    }
+
     return (
         <CModal
             visible={visible}
@@ -58,10 +303,26 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                 </CRow>
                 <CRow>
                     <CCol>
+                        <h6>Desa: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.desa && item.desa.nama_desa}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>Dusun: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.desa && item.dusun.nama_dusun}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
                         <h6>Tanggal lahir: </h6>
                     </CCol>
                     <CCol>
-                        <p>{item.tanggal_lahir}</p>
+                        <p>{moment(item.tanggal_lahir).format('DD-MM-YYYY')}</p>
                     </CCol>
                 </CRow>
                 <CRow>
@@ -216,10 +477,11 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                         <p>{item.pesta_rakyat}</p>
                     </CCol>
                 </CRow>
+                {renderPenyakit(item.penyakit)}
+                {renderDisabilitas(item.disabilitas)}
             </CModalBody>
             <CModalFooter>
                 <CButton color="secondary" onClick={() => setVisible(false)}>Close</CButton>
-                <CButton color="primary">Save changes</CButton>
             </CModalFooter>
         </CModal>
     )

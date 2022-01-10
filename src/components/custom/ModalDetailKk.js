@@ -2,8 +2,6 @@ import React from 'react'
 import { CButton, CCol, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle, CRow } from '@coreui/react'
 
 const ModalDetailKk = ({item, visible, setVisible}) => {
-    console.log('====ITEM====')
-    console.log(item)
     const renderFasilitasKesehatan = (item) => {
         return (
             <CRow>

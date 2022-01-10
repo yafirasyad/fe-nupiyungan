@@ -4,13 +4,17 @@ import React, { createContext, useContext, useReducer } from 'react'
 export const defaultState = {
     individu: [],
     kk: [],
-    selectedData: {},
+    selectedDataIndividu: {},
     isEditMode: false,
+    selectedUser: {},
+    isEditUserMode: false,
+    users: [],
 }
 
 export const Action = {
     Set: 'Set',
     Fetch: 'Fetch',
+    RemoveUser: 'RemoveUser',
 }
 
 export const DataReducer = (state, action) => {
@@ -26,6 +30,11 @@ export const DataReducer = (state, action) => {
                 individu: action.payload.individu,
                 kk: action.payload.kk
             }
+        case Action.RemoveUser:
+            return {
+                ...state,
+                users: state.users.filter(user => user.id !== action.payload.id)
+            }
         default:
             return state
     }
@@ -38,12 +47,32 @@ const setDataIndividu = (dispatch) => {
     }
 }
 
-const setDataKK = (dispatch) => {
+const setDataKk = (dispatch) => {
     return (data) => {
         dispatch({ type: Action.Set, payload: { key: 'kk', data } })
     }
 }
 
+const setUsers = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.Set, payload: { key: 'users', data } })
+    }
+}
+
+const removeUser = (dispatch) => {
+    return (id) => {
+        dispatch({ type: Action.RemoveUser, payload: { id: id } })
+    }
+}
+
+const setEditUserMode = (dispatch) => {
+    return (data) => {
+        dispatch({
+             type: Action.Set, 
+             payload: { key: 'isEditUserMode', data } 
+        })
+    }   
+}
 const setEditMode = (dispatch) => {
     return (data) => {
         dispatch({
@@ -53,9 +82,21 @@ const setEditMode = (dispatch) => {
     }
 }
 
-const selectData = (dispatch) => {
+const selectDataIndividu = (dispatch) => {
     return (data) => {
-        dispatch({ type: Action.Set, payload: { key: 'selectedData', data } })
+        dispatch({ type: Action.Set, payload: { key: 'selectedDataIndividu', data } })
+    }
+}
+
+const selectDataKk = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.Set, payload: { key: 'selectedDataKk', data } })
+    }
+}
+
+const selectUser = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.Set, payload: { key: 'selectedUser', data } })
     }
 }
 
@@ -66,9 +107,14 @@ export const DataProvider = ({ children, initialState, reducer }) => {
     const value = {
         state,
         setDataIndividu: setDataIndividu(dispatch),
-        setDataKK: setDataKK(dispatch),
+        setDataKk: setDataKk(dispatch),
         setEditMode: setEditMode(dispatch),
-        selectData: selectData(dispatch),
+        selectDataIndividu: selectDataIndividu(dispatch),
+        selectDataKk: selectDataKk(dispatch),
+        setUsers: setUsers(dispatch),
+        selectUser: selectUser(dispatch),
+        removeUser: removeUser(dispatch),
+        setEditUserMode: setEditUserMode(dispatch),
     }
     return <context.Provider value={value}>{children}</context.Provider>
 }

@@ -103,7 +103,7 @@ const WidgetsDropdown = () => {
         <CWidgetStatsA
           className="mb-4"
           color="info"
-          value={<>60</>}
+          value={<>{dataState.kk.length}</>}
           title="Jumlah KK"
           action={
             <CDropdown alignment="end">
