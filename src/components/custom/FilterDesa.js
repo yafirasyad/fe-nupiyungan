@@ -12,13 +12,14 @@ const FilterDesa = ({filterDesa, setFilterDesa, filterDusun, setFilterDusun}) =>
                 const desaData = res.data.data
                 setDesa(desaData)
             }).catch(err => {
-                console.log(err)
+                console.log(err.response)
             })
     }, [])
     
     return (
-        <div className='mt-3'>
+        <div className='my-3'>
            <select
+             className='me-2'
              id="filterdesa"
              name="filterdesa"
              value={filterDesa}
@@ -34,6 +35,7 @@ const FilterDesa = ({filterDesa, setFilterDesa, filterDusun, setFilterDusun}) =>
              ))}
            </select>
            <select
+             className='ms-2'
              id="filterdusun"
              name="filterdusun"
              value={filterDusun}

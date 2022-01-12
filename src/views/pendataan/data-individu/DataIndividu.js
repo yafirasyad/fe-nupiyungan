@@ -83,6 +83,7 @@ const DataIndividu = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [deleteMode, setDeleteMode] = useState(false)
   const [selectedData, setSelectedData] = useState({})
+  const [unauthorized, setUnauthorized] = useState('');
   const [query, setQuery] = useState('')
   const itemsPerPage = 15
   const [page, setPage] = useState(1)
@@ -105,6 +106,11 @@ const DataIndividu = () => {
       setIsLoading(false)
     }).catch(err => {
       console.log(err.response)
+      if (err.response.status === 401) {
+        console.log('unauthorized')
+        setUnauthorized(true);
+      }
+      setIsLoading(false)
     })
   }
 
@@ -201,6 +207,10 @@ const DataIndividu = () => {
         element={
           <CButton
             color="primary"
+            style={{
+              width: '100px',
+              marginBottom: '10px',
+            }}
           >
             Download
           </CButton>
@@ -397,7 +407,7 @@ const DataIndividu = () => {
   console.log(dataState.individu)
   return (
     <>
-      <Loader visible={isLoading} />
+      {/* <Loader visible={isLoading} /> */}
       <ModalSubmitState visible={isModalVisible} setVisible={setIsModalVisible} message={modalMessage} onClose={() => setIsModalVisible(false)}/>
       <ModalDetailIndividu visible={detailMode} item={selectedData} setVisible={setDetailMode}/>
       <ModalDelete visible={deleteMode} item={selectedData.id} setVisible={setDeleteMode} deleteFunc={deleteFunc}/>
@@ -455,7 +465,9 @@ const DataIndividu = () => {
           <Pagination itemsPerPage={itemsPerPage} totalItems={dataState.individu.length} changePage={changePage} currentPage={page}/>
         </div>
       </CRow>
-      {dataState.individu.length == 0 && !isLoading  ? (
+      { unauthorized ? (
+        <p className='text-center'>Anda tidak memiliki akses</p>
+      ) :  (dataState.individu.length == 0 && !isLoading)  ? (
         <p className='text-center'>Tidak ada data</p>
       ) : ''}
       <Spinner visible={isLoading} />

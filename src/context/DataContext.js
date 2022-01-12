@@ -9,12 +9,15 @@ export const defaultState = {
     selectedUser: {},
     isEditUserMode: false,
     users: [],
+    roles: [],
+    selectedRole: {},
 }
 
 export const Action = {
     Set: 'Set',
     Fetch: 'Fetch',
     RemoveUser: 'RemoveUser',
+    Clean: 'Clean',
 }
 
 export const DataReducer = (state, action) => {
@@ -35,6 +38,11 @@ export const DataReducer = (state, action) => {
                 ...state,
                 users: state.users.filter(user => user.id !== action.payload.id)
             }
+        case Action.Clean:
+            return {
+                ...state,
+                ...defaultState
+            }   
         default:
             return state
     }
@@ -56,6 +64,12 @@ const setDataKk = (dispatch) => {
 const setUsers = (dispatch) => {
     return (data) => {
         dispatch({ type: Action.Set, payload: { key: 'users', data } })
+    }
+}
+
+const setRoles = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.Set, payload: { key: 'roles', data } })
     }
 }
 
@@ -100,6 +114,11 @@ const selectUser = (dispatch) => {
     }
 }
 
+const cleanState = (dispatch) => {
+    return () => {
+        dispatch({ type: Action.Clean })
+    }
+}
 export const useData = () => useContext(context)
 
 export const DataProvider = ({ children, initialState, reducer }) => {
@@ -115,6 +134,8 @@ export const DataProvider = ({ children, initialState, reducer }) => {
         selectUser: selectUser(dispatch),
         removeUser: removeUser(dispatch),
         setEditUserMode: setEditUserMode(dispatch),
+        setRoles: setRoles(dispatch),
+        cleanState: cleanState(dispatch),
     }
     return <context.Provider value={value}>{children}</context.Provider>
 }

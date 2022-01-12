@@ -19,33 +19,34 @@ import {
     CTableHeaderCell,
     CTableRow,
   } from '@coreui/react'
-import { DeleteUser, GetUsers } from 'src/api/Functions'
+import { DeleteRole, DeleteUser, GetRoles, GetUsers } from 'src/api/Functions'
 import { Role } from 'src/util/Type'
 import ModalAddEditUser from 'src/components/custom/ModalAddEditUser'
 import ModalDelete from 'src/components/custom/ModalDelete'
 import { useData } from 'src/context/DataContext'
 import Spinner from 'src/components/custom/Spinner'
+import ModalAddEditRole from 'src/components/custom/ModalAddEditRole'
 
-const UserManagement = () => {
+const RoleManagement = () => {
     const [query, setQuery] = useState('')
     const [addEditMode, setAddEditMode] = useState(false)
     const [selectedData, setSelectedData] = useState({})
     const [deleteMode, setDeleteMode] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [unauthorized, setUnauthorized] = useState(false)
-    const { state: dataState, setUsers, removeUser, selectUser, setEditUserMode } = useData();
+    const { state: dataState, setRoles, selectUser, setEditUserMode } = useData();
     
     useEffect(() => {
-        GetUsers()
-            .then(res => {
-                setUsers(res.data.data)
-                setIsLoading(false)
-            }).catch(err => {
-                if (err.response.status === 401) {
-                    setUnauthorized(true)
-                }
-                setIsLoading(false)
-            })
+        GetRoles()
+          .then(res => {
+            setRoles(res.data.data)
+            setIsLoading(false)
+          }).catch(err => {
+            if (err.response.status === 401) {
+              setUnauthorized(true)
+            }
+            setIsLoading(false)
+          })
     }, [])
 
     const renderTable = (item, index) => {
@@ -54,8 +55,6 @@ const UserManagement = () => {
         <CTableRow>
           <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
           <CTableDataCell>{item.name}</CTableDataCell>
-          <CTableDataCell>{item.email}</CTableDataCell>
-          <CTableDataCell>{item.role.name}</CTableDataCell>
           <CTableDataCell>
             <div>
                 <CButton 
@@ -93,26 +92,21 @@ const UserManagement = () => {
         )
     }
 
-    const filterFunc = (value) => {
-        return value.name.toLowerCase().includes(query.toLowerCase()) || value.email.toLowerCase().includes(query.toLowerCase()) || Role[value.role].toLowerCase().includes(query.toLowerCase())
-    }
-
     const deleteFunc = () => {
-      DeleteUser(selectedData.id)
+      DeleteRole(selectedData.id)
         .then(res => {
           console.log(res.data)
-          removeUser(selectedData.id)
           setDeleteMode(false)
         }).catch(err => {
           console.log(err.response)
-          setDeleteMode(false)
         })
     }
 
     return (
         <>
-        <ModalAddEditUser visible={addEditMode} setVisible={setAddEditMode} />
+        {/* <ModalAddEditUser visible={addEditMode} setVisible={setAddEditMode} /> */}
         <ModalDelete visible={deleteMode} item={selectedData.id} setVisible={setDeleteMode} deleteFunc={deleteFunc} />
+        <ModalAddEditRole visible={addEditMode} setVisible={setAddEditMode} />
         <CRow>
             <CCol xs>
             <CCard className="mb-4">
@@ -135,7 +129,7 @@ const UserManagement = () => {
             </CCol>
         </CRow>
         <CRow>
-        <h2>Data Individu</h2>
+        <h2>Role</h2>
         <CRow>
         <CButton 
             color="primary"
@@ -145,7 +139,7 @@ const UserManagement = () => {
             }}
             onClick={() => setAddEditMode(true)}
         >
-            Add User
+            Add Role
         </CButton>
         </CRow>
         <CFormInput 
@@ -161,13 +155,11 @@ const UserManagement = () => {
             <CTableRow>
               <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">Nama</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Email/Username</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Role</CTableHeaderCell>
               <CTableHeaderCell scope="col">Action</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {dataState.users.filter(filterFunc).map((item, index) => renderTable(item, index))}
+            {dataState.roles.map((item, index) => renderTable(item, index))}
           </CTableBody>
         </CTable>
         <div className='d-flex justify-content-center'>  
@@ -184,4 +176,4 @@ const UserManagement = () => {
     )
 }
 
-export default UserManagement
+export default RoleManagement

@@ -10,6 +10,8 @@ const FormIndividu = React.lazy(() => import('./views/forms/individu/FormIndivid
 const Select = React.lazy(() => import('./views/forms/select/Select'))
 const FormEditKk = React.lazy(() => import('./views/forms/select/FormEditKk'))
 const UserManagement = React.lazy(() => import('./views/pages/user/UserManagement'))
+const RoleManagement = React.lazy(() => import('./views/pages/user/RoleManagement'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
@@ -21,6 +23,7 @@ const routes = [
   { path: '/kk/input', name: 'KK input', component: Select, exact: true },
   { path: '/kk/edit', name: 'KK edit', component: FormEditKk, exact: true },
   { path: '/users', name: 'User Management', component: UserManagement, exact: true },
+  { path: '/roles', name: 'Role Management', component: RoleManagement, exact: true },
 ]
 
 export default routes

@@ -21,7 +21,7 @@ const InputDesa = ({selectedDesa, setSelectedDesa, selectedDusun, setSelectedDus
                     setDusunOption(desaData.find(desa => desa.id == dataState.selectedData.desa.id).dusun)
                 }
             }).catch(err => {
-                console.log(err)
+                console.log(err.response)
             })
     }, [])
 
@@ -29,7 +29,7 @@ const InputDesa = ({selectedDesa, setSelectedDesa, selectedDusun, setSelectedDus
         <>
             <div className='mb-3'>
                 <CFormLabel>
-                    <h6>Desa</h6>
+                    <h6>Desa &nbsp;</h6>
                 </CFormLabel>
                 <select
                     id="desa"
@@ -50,7 +50,7 @@ const InputDesa = ({selectedDesa, setSelectedDesa, selectedDusun, setSelectedDus
             </div>
             <div className='mb-3'>
                 <CFormLabel>
-                    <h6>dusun</h6>
+                    <h6>Dusun &nbsp;</h6>
                 </CFormLabel>
                 <select
                     id="dusun"

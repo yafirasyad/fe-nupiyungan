@@ -24,6 +24,7 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
+import { Link } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
   return (
@@ -85,10 +86,14 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem> */}
         <CDropdownDivider />
-        <CDropdownItem href="#">
-          <CIcon icon={cilAccountLogout} className="me-2" />
-          Logout
-        </CDropdownItem>
+        <Link 
+          to='/logout'
+        >
+          <CDropdownItem href="#">
+            <CIcon icon={cilAccountLogout} className="me-2" />
+            Logout
+          </CDropdownItem>
+        </Link>
       </CDropdownMenu>
     </CDropdown>
   )

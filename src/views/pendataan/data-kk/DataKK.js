@@ -70,6 +70,7 @@ const DataKK = () => {
   const [deleteMode, setDeleteMode] = useState(false)
   const [selectedData, setSelectedData] = useState({})
   const [query, setQuery] = useState('')
+  const [unauthorized, setUnauthorized] = useState(false)
   const itemsPerPage = 2
   const [page, setPage] = useState(1)
   const {state: dataState, setDataKk, setEditMode, selectDataIndividu, selectDataKk} = useData()
@@ -85,7 +86,10 @@ const DataKK = () => {
       setDataKk(res.data.data)
       setIsLoading(false)
     }).catch(err => { 
-      console.log(err.response)
+      if(err.response.status === 401) {
+        setUnauthorized(true)
+      }
+      setIsLoading(false)
     })
   }
 
@@ -182,6 +186,10 @@ const DataKK = () => {
         element={
           <CButton
             color="primary"
+            style={{
+              width: '100px',
+              marginBottom: '10px',
+            }}
           >
             Download
           </CButton>
@@ -566,7 +574,9 @@ const DataKK = () => {
           <Pagination itemsPerPage={itemsPerPage} totalItems={dataState.kk.length} changePage={changePage} currentPage={page}/>
         </div>
       </CRow>
-      {dataState.kk.length === 0 && !isLoading  ? (
+      {unauthorized ? (
+        <p className='text-center'>Anda tidak memiliki akses</p>
+      ) : dataState.kk.length === 0 && !isLoading  ? (
         <p className='text-center'>Tidak ada data</p>
       ) : ''}
       <Spinner visible={isLoading}/>

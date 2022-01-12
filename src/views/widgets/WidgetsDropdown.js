@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CRow,
   CCol,
@@ -13,9 +13,27 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import { useData } from 'src/context/DataContext'
+import { GetStats } from 'src/api/Functions'
 
 const WidgetsDropdown = () => {
   const {state: dataState} = useData()
+  const [jmlIndividu, setJmlIndividu] = useState(0)
+  const [jmlKk, setJmlKk] = useState(0)
+  const [jmlDesa, setJmlDesa] = useState(0)
+  const [jmlDusun, setJmlDusun] = useState(0)
+  
+  useEffect(() => {
+    GetStats()
+      .then(res => {
+        console.log(res.data)
+        setJmlIndividu(res.data.data.jumlahDataIndividu)
+        setJmlKk(res.data.data.jumlahDataFamily)
+        setJmlDesa(res.data.data.jumlahDesa)
+        setJmlDusun(res.data.data.jumlahDusun)
+      }).catch(err => {
+        console.log(err.response)
+      })
+  }, [])
 
   return (
     <CRow>
@@ -23,7 +41,7 @@ const WidgetsDropdown = () => {
         <CWidgetStatsA
           className="mb-4"
           color="primary"
-          value={<>{dataState.individu.length}</>}
+          value={<>{jmlIndividu}</>}
           title="Data Individu"
           action={
             <CDropdown alignment="end">
@@ -103,7 +121,7 @@ const WidgetsDropdown = () => {
         <CWidgetStatsA
           className="mb-4"
           color="info"
-          value={<>{dataState.kk.length}</>}
+          value={<>{jmlKk}</>}
           title="Jumlah KK"
           action={
             <CDropdown alignment="end">
@@ -184,13 +202,10 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-              2.49{' '}
-              <span className="fs-6 fw-normal">
-                (84.7% <CIcon icon={cilArrowTop} />)
-              </span>
+              {jmlDesa}
             </>
           }
-          title="Conversion Rate"
+          title="Jumlah Desa"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -257,13 +272,10 @@ const WidgetsDropdown = () => {
           color="danger"
           value={
             <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
-                (-23.6% <CIcon icon={cilArrowBottom} />)
-              </span>
+              {jmlDusun}
             </>
           }
-          title="Sessions"
+          title="Jumlah Dusun"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
