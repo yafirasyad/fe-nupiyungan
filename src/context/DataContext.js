@@ -11,12 +11,15 @@ export const defaultState = {
     users: [],
     roles: [],
     selectedRole: {},
+    notes: [],
 }
 
 export const Action = {
     Set: 'Set',
     Fetch: 'Fetch',
+    Remove: 'Remove',
     RemoveUser: 'RemoveUser',
+    AddNote: 'AddNote',
     Clean: 'Clean',
 }
 
@@ -37,6 +40,16 @@ export const DataReducer = (state, action) => {
             return {
                 ...state,
                 users: state.users.filter(user => user.id !== action.payload.id)
+            }
+        case Action.AddNote: 
+            return {
+                ...state,
+                notes: [...state.notes, action.payload.note]
+            }
+        case Action.RemoveNote:
+            return {
+                ...state,
+                notes: state.notes.filter(note => note.id !== action.payload.id)
             }
         case Action.Clean:
             return {
@@ -119,6 +132,29 @@ const cleanState = (dispatch) => {
         dispatch({ type: Action.Clean })
     }
 }
+
+const setNotes = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.Set, payload: { key: 'notes', data } })
+    }
+}
+
+const setAddNoteMode = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.Set, payload: { key: 'isAddNoteMode', data } })
+    }
+}
+
+const addNote = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.AddNote, payload: { note: data } })
+    }
+}
+const removeNote = (dispatch) => {
+    return (id) => {
+        dispatch({ type: Action.RemoveNote, payload: { id: id } })
+    }
+}
 export const useData = () => useContext(context)
 
 export const DataProvider = ({ children, initialState, reducer }) => {
@@ -135,7 +171,11 @@ export const DataProvider = ({ children, initialState, reducer }) => {
         removeUser: removeUser(dispatch),
         setEditUserMode: setEditUserMode(dispatch),
         setRoles: setRoles(dispatch),
+        setNotes: setNotes(dispatch),
         cleanState: cleanState(dispatch),
+        setAddNoteMode: setAddNoteMode(dispatch),
+        removeNote: removeNote(dispatch),
+        addNote: addNote(dispatch),
     }
     return <context.Provider value={value}>{children}</context.Provider>
 }

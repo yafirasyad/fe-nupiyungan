@@ -178,7 +178,345 @@ const DataKK = () => {
   }
 
   const changePage = (page) => setPage(page)
-  console.log(dataState.kk.filter((item) => item.desa_id === Desa['Sitimulyo']))
+
+  // const downloadFile = () => {
+  //   return (
+  //     <ExcelFile
+  //       filename={moment().format("DD-MM-YYYY") + '_data_kk.xlsx'}
+  //       element={
+  //         <CButton
+  //           color="primary"
+  //           style={{
+  //             width: '100px',
+  //             marginBottom: '10px',
+  //           }}
+  //         >
+  //           Download
+  //         </CButton>
+  //       }
+  //     >
+  //         <ExcelSheet
+  //           data={dataState.kk.filter((item) => item.desa_id === Desa['Sitimulyo'])}
+  //           name="Sitimulyo"
+  //         >
+  //           <ExcelColumn label="No KK" value="no_kk" />
+  //           <ExcelColumn label="Nama Kepala" value="nama_kepala" />
+  //           <ExcelColumn label="Tempat Tinggal" value="tempat_tinggal" />
+  //           <ExcelColumn label="Desa" value={(col) => col.desa.nama_desa} />
+  //           <ExcelColumn label="Dusun" value={(col) => col.dusun.nama_dusun} />
+  //           <ExcelColumn label="Luas Lahan" value="luas_lahan" />
+  //           <ExcelColumn label="Luas Rumah" value="luas_rumah" />
+  //           <ExcelColumn label="Jenis Lantai" value="jenis_lantai" />
+  //           <ExcelColumn label="Dinding" value="dinding" />
+  //           <ExcelColumn label="Atap" value="atap" />
+  //           <ExcelColumn label="Jendela" value="jendela" />
+  //           <ExcelColumn label="MCK" value="mck" />
+  //           <ExcelColumn label="Penerangan" value="penerangan" />
+  //           <ExcelColumn label="Energi Masak" value="energi_masak" />
+  //           <ExcelColumn label="Pembuangan" value="pembuangan" />
+  //           <ExcelColumn label="Sumber Air Mandi" value="sumber_air_mandi" />
+  //           <ExcelColumn label="Sumber Air Minum" value="sumber_air_minum" />
+  //           <ExcelColumn label="Rumah Dibawah Sutet" value={(col) => (
+  //             col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
+  //           )} />
+  //           <ExcelColumn label="Rumah Bantaran Sungai" value={(col) => (
+  //             col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Kondisi Rumah" value="kondisi_rumah" />
+  //           <ExcelColumn label="BLT Desa" value={(col) => (
+  //             col.blt_desa ? 'Ya' : 'Tidak'
+  //           )} />
+  //           <ExcelColumn label="Program Keluarga Harapan" value={(col) => (col.pkh ? 'Ya' : 'Tidak')}/>
+  //           <ExcelColumn label="Bantuan Sosial Tunai" value={(col) => (
+  //             col.bantuan_sosial_tunai ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Presiden" value={(col) => (
+  //             col.bantuan_presiden ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan UMKM" value={(col) => (
+  //             col.bantuan_umkm ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Pekerja" value={(col) => (
+  //             col.bantuan_pekerja ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Pendidikan" value={(col) => (
+  //             col.bantuan_pendidikan ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Akses Kerja" value="akses_kerja" />
+  //           <ExcelColumn label="Akses Lahan" value="akses_lahan" />
+  //           <ExcelColumn label="Akses Sekolah" value="akses_sekolah" />
+  //           <ExcelColumn label="Akses Kesehatan" value="akses_kesehatan" />
+  //           <ExcelColumn label="Rumah Sakit - Jarak" value={(col) => col.akses_fasilitas_kesehatan[0].jarak} />
+  //           <ExcelColumn label="Rumah Sakit - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[0].kemudahan} />
+  //           <ExcelColumn label="Rumah Sakit - Waktu" value={(col) => col.akses_fasilitas_kesehatan[0].waktu} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Jarak" value={(col) => col.akses_fasilitas_kesehatan[1].jarak} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[1].kemudahan} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Waktu" value={(col) => col.akses_fasilitas_kesehatan[1].waktu} />
+  //           <ExcelColumn label="Poliklinik - Jarak" value={(col) => col.akses_fasilitas_kesehatan[2].jarak} />
+  //           <ExcelColumn label="Poliklinik - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[2].kemudahan} />
+  //           <ExcelColumn label="Poliklinik - Waktu" value={(col) => col.akses_fasilitas_kesehatan[2].waktu} />
+  //           <ExcelColumn label="Puskesmas - Jarak" value={(col) => col.akses_fasilitas_kesehatan[3].jarak} /> 
+  //           <ExcelColumn label="Puskesmas - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[3].kemudahan} />
+  //           <ExcelColumn label="Puskesmas - Waktu" value={(col) => col.akses_fasilitas_kesehatan[3].waktu} />
+  //           <ExcelColumn label="Puskesmas Bantu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[4].jarak} />
+  //           <ExcelColumn label="Puskesmas Bantu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[4].kemudahan} />
+  //           <ExcelColumn label="Puskesmas Bantu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[4].waktu} />
+  //           <ExcelColumn label="Polindes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[5].jarak} />
+  //           <ExcelColumn label="Polindes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[5].kemudahan} />
+  //           <ExcelColumn label="Polindes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[5].waktu} />
+  //           <ExcelColumn label="Poskesdes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[6].jarak} />
+  //           <ExcelColumn label="Poskesdes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[6].kemudahan} />
+  //           <ExcelColumn label="Poskesdes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[6].waktu} />
+  //           <ExcelColumn label="Posyandu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[7].jarak} />
+  //           <ExcelColumn label="Posyandu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[7].kemudahan} />
+  //           <ExcelColumn label="Posyandu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[7].waktu} />
+  //           <ExcelColumn label="Apotek - Jarak" value={(col) => col.akses_fasilitas_kesehatan[8].jarak} />
+  //           <ExcelColumn label="Apotek - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[8].kemudahan} />
+  //           <ExcelColumn label="Apotek - Waktu" value={(col) => col.akses_fasilitas_kesehatan[8].waktu} />
+  //           <ExcelColumn label="Paud - Jarak" value={(col) => col.akses_fasilitas_pendidikan[0].jarak} />
+  //           <ExcelColumn label="Paud - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[0].kemudahan} />
+  //           <ExcelColumn label="Paud - Waktu" value={(col) => col.akses_fasilitas_pendidikan[0].waktu} />
+  //           <ExcelColumn label="TK/RA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[1].jarak} />
+  //           <ExcelColumn label="TK/RA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[1].kemudahan} />
+  //           <ExcelColumn label="TK/RA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[1].waktu} />
+  //           <ExcelColumn label="SD/MI - Jarak" value={(col) => col.akses_fasilitas_pendidikan[2].jarak} />
+  //           <ExcelColumn label="SD/MI - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[2].kemudahan} />
+  //           <ExcelColumn label="SD/MI - Waktu" value={(col) => col.akses_fasilitas_pendidikan[2].waktu} />
+  //           <ExcelColumn label="SMP/MTs - Jarak" value={(col) => col.akses_fasilitas_pendidikan[3].jarak} />
+  //           <ExcelColumn label="SMP/MTs - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[3].kemudahan} />
+  //           <ExcelColumn label="SMP/MTs - Waktu" value={(col) => col.akses_fasilitas_pendidikan[3].waktu} />
+  //           <ExcelColumn label="SMA/MA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[4].jarak} />
+  //           <ExcelColumn label="SMA/MA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[4].kemudahan} />
+  //           <ExcelColumn label="SMA/MA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[4].waktu} />
+  //           <ExcelColumn label="Perguruan Tinggi - Jarak" value={(col) => col.akses_fasilitas_pendidikan[5].jarak} />
+  //           <ExcelColumn label="Perguruan Tinggi - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[5].kemudahan} />
+  //           <ExcelColumn label="Perguruan Tinggi - Waktu" value={(col) => col.akses_fasilitas_pendidikan[5].waktu} />
+  //           <ExcelColumn label="Pesantren - Jarak" value={(col) => col.akses_fasilitas_pendidikan[6].jarak} />
+  //           <ExcelColumn label="Pesantren - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[6].kemudahan} />
+  //           <ExcelColumn label="Pesantren - Waktu" value={(col) => col.akses_fasilitas_pendidikan[6].waktu} />
+  //           <ExcelColumn label="Seminari - Jarak" value={(col) => col.akses_fasilitas_pendidikan[7].jarak} />
+  //           <ExcelColumn label="Seminari - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[7].kemudahan} />
+  //           <ExcelColumn label="Seminari - Waktu" value={(col) => col.akses_fasilitas_pendidikan[7].waktu} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Jarak" value={(col) => col.akses_fasilitas_pendidikan[8].jarak} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[8].kemudahan} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Waktu" value={(col) => col.akses_fasilitas_pendidikan[8].waktu} />
+  //         </ExcelSheet> 
+  //         <ExcelSheet
+  //           data={dataState.kk.filter((item) => item.desa_id === Desa['Srimulyo'])}
+  //           name="Srimulyo"
+  //         >
+  //            <ExcelColumn label="No KK" value="no_kk" />
+  //           <ExcelColumn label="Nama Kepala" value="nama_kepala" />
+  //           <ExcelColumn label="Tempat Tinggal" value="tempat_tinggal" />
+  //           <ExcelColumn label="Desa" value={(col) => col.desa.nama_desa} />
+  //           <ExcelColumn label="Dusun" value={(col) => col.dusun.nama_dusun} />
+  //           <ExcelColumn label="Luas Lahan" value="luas_lahan" />
+  //           <ExcelColumn label="Luas Rumah" value="luas_rumah" />
+  //           <ExcelColumn label="Jenis Lantai" value="jenis_lantai" />
+  //           <ExcelColumn label="Dinding" value="dinding" />
+  //           <ExcelColumn label="Atap" value="atap" />
+  //           <ExcelColumn label="Jendela" value="jendela" />
+  //           <ExcelColumn label="MCK" value="mck" />
+  //           <ExcelColumn label="Penerangan" value="penerangan" />
+  //           <ExcelColumn label="Energi Masak" value="energi_masak" />
+  //           <ExcelColumn label="Pembuangan" value="pembuangan" />
+  //           <ExcelColumn label="Sumber Air Mandi" value="sumber_air_mandi" />
+  //           <ExcelColumn label="Sumber Air Minum" value="sumber_air_minum" />
+  //           <ExcelColumn label="Rumah Dibawah Sutet" value={(col) => (
+  //             col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
+  //           )} />
+  //           <ExcelColumn label="Rumah Bantaran Sungai" value={(col) => (
+  //             col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Kondisi Rumah" value="kondisi_rumah" />
+  //           <ExcelColumn label="BLT Desa" value={(col) => (
+  //             col.blt_desa ? 'Ya' : 'Tidak'
+  //           )} />
+  //           <ExcelColumn label="Program Keluarga Harapan" value={(col) => (col.pkh ? 'Ya' : 'Tidak')}/>
+  //           <ExcelColumn label="Bantuan Sosial Tunai" value={(col) => (
+  //             col.bantuan_sosial_tunai ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Presiden" value={(col) => (
+  //             col.bantuan_presiden ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan UMKM" value={(col) => (
+  //             col.bantuan_umkm ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Pekerja" value={(col) => (
+  //             col.bantuan_pekerja ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Pendidikan" value={(col) => (
+  //             col.bantuan_pendidikan ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Akses Kerja" value="akses_kerja" />
+  //           <ExcelColumn label="Akses Lahan" value="akses_lahan" />
+  //           <ExcelColumn label="Akses Sekolah" value="akses_sekolah" />
+  //           <ExcelColumn label="Akses Kesehatan" value="akses_kesehatan" />
+  //           <ExcelColumn label="Rumah Sakit - Jarak" value={(col) => col.akses_fasilitas_kesehatan[0].jarak} />
+  //           <ExcelColumn label="Rumah Sakit - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[0].kemudahan} />
+  //           <ExcelColumn label="Rumah Sakit - Waktu" value={(col) => col.akses_fasilitas_kesehatan[0].waktu} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Jarak" value={(col) => col.akses_fasilitas_kesehatan[1].jarak} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[1].kemudahan} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Waktu" value={(col) => col.akses_fasilitas_kesehatan[1].waktu} />
+  //           <ExcelColumn label="Poliklinik - Jarak" value={(col) => col.akses_fasilitas_kesehatan[2].jarak} />
+  //           <ExcelColumn label="Poliklinik - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[2].kemudahan} />
+  //           <ExcelColumn label="Poliklinik - Waktu" value={(col) => col.akses_fasilitas_kesehatan[2].waktu} />
+  //           <ExcelColumn label="Puskesmas - Jarak" value={(col) => col.akses_fasilitas_kesehatan[3].jarak} /> 
+  //           <ExcelColumn label="Puskesmas - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[3].kemudahan} />
+  //           <ExcelColumn label="Puskesmas - Waktu" value={(col) => col.akses_fasilitas_kesehatan[3].waktu} />
+  //           <ExcelColumn label="Puskesmas Bantu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[4].jarak} />
+  //           <ExcelColumn label="Puskesmas Bantu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[4].kemudahan} />
+  //           <ExcelColumn label="Puskesmas Bantu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[4].waktu} />
+  //           <ExcelColumn label="Polindes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[5].jarak} />
+  //           <ExcelColumn label="Polindes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[5].kemudahan} />
+  //           <ExcelColumn label="Polindes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[5].waktu} />
+  //           <ExcelColumn label="Poskesdes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[6].jarak} />
+  //           <ExcelColumn label="Poskesdes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[6].kemudahan} />
+  //           <ExcelColumn label="Poskesdes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[6].waktu} />
+  //           <ExcelColumn label="Posyandu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[7].jarak} />
+  //           <ExcelColumn label="Posyandu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[7].kemudahan} />
+  //           <ExcelColumn label="Posyandu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[7].waktu} />
+  //           <ExcelColumn label="Apotek - Jarak" value={(col) => col.akses_fasilitas_kesehatan[8].jarak} />
+  //           <ExcelColumn label="Apotek - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[8].kemudahan} />
+  //           <ExcelColumn label="Apotek - Waktu" value={(col) => col.akses_fasilitas_kesehatan[8].waktu} />
+  //           <ExcelColumn label="Paud - Jarak" value={(col) => col.akses_fasilitas_pendidikan[0].jarak} />
+  //           <ExcelColumn label="Paud - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[0].kemudahan} />
+  //           <ExcelColumn label="Paud - Waktu" value={(col) => col.akses_fasilitas_pendidikan[0].waktu} />
+  //           <ExcelColumn label="TK/RA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[1].jarak} />
+  //           <ExcelColumn label="TK/RA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[1].kemudahan} />
+  //           <ExcelColumn label="TK/RA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[1].waktu} />
+  //           <ExcelColumn label="SD/MI - Jarak" value={(col) => col.akses_fasilitas_pendidikan[2].jarak} />
+  //           <ExcelColumn label="SD/MI - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[2].kemudahan} />
+  //           <ExcelColumn label="SD/MI - Waktu" value={(col) => col.akses_fasilitas_pendidikan[2].waktu} />
+  //           <ExcelColumn label="SMP/MTs - Jarak" value={(col) => col.akses_fasilitas_pendidikan[3].jarak} />
+  //           <ExcelColumn label="SMP/MTs - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[3].kemudahan} />
+  //           <ExcelColumn label="SMP/MTs - Waktu" value={(col) => col.akses_fasilitas_pendidikan[3].waktu} />
+  //           <ExcelColumn label="SMA/MA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[4].jarak} />
+  //           <ExcelColumn label="SMA/MA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[4].kemudahan} />
+  //           <ExcelColumn label="SMA/MA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[4].waktu} />
+  //           <ExcelColumn label="Perguruan Tinggi - Jarak" value={(col) => col.akses_fasilitas_pendidikan[5].jarak} />
+  //           <ExcelColumn label="Perguruan Tinggi - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[5].kemudahan} />
+  //           <ExcelColumn label="Perguruan Tinggi - Waktu" value={(col) => col.akses_fasilitas_pendidikan[5].waktu} />
+  //           <ExcelColumn label="Pesantren - Jarak" value={(col) => col.akses_fasilitas_pendidikan[6].jarak} />
+  //           <ExcelColumn label="Pesantren - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[6].kemudahan} />
+  //           <ExcelColumn label="Pesantren - Waktu" value={(col) => col.akses_fasilitas_pendidikan[6].waktu} />
+  //           <ExcelColumn label="Seminari - Jarak" value={(col) => col.akses_fasilitas_pendidikan[7].jarak} />
+  //           <ExcelColumn label="Seminari - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[7].kemudahan} />
+  //           <ExcelColumn label="Seminari - Waktu" value={(col) => col.akses_fasilitas_pendidikan[7].waktu} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Jarak" value={(col) => col.akses_fasilitas_pendidikan[8].jarak} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[8].kemudahan} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Waktu" value={(col) => col.akses_fasilitas_pendidikan[8].waktu} />
+  //         </ExcelSheet> 
+  //         <ExcelSheet
+  //           data={dataState.kk.filter((item) => item.desa_id === Desa['Srimartani'])}
+  //           name="Srimartani"
+  //         >
+  //            <ExcelColumn label="No KK" value="no_kk" />
+  //           <ExcelColumn label="Nama Kepala" value="nama_kepala" />
+  //           <ExcelColumn label="Tempat Tinggal" value="tempat_tinggal" />
+  //           <ExcelColumn label="Desa" value={(col) => col.desa.nama_desa} />
+  //           <ExcelColumn label="Dusun" value={(col) => col.dusun.nama_dusun} />
+  //           <ExcelColumn label="Luas Lahan" value="luas_lahan" />
+  //           <ExcelColumn label="Luas Rumah" value="luas_rumah" />
+  //           <ExcelColumn label="Jenis Lantai" value="jenis_lantai" />
+  //           <ExcelColumn label="Dinding" value="dinding" />
+  //           <ExcelColumn label="Atap" value="atap" />
+  //           <ExcelColumn label="Jendela" value="jendela" />
+  //           <ExcelColumn label="MCK" value="mck" />
+  //           <ExcelColumn label="Penerangan" value="penerangan" />
+  //           <ExcelColumn label="Energi Masak" value="energi_masak" />
+  //           <ExcelColumn label="Pembuangan" value="pembuangan" />
+  //           <ExcelColumn label="Sumber Air Mandi" value="sumber_air_mandi" />
+  //           <ExcelColumn label="Sumber Air Minum" value="sumber_air_minum" />
+  //           <ExcelColumn label="Rumah Dibawah Sutet" value={(col) => (
+  //             col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
+  //           )} />
+  //           <ExcelColumn label="Rumah Bantaran Sungai" value={(col) => (
+  //             col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Kondisi Rumah" value="kondisi_rumah" />
+  //           <ExcelColumn label="BLT Desa" value={(col) => (
+  //             col.blt_desa ? 'Ya' : 'Tidak'
+  //           )} />
+  //           <ExcelColumn label="Program Keluarga Harapan" value={(col) => (col.pkh ? 'Ya' : 'Tidak')}/>
+  //           <ExcelColumn label="Bantuan Sosial Tunai" value={(col) => (
+  //             col.bantuan_sosial_tunai ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Presiden" value={(col) => (
+  //             col.bantuan_presiden ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan UMKM" value={(col) => (
+  //             col.bantuan_umkm ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Pekerja" value={(col) => (
+  //             col.bantuan_pekerja ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Bantuan Pendidikan" value={(col) => (
+  //             col.bantuan_pendidikan ? 'Ya' : 'Tidak'
+  //           )}/>
+  //           <ExcelColumn label="Akses Kerja" value="akses_kerja" />
+  //           <ExcelColumn label="Akses Lahan" value="akses_lahan" />
+  //           <ExcelColumn label="Akses Sekolah" value="akses_sekolah" />
+  //           <ExcelColumn label="Akses Kesehatan" value="akses_kesehatan" />
+  //           <ExcelColumn label="Rumah Sakit - Jarak" value={(col) => col.akses_fasilitas_kesehatan[0].jarak} />
+  //           <ExcelColumn label="Rumah Sakit - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[0].kemudahan} />
+  //           <ExcelColumn label="Rumah Sakit - Waktu" value={(col) => col.akses_fasilitas_kesehatan[0].waktu} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Jarak" value={(col) => col.akses_fasilitas_kesehatan[1].jarak} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[1].kemudahan} />
+  //           <ExcelColumn label="Rumah Sakit Bersalin - Waktu" value={(col) => col.akses_fasilitas_kesehatan[1].waktu} />
+  //           <ExcelColumn label="Poliklinik - Jarak" value={(col) => col.akses_fasilitas_kesehatan[2].jarak} />
+  //           <ExcelColumn label="Poliklinik - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[2].kemudahan} />
+  //           <ExcelColumn label="Poliklinik - Waktu" value={(col) => col.akses_fasilitas_kesehatan[2].waktu} />
+  //           <ExcelColumn label="Puskesmas - Jarak" value={(col) => col.akses_fasilitas_kesehatan[3].jarak} /> 
+  //           <ExcelColumn label="Puskesmas - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[3].kemudahan} />
+  //           <ExcelColumn label="Puskesmas - Waktu" value={(col) => col.akses_fasilitas_kesehatan[3].waktu} />
+  //           <ExcelColumn label="Puskesmas Bantu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[4].jarak} />
+  //           <ExcelColumn label="Puskesmas Bantu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[4].kemudahan} />
+  //           <ExcelColumn label="Puskesmas Bantu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[4].waktu} />
+  //           <ExcelColumn label="Polindes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[5].jarak} />
+  //           <ExcelColumn label="Polindes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[5].kemudahan} />
+  //           <ExcelColumn label="Polindes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[5].waktu} />
+  //           <ExcelColumn label="Poskesdes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[6].jarak} />
+  //           <ExcelColumn label="Poskesdes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[6].kemudahan} />
+  //           <ExcelColumn label="Poskesdes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[6].waktu} />
+  //           <ExcelColumn label="Posyandu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[7].jarak} />
+  //           <ExcelColumn label="Posyandu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[7].kemudahan} />
+  //           <ExcelColumn label="Posyandu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[7].waktu} />
+  //           <ExcelColumn label="Apotek - Jarak" value={(col) => col.akses_fasilitas_kesehatan[8].jarak} />
+  //           <ExcelColumn label="Apotek - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[8].kemudahan} />
+  //           <ExcelColumn label="Apotek - Waktu" value={(col) => col.akses_fasilitas_kesehatan[8].waktu} />
+  //           <ExcelColumn label="Paud - Jarak" value={(col) => col.akses_fasilitas_pendidikan[0].jarak} />
+  //           <ExcelColumn label="Paud - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[0].kemudahan} />
+  //           <ExcelColumn label="Paud - Waktu" value={(col) => col.akses_fasilitas_pendidikan[0].waktu} />
+  //           <ExcelColumn label="TK/RA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[1].jarak} />
+  //           <ExcelColumn label="TK/RA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[1].kemudahan} />
+  //           <ExcelColumn label="TK/RA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[1].waktu} />
+  //           <ExcelColumn label="SD/MI - Jarak" value={(col) => col.akses_fasilitas_pendidikan[2].jarak} />
+  //           <ExcelColumn label="SD/MI - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[2].kemudahan} />
+  //           <ExcelColumn label="SD/MI - Waktu" value={(col) => col.akses_fasilitas_pendidikan[2].waktu} />
+  //           <ExcelColumn label="SMP/MTs - Jarak" value={(col) => col.akses_fasilitas_pendidikan[3].jarak} />
+  //           <ExcelColumn label="SMP/MTs - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[3].kemudahan} />
+  //           <ExcelColumn label="SMP/MTs - Waktu" value={(col) => col.akses_fasilitas_pendidikan[3].waktu} />
+  //           <ExcelColumn label="SMA/MA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[4].jarak} />
+  //           <ExcelColumn label="SMA/MA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[4].kemudahan} />
+  //           <ExcelColumn label="SMA/MA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[4].waktu} />
+  //           <ExcelColumn label="Perguruan Tinggi - Jarak" value={(col) => col.akses_fasilitas_pendidikan[5].jarak} />
+  //           <ExcelColumn label="Perguruan Tinggi - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[5].kemudahan} />
+  //           <ExcelColumn label="Perguruan Tinggi - Waktu" value={(col) => col.akses_fasilitas_pendidikan[5].waktu} />
+  //           <ExcelColumn label="Pesantren - Jarak" value={(col) => col.akses_fasilitas_pendidikan[6].jarak} />
+  //           <ExcelColumn label="Pesantren - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[6].kemudahan} />
+  //           <ExcelColumn label="Pesantren - Waktu" value={(col) => col.akses_fasilitas_pendidikan[6].waktu} />
+  //           <ExcelColumn label="Seminari - Jarak" value={(col) => col.akses_fasilitas_pendidikan[7].jarak} />
+  //           <ExcelColumn label="Seminari - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[7].kemudahan} />
+  //           <ExcelColumn label="Seminari - Waktu" value={(col) => col.akses_fasilitas_pendidikan[7].waktu} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Jarak" value={(col) => col.akses_fasilitas_pendidikan[8].jarak} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[8].kemudahan} />
+  //           <ExcelColumn label="Pend.Keagamaan Lain - Waktu" value={(col) => col.akses_fasilitas_pendidikan[8].waktu} />
+  //         </ExcelSheet> 
+  //     </ExcelFile>  
+  //   )
+  // }
+
   const downloadFile = () => {
     return (
       <ExcelFile
@@ -196,222 +534,10 @@ const DataKK = () => {
         }
       >
           <ExcelSheet
-            data={dataState.kk.filter((item) => item.desa_id === Desa['Sitimulyo'])}
-            name="Sitimulyo"
+            data={dataState.kk.filter(searchFunc)}
+            name="Data KK"
           >
             <ExcelColumn label="No KK" value="no_kk" />
-            <ExcelColumn label="Nama Kepala" value="nama_kepala" />
-            <ExcelColumn label="Tempat Tinggal" value="tempat_tinggal" />
-            <ExcelColumn label="Desa" value={(col) => col.desa.nama_desa} />
-            <ExcelColumn label="Dusun" value={(col) => col.dusun.nama_dusun} />
-            <ExcelColumn label="Luas Lahan" value="luas_lahan" />
-            <ExcelColumn label="Luas Rumah" value="luas_rumah" />
-            <ExcelColumn label="Jenis Lantai" value="jenis_lantai" />
-            <ExcelColumn label="Dinding" value="dinding" />
-            <ExcelColumn label="Atap" value="atap" />
-            <ExcelColumn label="Jendela" value="jendela" />
-            <ExcelColumn label="MCK" value="mck" />
-            <ExcelColumn label="Penerangan" value="penerangan" />
-            <ExcelColumn label="Energi Masak" value="energi_masak" />
-            <ExcelColumn label="Pembuangan" value="pembuangan" />
-            <ExcelColumn label="Sumber Air Mandi" value="sumber_air_mandi" />
-            <ExcelColumn label="Sumber Air Minum" value="sumber_air_minum" />
-            <ExcelColumn label="Rumah Dibawah Sutet" value={(col) => (
-              col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
-            )} />
-            <ExcelColumn label="Rumah Bantaran Sungai" value={(col) => (
-              col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Kondisi Rumah" value="kondisi_rumah" />
-            <ExcelColumn label="BLT Desa" value={(col) => (
-              col.blt_desa ? 'Ya' : 'Tidak'
-            )} />
-            <ExcelColumn label="Program Keluarga Harapan" value={(col) => (col.pkh ? 'Ya' : 'Tidak')}/>
-            <ExcelColumn label="Bantuan Sosial Tunai" value={(col) => (
-              col.bantuan_sosial_tunai ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Bantuan Presiden" value={(col) => (
-              col.bantuan_presiden ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Bantuan UMKM" value={(col) => (
-              col.bantuan_umkm ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Bantuan Pekerja" value={(col) => (
-              col.bantuan_pekerja ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Bantuan Pendidikan" value={(col) => (
-              col.bantuan_pendidikan ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Akses Kerja" value="akses_kerja" />
-            <ExcelColumn label="Akses Lahan" value="akses_lahan" />
-            <ExcelColumn label="Akses Sekolah" value="akses_sekolah" />
-            <ExcelColumn label="Akses Kesehatan" value="akses_kesehatan" />
-            <ExcelColumn label="Rumah Sakit - Jarak" value={(col) => col.akses_fasilitas_kesehatan[0].jarak} />
-            <ExcelColumn label="Rumah Sakit - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[0].kemudahan} />
-            <ExcelColumn label="Rumah Sakit - Waktu" value={(col) => col.akses_fasilitas_kesehatan[0].waktu} />
-            <ExcelColumn label="Rumah Sakit Bersalin - Jarak" value={(col) => col.akses_fasilitas_kesehatan[1].jarak} />
-            <ExcelColumn label="Rumah Sakit Bersalin - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[1].kemudahan} />
-            <ExcelColumn label="Rumah Sakit Bersalin - Waktu" value={(col) => col.akses_fasilitas_kesehatan[1].waktu} />
-            <ExcelColumn label="Poliklinik - Jarak" value={(col) => col.akses_fasilitas_kesehatan[2].jarak} />
-            <ExcelColumn label="Poliklinik - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[2].kemudahan} />
-            <ExcelColumn label="Poliklinik - Waktu" value={(col) => col.akses_fasilitas_kesehatan[2].waktu} />
-            <ExcelColumn label="Puskesmas - Jarak" value={(col) => col.akses_fasilitas_kesehatan[3].jarak} /> 
-            <ExcelColumn label="Puskesmas - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[3].kemudahan} />
-            <ExcelColumn label="Puskesmas - Waktu" value={(col) => col.akses_fasilitas_kesehatan[3].waktu} />
-            <ExcelColumn label="Puskesmas Bantu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[4].jarak} />
-            <ExcelColumn label="Puskesmas Bantu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[4].kemudahan} />
-            <ExcelColumn label="Puskesmas Bantu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[4].waktu} />
-            <ExcelColumn label="Polindes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[5].jarak} />
-            <ExcelColumn label="Polindes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[5].kemudahan} />
-            <ExcelColumn label="Polindes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[5].waktu} />
-            <ExcelColumn label="Poskesdes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[6].jarak} />
-            <ExcelColumn label="Poskesdes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[6].kemudahan} />
-            <ExcelColumn label="Poskesdes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[6].waktu} />
-            <ExcelColumn label="Posyandu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[7].jarak} />
-            <ExcelColumn label="Posyandu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[7].kemudahan} />
-            <ExcelColumn label="Posyandu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[7].waktu} />
-            <ExcelColumn label="Apotek - Jarak" value={(col) => col.akses_fasilitas_kesehatan[8].jarak} />
-            <ExcelColumn label="Apotek - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[8].kemudahan} />
-            <ExcelColumn label="Apotek - Waktu" value={(col) => col.akses_fasilitas_kesehatan[8].waktu} />
-            <ExcelColumn label="Paud - Jarak" value={(col) => col.akses_fasilitas_pendidikan[0].jarak} />
-            <ExcelColumn label="Paud - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[0].kemudahan} />
-            <ExcelColumn label="Paud - Waktu" value={(col) => col.akses_fasilitas_pendidikan[0].waktu} />
-            <ExcelColumn label="TK/RA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[1].jarak} />
-            <ExcelColumn label="TK/RA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[1].kemudahan} />
-            <ExcelColumn label="TK/RA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[1].waktu} />
-            <ExcelColumn label="SD/MI - Jarak" value={(col) => col.akses_fasilitas_pendidikan[2].jarak} />
-            <ExcelColumn label="SD/MI - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[2].kemudahan} />
-            <ExcelColumn label="SD/MI - Waktu" value={(col) => col.akses_fasilitas_pendidikan[2].waktu} />
-            <ExcelColumn label="SMP/MTs - Jarak" value={(col) => col.akses_fasilitas_pendidikan[3].jarak} />
-            <ExcelColumn label="SMP/MTs - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[3].kemudahan} />
-            <ExcelColumn label="SMP/MTs - Waktu" value={(col) => col.akses_fasilitas_pendidikan[3].waktu} />
-            <ExcelColumn label="SMA/MA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[4].jarak} />
-            <ExcelColumn label="SMA/MA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[4].kemudahan} />
-            <ExcelColumn label="SMA/MA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[4].waktu} />
-            <ExcelColumn label="Perguruan Tinggi - Jarak" value={(col) => col.akses_fasilitas_pendidikan[5].jarak} />
-            <ExcelColumn label="Perguruan Tinggi - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[5].kemudahan} />
-            <ExcelColumn label="Perguruan Tinggi - Waktu" value={(col) => col.akses_fasilitas_pendidikan[5].waktu} />
-            <ExcelColumn label="Pesantren - Jarak" value={(col) => col.akses_fasilitas_pendidikan[6].jarak} />
-            <ExcelColumn label="Pesantren - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[6].kemudahan} />
-            <ExcelColumn label="Pesantren - Waktu" value={(col) => col.akses_fasilitas_pendidikan[6].waktu} />
-            <ExcelColumn label="Seminari - Jarak" value={(col) => col.akses_fasilitas_pendidikan[7].jarak} />
-            <ExcelColumn label="Seminari - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[7].kemudahan} />
-            <ExcelColumn label="Seminari - Waktu" value={(col) => col.akses_fasilitas_pendidikan[7].waktu} />
-            <ExcelColumn label="Pend.Keagamaan Lain - Jarak" value={(col) => col.akses_fasilitas_pendidikan[8].jarak} />
-            <ExcelColumn label="Pend.Keagamaan Lain - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[8].kemudahan} />
-            <ExcelColumn label="Pend.Keagamaan Lain - Waktu" value={(col) => col.akses_fasilitas_pendidikan[8].waktu} />
-          </ExcelSheet> 
-          <ExcelSheet
-            data={dataState.kk.filter((item) => item.desa_id === Desa['Srimulyo'])}
-            name="Srimulyo"
-          >
-             <ExcelColumn label="No KK" value="no_kk" />
-            <ExcelColumn label="Nama Kepala" value="nama_kepala" />
-            <ExcelColumn label="Tempat Tinggal" value="tempat_tinggal" />
-            <ExcelColumn label="Desa" value={(col) => col.desa.nama_desa} />
-            <ExcelColumn label="Dusun" value={(col) => col.dusun.nama_dusun} />
-            <ExcelColumn label="Luas Lahan" value="luas_lahan" />
-            <ExcelColumn label="Luas Rumah" value="luas_rumah" />
-            <ExcelColumn label="Jenis Lantai" value="jenis_lantai" />
-            <ExcelColumn label="Dinding" value="dinding" />
-            <ExcelColumn label="Atap" value="atap" />
-            <ExcelColumn label="Jendela" value="jendela" />
-            <ExcelColumn label="MCK" value="mck" />
-            <ExcelColumn label="Penerangan" value="penerangan" />
-            <ExcelColumn label="Energi Masak" value="energi_masak" />
-            <ExcelColumn label="Pembuangan" value="pembuangan" />
-            <ExcelColumn label="Sumber Air Mandi" value="sumber_air_mandi" />
-            <ExcelColumn label="Sumber Air Minum" value="sumber_air_minum" />
-            <ExcelColumn label="Rumah Dibawah Sutet" value={(col) => (
-              col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
-            )} />
-            <ExcelColumn label="Rumah Bantaran Sungai" value={(col) => (
-              col.rumah_bantaran_sungai ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Kondisi Rumah" value="kondisi_rumah" />
-            <ExcelColumn label="BLT Desa" value={(col) => (
-              col.blt_desa ? 'Ya' : 'Tidak'
-            )} />
-            <ExcelColumn label="Program Keluarga Harapan" value={(col) => (col.pkh ? 'Ya' : 'Tidak')}/>
-            <ExcelColumn label="Bantuan Sosial Tunai" value={(col) => (
-              col.bantuan_sosial_tunai ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Bantuan Presiden" value={(col) => (
-              col.bantuan_presiden ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Bantuan UMKM" value={(col) => (
-              col.bantuan_umkm ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Bantuan Pekerja" value={(col) => (
-              col.bantuan_pekerja ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Bantuan Pendidikan" value={(col) => (
-              col.bantuan_pendidikan ? 'Ya' : 'Tidak'
-            )}/>
-            <ExcelColumn label="Akses Kerja" value="akses_kerja" />
-            <ExcelColumn label="Akses Lahan" value="akses_lahan" />
-            <ExcelColumn label="Akses Sekolah" value="akses_sekolah" />
-            <ExcelColumn label="Akses Kesehatan" value="akses_kesehatan" />
-            <ExcelColumn label="Rumah Sakit - Jarak" value={(col) => col.akses_fasilitas_kesehatan[0].jarak} />
-            <ExcelColumn label="Rumah Sakit - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[0].kemudahan} />
-            <ExcelColumn label="Rumah Sakit - Waktu" value={(col) => col.akses_fasilitas_kesehatan[0].waktu} />
-            <ExcelColumn label="Rumah Sakit Bersalin - Jarak" value={(col) => col.akses_fasilitas_kesehatan[1].jarak} />
-            <ExcelColumn label="Rumah Sakit Bersalin - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[1].kemudahan} />
-            <ExcelColumn label="Rumah Sakit Bersalin - Waktu" value={(col) => col.akses_fasilitas_kesehatan[1].waktu} />
-            <ExcelColumn label="Poliklinik - Jarak" value={(col) => col.akses_fasilitas_kesehatan[2].jarak} />
-            <ExcelColumn label="Poliklinik - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[2].kemudahan} />
-            <ExcelColumn label="Poliklinik - Waktu" value={(col) => col.akses_fasilitas_kesehatan[2].waktu} />
-            <ExcelColumn label="Puskesmas - Jarak" value={(col) => col.akses_fasilitas_kesehatan[3].jarak} /> 
-            <ExcelColumn label="Puskesmas - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[3].kemudahan} />
-            <ExcelColumn label="Puskesmas - Waktu" value={(col) => col.akses_fasilitas_kesehatan[3].waktu} />
-            <ExcelColumn label="Puskesmas Bantu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[4].jarak} />
-            <ExcelColumn label="Puskesmas Bantu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[4].kemudahan} />
-            <ExcelColumn label="Puskesmas Bantu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[4].waktu} />
-            <ExcelColumn label="Polindes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[5].jarak} />
-            <ExcelColumn label="Polindes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[5].kemudahan} />
-            <ExcelColumn label="Polindes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[5].waktu} />
-            <ExcelColumn label="Poskesdes - Jarak" value={(col) => col.akses_fasilitas_kesehatan[6].jarak} />
-            <ExcelColumn label="Poskesdes - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[6].kemudahan} />
-            <ExcelColumn label="Poskesdes - Waktu" value={(col) => col.akses_fasilitas_kesehatan[6].waktu} />
-            <ExcelColumn label="Posyandu - Jarak" value={(col) => col.akses_fasilitas_kesehatan[7].jarak} />
-            <ExcelColumn label="Posyandu - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[7].kemudahan} />
-            <ExcelColumn label="Posyandu - Waktu" value={(col) => col.akses_fasilitas_kesehatan[7].waktu} />
-            <ExcelColumn label="Apotek - Jarak" value={(col) => col.akses_fasilitas_kesehatan[8].jarak} />
-            <ExcelColumn label="Apotek - Kemudahan" value={(col) => col.akses_fasilitas_kesehatan[8].kemudahan} />
-            <ExcelColumn label="Apotek - Waktu" value={(col) => col.akses_fasilitas_kesehatan[8].waktu} />
-            <ExcelColumn label="Paud - Jarak" value={(col) => col.akses_fasilitas_pendidikan[0].jarak} />
-            <ExcelColumn label="Paud - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[0].kemudahan} />
-            <ExcelColumn label="Paud - Waktu" value={(col) => col.akses_fasilitas_pendidikan[0].waktu} />
-            <ExcelColumn label="TK/RA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[1].jarak} />
-            <ExcelColumn label="TK/RA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[1].kemudahan} />
-            <ExcelColumn label="TK/RA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[1].waktu} />
-            <ExcelColumn label="SD/MI - Jarak" value={(col) => col.akses_fasilitas_pendidikan[2].jarak} />
-            <ExcelColumn label="SD/MI - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[2].kemudahan} />
-            <ExcelColumn label="SD/MI - Waktu" value={(col) => col.akses_fasilitas_pendidikan[2].waktu} />
-            <ExcelColumn label="SMP/MTs - Jarak" value={(col) => col.akses_fasilitas_pendidikan[3].jarak} />
-            <ExcelColumn label="SMP/MTs - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[3].kemudahan} />
-            <ExcelColumn label="SMP/MTs - Waktu" value={(col) => col.akses_fasilitas_pendidikan[3].waktu} />
-            <ExcelColumn label="SMA/MA - Jarak" value={(col) => col.akses_fasilitas_pendidikan[4].jarak} />
-            <ExcelColumn label="SMA/MA - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[4].kemudahan} />
-            <ExcelColumn label="SMA/MA - Waktu" value={(col) => col.akses_fasilitas_pendidikan[4].waktu} />
-            <ExcelColumn label="Perguruan Tinggi - Jarak" value={(col) => col.akses_fasilitas_pendidikan[5].jarak} />
-            <ExcelColumn label="Perguruan Tinggi - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[5].kemudahan} />
-            <ExcelColumn label="Perguruan Tinggi - Waktu" value={(col) => col.akses_fasilitas_pendidikan[5].waktu} />
-            <ExcelColumn label="Pesantren - Jarak" value={(col) => col.akses_fasilitas_pendidikan[6].jarak} />
-            <ExcelColumn label="Pesantren - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[6].kemudahan} />
-            <ExcelColumn label="Pesantren - Waktu" value={(col) => col.akses_fasilitas_pendidikan[6].waktu} />
-            <ExcelColumn label="Seminari - Jarak" value={(col) => col.akses_fasilitas_pendidikan[7].jarak} />
-            <ExcelColumn label="Seminari - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[7].kemudahan} />
-            <ExcelColumn label="Seminari - Waktu" value={(col) => col.akses_fasilitas_pendidikan[7].waktu} />
-            <ExcelColumn label="Pend.Keagamaan Lain - Jarak" value={(col) => col.akses_fasilitas_pendidikan[8].jarak} />
-            <ExcelColumn label="Pend.Keagamaan Lain - Kemudahan" value={(col) => col.akses_fasilitas_pendidikan[8].kemudahan} />
-            <ExcelColumn label="Pend.Keagamaan Lain - Waktu" value={(col) => col.akses_fasilitas_pendidikan[8].waktu} />
-          </ExcelSheet> 
-          <ExcelSheet
-            data={dataState.kk.filter((item) => item.desa_id === Desa['Srimartani'])}
-            name="Srimartani"
-          >
-             <ExcelColumn label="No KK" value="no_kk" />
             <ExcelColumn label="Nama Kepala" value="nama_kepala" />
             <ExcelColumn label="Tempat Tinggal" value="tempat_tinggal" />
             <ExcelColumn label="Desa" value={(col) => col.desa.nama_desa} />

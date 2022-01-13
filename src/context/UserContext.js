@@ -6,7 +6,7 @@ import { createContext } from 'react'
 export const defaultState = {
     user: {
         id: '',
-        name: 'kukukuntul',
+        name: '',
         email: '',
         role: 0,
     }

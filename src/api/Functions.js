@@ -46,6 +46,15 @@ export const GetUsers = async () => {
     })
 }
 
+export const GetUsersInfo = async () => {
+    return await httpClient.get(`/users/info`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+}
+
 export const SaveUser = async (data) => {
     return await httpClient.post(`/users`, data, {
         headers: {
@@ -112,6 +121,33 @@ export const DeleteRole = async (id) => {
 
 export const GetStats = async () => {
     return await httpClient.get(`/stats`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+}
+
+export const GetNotes = async (id) => {
+    return await httpClient.get(`users/${id}/notes`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+}
+
+export const AddNote = async (data) => {
+    return await httpClient.post(`/notes`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+}
+
+export const DeleteNote = async (id) => {
+    return await httpClient.delete(`/notes/${id}`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('token')

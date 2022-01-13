@@ -12,7 +12,7 @@ ReactDOM.render(
   <Provider store={store}>
     <UserProvider initialState={defaultStateUser} reducer={UserReducer}>
       <DataProvider initialState={defaultStateData} reducer={DataReducer}>
-        <App />
+        <App /> 
       </DataProvider>
     </UserProvider>
   </Provider>,

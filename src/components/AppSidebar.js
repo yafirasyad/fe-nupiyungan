@@ -23,8 +23,19 @@ const AppSidebar = () => {
 
   return (
     <CSidebar position="fixed" unfoldable={unfoldable} visible={sidebarShow}>
-      <CSidebarBrand className="d-none d-md-flex" to="/">
-        <img src={logonu} width={150} />
+      <CSidebarBrand className="d-none d-md-flex" to="/"
+        style={{
+          height: '90px',
+        }}
+      >
+        <img 
+          src={logonu} 
+          style={{
+            width: '100%',
+            height: '100%',
+
+          }}
+        />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
