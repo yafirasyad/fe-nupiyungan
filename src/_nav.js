@@ -75,12 +75,12 @@ const _nav = [
     component: CNavTitle,
     name: 'Lain-Lain',
   },
-  {
-    component: CNavItem,
-    name: 'Setting',
-    to: '/register',
-    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Setting',
+  //   to: '/register',
+  //   icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'Logout',

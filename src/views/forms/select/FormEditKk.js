@@ -514,8 +514,9 @@ const FormEditKk = () => {
       setOtherModeSumberAirMinum(false)
       setOtherSumberAirMinum('')
     }
-
     useEffect(() => {
+        setDesa(dataState.selectedDataKk.desa.id)
+        setDusun(dataState.selectedDataKk.dusun.id)
         setNoKk(dataState.selectedDataKk.no_kk)
         setNamaKepala(dataState.selectedDataKk.nama_kepala)
         setTempatTinggal(dataState.selectedDataKk.tempat_tinggal)

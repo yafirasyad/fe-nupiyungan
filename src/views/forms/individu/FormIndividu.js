@@ -294,9 +294,10 @@ const FormIndividu = () => {
       cacat_ganda: 0,
     })
   }
-
   useEffect(() => {
     if(dataState.isEditMode){
+      setDesa(dataState.selectedDataIndividu.desa.id)
+      setDusun(dataState.selectedDataIndividu.dusun.id)
       setNik(dataState.selectedDataIndividu.nik)
       setNoKk(dataState.selectedDataIndividu.no_kk)
       setNama(dataState.selectedDataIndividu.nama)
@@ -343,7 +344,6 @@ const FormIndividu = () => {
       setEditMode(false)
     }
   }, [])
-  
   return (
     <CRow>
       <Loader visible={isLoading}/>

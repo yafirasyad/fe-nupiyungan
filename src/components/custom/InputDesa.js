@@ -15,16 +15,16 @@ const InputDesa = ({selectedDesa, setSelectedDesa, selectedDusun, setSelectedDus
                 const dusunData = desaData.find(desa => desa.id == selectedDesa).dusun
                 setDesa(desaData)
                 setDusunOption(dusunData)
-                if (dataState.isEditMode) {
-                    setSelectedDesa(dataState.selectedData.desa.id)
-                    setSelectedDusun(dataState.selectedData.dusun.id)      
-                    setDusunOption(desaData.find(desa => desa.id == dataState.selectedData.desa.id).dusun)
-                }
             }).catch(err => {
                 console.log(err.response)
             })
     }, [])
 
+    useEffect(() => {
+        if (desa.length > 0 && dataState.isEditMode) {
+            setDusunOption(desa.find(desa => desa.id == selectedDesa).dusun)
+        }
+    }, [selectedDesa, desa])
     return (
         <>
             <div className='mb-3'>
