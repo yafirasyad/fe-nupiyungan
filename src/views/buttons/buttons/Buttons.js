@@ -63,7 +63,7 @@ const Buttons = () => {
           </CCardHeader>
           <CCardBody>
             <p className="text-medium-emphasis small">
-              You can combine button with our <a href="https://icons.coreui.io/">CoreUI Icons</a>.
+              You can combine button with our <a href="https://icons.coreui.io/"></a>.
             </p>
             <DocsExample href="components/buttons">
               {['normal', 'active', 'disabled'].map((state, index) => (

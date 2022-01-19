@@ -692,7 +692,7 @@ const FormEditKk = () => {
               <DocsExample href="forms/form-control">
                 <CForm onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <h3>Data KKs</h3>
+                    <h3>Data KK</h3>
                     <br></br>
                     <CFormLabel htmlFor="nomorkkdatakk">
                       <h6>Nomor Kartu Keluarga (16 Digit)</h6>

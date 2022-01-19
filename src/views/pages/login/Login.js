@@ -74,6 +74,8 @@ const Login = () => {
     console.log(isLogin())
     return <Redirect to='/dashboard' />
   }
+  console.log('----------------------------------------------------')
+  console.log(process.env.REACT_APP_DEV_API_URL)
   return (
     <div className="min-vh-100 d-flex flex-row align-items-center">
       <img
@@ -132,9 +134,9 @@ const Login = () => {
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                        {/* <CButton color="link" className="px-0">
                           Forgot password?
-                        </CButton>
+                        </CButton> */}
                       </CCol>
                     </CRow>
                   </CForm>
