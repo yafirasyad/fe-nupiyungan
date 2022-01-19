@@ -32,13 +32,15 @@ const AppSidebar = () => {
           src={logonu} 
           style={{
             width: '100%',
-            height: '100%',
+            height: '125%',
 
           }}
         />
       </CSidebarBrand>
       <CSidebarNav>
-        <SimpleBar>
+        <SimpleBar style={{
+          marginTop:'12px',
+        }}>
           <AppSidebarNav items={navigation} />
         </SimpleBar>
       </CSidebarNav>
