@@ -82,6 +82,24 @@ export const DeleteUser = async (id) => {
     })
 }
 
+export const ChangePasswordUser = async (id, data) => {
+    return await httpClient.patch(`/users/${id}/password`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+}
+
+export const UpdateUserEmailName = async (id, data) => {
+    return await httpClient.patch(`/users/${id}`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+}
+
 export const GetRoles = async () => {
     return await httpClient.get(`/roles`, {
         headers: {
