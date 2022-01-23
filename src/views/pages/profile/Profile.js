@@ -2,25 +2,31 @@ import { CButton, CCard, CCardHeader, CCol, CForm, CFormInput, CFormLabel, CRow,
 import React, { useEffect, useState } from 'react'
 import { GetUsersInfo, UpdateUserEmailName } from 'src/api/Functions'
 import ModalChangePassword from 'src/components/custom/ModalChangePassword'
+import ModalUploadAvatar from 'src/components/custom/ModalUploadAvatar'
 import { useUser } from 'src/context/UserContext'
-import avatar from './../../../assets/images/avatars/profile.png'
+import avatarImg from './../../../assets/images/avatars/profile.png'
 
 const Profile = () => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
+    const [avatar, setAvatar] = useState("")
     const [editMode, setEditMode] = useState(false)
     const [changePassMode, setChangePassMode] = useState(false)
+    const [uploadAvatarMode, setUploadAvatarMode] = useState(false)
     const {state: userState, setUser } = useUser()
     
     useEffect(() => {
         GetUsersInfo()
             .then(res => {
+                console.log(res.data.data)
                 setUser({
                     id: res.data.data.id,
                     name: res.data.data.name,
                     email: res.data.data.email,
                     role: res.data.data.role.id,
+                    avatar: res.data.data.avatar,
                   })
+                setAvatar(res.data.data.avatar)
                 setName(res.data.data.name)
                 setEmail(res.data.data.email)
             }).catch(err => {
@@ -52,7 +58,8 @@ const Profile = () => {
     }
 
     return (
-        <CCard>
+        <CCard className='pb-4'>
+            <ModalUploadAvatar visible={uploadAvatarMode} setVisible={setUploadAvatarMode}/>
             <ModalChangePassword visible={changePassMode} setVisible={setChangePassMode}/>
             <CCardHeader>Profile</CCardHeader>
             <CRow>
@@ -60,9 +67,20 @@ const Profile = () => {
                     marginTop: "10px",
                     textAlign: "center",
                 }}>
-                    <img src={avatar} height={200} style={{
-                        borderRadius: "50%",
-                    }}/>
+                    <CRow>
+                        <div>
+                            <img src={avatar ? `${process.env.REACT_APP_DEV_API_URL}/public/user/${avatar}` : avatarImg} height={200} width={200} style={{
+                                borderRadius: "50%",
+                            }}/>
+                        </div>
+                        <div>
+                            <CButton className="mt-4" onClick={() => {
+                                setUploadAvatarMode(true)
+                            }}>
+                                Change Photo
+                            </CButton>
+                        </div>
+                    </CRow>
                 </CCol>
                 <CCol xs={12} md={7}>
                     <CForm 

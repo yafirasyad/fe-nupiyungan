@@ -100,6 +100,15 @@ export const UpdateUserEmailName = async (id, data) => {
     })
 }
 
+export const UploadAvatar = async (id, data) => {
+    return await httpClient.post(`/users/${id}/avatar`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
+}
+
 export const GetRoles = async () => {
     return await httpClient.get(`/roles`, {
         headers: {

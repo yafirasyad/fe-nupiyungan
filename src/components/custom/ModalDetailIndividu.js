@@ -259,9 +259,15 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                 <CModalTitle>Detail</CModalTitle>
             </CModalHeader>
             <CModalBody>
-                <CRow style={{
-                    marginBottom: '50px'
-                }}>
+                <CRow>
+                    <CCol>
+                        <h6>Foto: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.nik}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
                     <CCol>
                         <h6>Nik: </h6>
                     </CCol>
@@ -279,6 +285,14 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                 </CRow>
                 <CRow>
                     <CCol>
+                        <h6>No kartu NU: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.kartu_nu}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
                         <h6>Nama: </h6>
                     </CCol>
                     <CCol>
@@ -291,6 +305,14 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                     </CCol>
                     <CCol>
                         <p>{item.jenis_kelamin}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>Golongan darah: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.golongan_darah}</p>
                     </CCol>
                 </CRow>
                 <CRow>
