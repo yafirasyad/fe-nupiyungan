@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-undef */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -53,7 +53,7 @@ const FormIndividu = () => {
   const [tempatLahir, setTempatLahir] = useState('')
   const [tanggalLahir, setTanggalLahir] = useState(new Date())
   const [status, setStatus] = useState('Kawin')
-  const [agama, setAgama] = useState('')
+  const [agama, setAgama] = useState('Islam')
   const [suku, setSuku] = useState('')
   const [wargaNegara, setWargaNegara] = useState('WNI')
   const [noHp, setNoHp] = useState('')
@@ -71,6 +71,9 @@ const FormIndividu = () => {
   const [bahasaFormal, setBahasaFormal] = useState('')
   const [jamsostek, setJamsostek] = useState(0)
   const [jamsoskes, setJamsoskes] = useState(0)
+  const [kartuNu, setKartuNu] = useState('')
+  const [golonganDarah, setGolonganDarah] = useState('A')
+  const foto = useRef()
   const { state: dataState, setEditMode } = useData();
  
   const [penyakit, setPenyakit] = useState({
@@ -109,43 +112,74 @@ const FormIndividu = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setIsLoading(true)
-    const person = {
-      desa_id: desa,
-      dusun_id: dusun,
-      nik: nik,
-      no_kk: noKk,
-      nama: nama,
-      jenis_kelamin: jenisKelamin,
-      tempat_lahir: tempatLahir,
-      tanggal_lahir: tanggalLahir,
-      status: status,
-      agama: agama,
-      suku: suku,
-      warga_negara: wargaNegara,
-      no_hp: noHp,
-      email: email,
-      facebook: facebook,
-      instagram: instagram,
-      kondisi_pekerjaan: kondisiPekerjaan,
-      pekerjaan_utama: pekerjaanUtama,
-      penghasilan_setahun: penghasilanSetahun,
-      pendidikan: pendidikan,
-      kerja_bakti: kerjaBakti,
-      siskamling: siskamling,
-      pesta_rakyat: pestaRakyat,
-      bahasa_rumah: bahasaRumah,
-      bahasa_formal: bahasaFormal,
-      jaminan_sosial_ketenagakerjaan: jamsostek,
-      jaminan_sosial_kesehatan: jamsoskes,
-    }
+    // setIsLoading(true)
+    let data = new FormData()
+    data.append('desa_id', desa)
+    data.append('dusun_id', dusun)
+    data.append('nik', nik)
+    data.append('no_kk', noKk)
+    data.append('nama', nama)
+    data.append('jenis_kelamin', jenisKelamin)
+    data.append('tempat_lahir', tempatLahir)
+    data.append('tanggal_lahir', tanggalLahir)
+    data.append('status', status)
+    data.append('agama', agama)
+    data.append('suku', suku)
+    data.append('warga_negara', wargaNegara)
+    data.append('no_hp', noHp)
+    data.append('email', email)
+    data.append('kartu_nu', kartuNu)
+    data.append('golongan_darah', golonganDarah)
+    data.append('facebook', facebook)
+    data.append('instagram', instagram)
+    data.append('kondisi_pekerjaan', kondisiPekerjaan)
+    data.append('pekerjaan_utama', pekerjaanUtama)
+    data.append('penghasilan_setahun', penghasilanSetahun)
+    data.append('pendidikan', pendidikan)
+    data.append('kerja_bakti', kerjaBakti)
+    data.append('siskamling', siskamling)
+    data.append('pesta_rakyat', pestaRakyat)
+    data.append('bahasa_rumah', bahasaRumah)
+    data.append('bahasa_formal', bahasaFormal)
+    data.append('jaminan_sosial_ketenagakerjaan', jamsostek)
+    data.append('jaminan_sosial_kesehatan', jamsoskes)
+    data.append('foto', foto.current.files[0])
+    data.append('penyakit_muntaber', penyakit.muntaber)
+    data.append('penyakit_demam_berdarah', penyakit.demam_berdarah)
+    data.append('penyakit_campak', penyakit.campak)
+    data.append('penyakit_flu_burung', penyakit.flu_burung)
+    data.append('penyakit_malaria', penyakit.malaria)
+    data.append('penyakit_covid', penyakit.covid)
+    data.append('penyakit_hepatitis_b', penyakit.hepatitis_b)
+    data.append('penyakit_hepatitis_e', penyakit.hepatitis_e)
+    data.append('penyakit_difteri', penyakit.difteri)
+    data.append('penyakit_chikungunya', penyakit.chikungunya)
+    data.append('penyakit_leptospirosis', penyakit.leptospirosis)
+    data.append('penyakit_kolerea', penyakit.kolerea)
+    data.append('penyakit_gizi_buruk', penyakit.gizi_buruk)
+    data.append('penyakit_jantung', penyakit.jantung)
+    data.append('penyakit_tbc', penyakit.tbc)
+    data.append('penyakit_kanker', penyakit.kanker)
+    data.append('penyakit_diabetes', penyakit.diabetes)
+    data.append('penyakit_lumpuh', penyakit.lumpuh)
+    data.append('penyakit_lainnya', penyakit.lainnya)
+    data.append('disabilitas_tunanetra', disabilitas.tunanetra)
+    data.append('disabilitas_tunarungu', disabilitas.tunarungu)
+    data.append('disabilitas_tunawicara', disabilitas.tunawicara)
+    data.append('disabilitas_tunarungu_wicara', disabilitas.tunarungu_wicara)
+    data.append('disabilitas_tunadaksa', disabilitas.tunadaksa)
+    data.append('disabilitas_tunagrahita', disabilitas.tunagrahita)
+    data.append('disabilitas_tunalaras', disabilitas.tunalaras)
+    data.append('disabilitas_cacat_eks_kusta', disabilitas.cacat_eks_kusta)
+    data.append('disabilitas_cacat_ganda', disabilitas.cacat_ganda)
+
     if (dataState.isEditMode) {
-      httpClient.put(`/persons/${dataState.selectedDataIndividu.id}`, {
-        ...person,
-        penyakit: penyakit,
-        disabilitas: disabilitas,
-      }, {
+      httpClient.post(`/persons/${dataState.selectedDataIndividu.id}`, data, {
+        params: {
+          _method: 'PUT',
+        },
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         }
       }).then(res => {
@@ -162,11 +196,7 @@ const FormIndividu = () => {
         setIsLoading(false)
       })
     }else {
-      httpClient.post('/persons', {
-        ...person,
-        penyakit: penyakit,
-        disabilitas: disabilitas,
-      }, {
+      httpClient.post('/persons', data, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -257,6 +287,8 @@ const FormIndividu = () => {
     setBahasaFormal('')
     setJamsostek(0)
     setJamsoskes(0)
+    setGolonganDarah('')
+    setKartuNu('')
 
     // Penyakit
     setPenyakit({
@@ -294,6 +326,7 @@ const FormIndividu = () => {
       cacat_ganda: 0,
     })
   }
+
   useEffect(() => {
     if(dataState.isEditMode){
       setDesa(dataState.selectedDataIndividu.desa.id)
@@ -302,6 +335,8 @@ const FormIndividu = () => {
       setNoKk(dataState.selectedDataIndividu.no_kk)
       setNama(dataState.selectedDataIndividu.nama)
       setJenisKelamin(dataState.selectedDataIndividu.jenis_kelamin)
+      setKartuNu(dataState.selectedDataIndividu.kartu_nu)
+      setGolonganDarah(dataState.selectedDataIndividu.golongan_darah)
       setTempatLahir(dataState.selectedDataIndividu.tempat_lahir)
       setTanggalLahir(new Date(dataState.selectedDataIndividu.tanggal_lahir))
       setStatus(dataState.selectedDataIndividu.status)
@@ -344,6 +379,7 @@ const FormIndividu = () => {
       setEditMode(false)
     }
   }, [])
+
   return (
     <CRow>
       <Loader visible={isLoading}/>
@@ -411,6 +447,16 @@ const FormIndividu = () => {
                   />
                 </div>
                 <div className="mb-3">
+                  <CFormLabel htmlFor="kartunu">
+                    <h6>Foto</h6>
+                  </CFormLabel>
+                  <CFormInput 
+                    type="file" 
+                    ref={foto}
+                    required={dataState.isEditMode ? false : true}
+                  />
+                </div>
+                <div className="mb-3">
                   <CFormLabel htmlFor="JenisKelamin">
                     <h6>Jenis Kelamin &nbsp;</h6>
                   </CFormLabel>
@@ -450,6 +496,36 @@ const FormIndividu = () => {
                     showYearDropdown
                     dropdownMode="select"
                   />
+                </div>
+                <div className="mb-3">
+                  <CFormLabel htmlFor="kartunu">
+                    <h6>No Kartu NU</h6>
+                  </CFormLabel>
+                  <CFormInput 
+                    type="text" 
+                    id="kartunu" 
+                    value={kartuNu}
+                    onChange={(e) => setKartuNu(e.target.value)}  
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <CFormLabel htmlFor="golongandarah">
+                    <h6>Golongan Darah &nbsp;</h6>
+                  </CFormLabel>
+                  <select 
+                    id="golongandarah" 
+                    name="golongandarah"
+                    value={golonganDarah}
+                    onChange={(e) => {
+                      setGolonganDarah(e.target.value)
+                    }}
+                    >
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="AB">AB</option>
+                    <option value="O">O</option>
+                  </select>
                 </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="statuspernikahan">

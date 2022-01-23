@@ -77,7 +77,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'My profile',
+    name: 'Profile saya',
     to: '/profile',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
   },

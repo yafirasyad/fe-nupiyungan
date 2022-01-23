@@ -8,6 +8,7 @@ export const defaultState = {
         id: '',
         name: '',
         email: '',
+        avatar: '',
         role: 0,
     }
 }
