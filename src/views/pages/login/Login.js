@@ -51,6 +51,7 @@ const Login = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         role: res.data.data.role,
+        avatar: res.data.data.avatar,
       })
     }).catch(err => {
       if (err.response.data.meta.message == 'Email not found') {
