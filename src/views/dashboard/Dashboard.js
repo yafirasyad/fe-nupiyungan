@@ -71,6 +71,7 @@ const Dashboard = () => {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
   
+  console.log(userState.user)
 
   useEffect(() => {
     getUserInfo()
@@ -84,6 +85,7 @@ const Dashboard = () => {
         name: res.data.data.name,
         email: res.data.data.email,
         role: res.data.data.role.id,
+        avatar: res.data.data.avatar,
       })
       GetNotes(res.data.data.id)
       .then(res => {
