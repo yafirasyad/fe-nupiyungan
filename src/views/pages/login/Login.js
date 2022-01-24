@@ -35,7 +35,6 @@ const Login = () => {
   const { state: userState, setUser } = useUser()
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(username, password, process.env.REACT_APP_DEV_API_URL)
     httpClient.post(
       '/users/login', 
       {
