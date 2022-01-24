@@ -74,8 +74,24 @@ const FormIndividu = () => {
   const [kartuNu, setKartuNu] = useState('')
   const [golonganDarah, setGolonganDarah] = useState('A')
   const foto = useRef()
+  const [fotoVal, setFotoVal] = useState('')
+  const [fotoErr, setFotoErr] = useState('')
   const { state: dataState, setEditMode } = useData();
  
+  useEffect(() => {
+    if (foto.current) {
+      if (foto.current.files.length !== 0) {
+          if (foto.current.files[0].size/1024 >= 2048) {
+            setFotoErr('Ukuran foto maksimal 2 MB')
+          }else{
+            setFotoErr("")
+          }
+      }else {
+        setFotoErr('Foto wajib diisi')
+      }
+    }
+  }, [foto, fotoVal])
+
   const [penyakit, setPenyakit] = useState({
     muntaber: 0,
     demam_berdarah: 0,
@@ -112,7 +128,7 @@ const FormIndividu = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // setIsLoading(true)
+    setIsLoading(true)
     let data = new FormData()
     data.append('desa_id', desa)
     data.append('dusun_id', dusun)
@@ -414,6 +430,7 @@ const FormIndividu = () => {
                     value={noKk}
                     onChange={(e) => setNoKk(e.target.value)}
                     required
+                    autoComplete='off'
                   />
                 </div>
                 <div className="mb-3">
@@ -426,14 +443,11 @@ const FormIndividu = () => {
                     value={nik}
                     onChange={(e) => setNik(e.target.value)}  
                     required
+                    autoComplete='off'
                   />
                   <ErrorMessage text="NIK sudah terdaftar" visible={errorNik}/>
                 </div>
                 <InputDesa selectedDesa={desa} setSelectedDesa={setDesa} selectedDusun={dusun} setSelectedDusun={setDusun}/>
-                {/* <div className="mb-3">
-                  <CFormLabel htmlFor="exampleFormControlTextarea1">Example textarea</CFormLabel>
-                  <CFormTextarea id="exampleFormControlTextarea1" rows="3"></CFormTextarea>
-                </div> */}
                 <div className="mb-3">
                   <CFormLabel htmlFor="nama">
                     <h6>Nama</h6>
@@ -444,17 +458,22 @@ const FormIndividu = () => {
                     value={nama}
                     onChange={(e) => setNama(e.target.value)}
                     required
+                    autoComplete='off'
                   />
                 </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="kartunu">
-                    <h6>Foto</h6>
+                    <h6>Foto  (jpg/jpeg/png Max.size 2Mb)</h6>
                   </CFormLabel>
                   <CFormInput 
                     type="file" 
                     ref={foto}
                     required={dataState.isEditMode ? false : true}
+                    onChange={() => foto.current.files[0] ? setFotoVal(foto.current.files[0]) : setFotoVal('')}
                   />
+                  <p style={{
+                    color: 'red',
+                  }}>{fotoErr}</p>
                 </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="JenisKelamin">
@@ -481,6 +500,7 @@ const FormIndividu = () => {
                     value={tempatLahir}
                     onChange={(e) => setTempatLahir(e.target.value)}  
                     required
+                    autoComplete='off'
                   />
                 </div>
                 <div className="mb-3">
@@ -507,6 +527,7 @@ const FormIndividu = () => {
                     value={kartuNu}
                     onChange={(e) => setKartuNu(e.target.value)}  
                     required
+                    autoComplete='off'
                   />
                 </div>
                 <div className="mb-3">
@@ -609,6 +630,8 @@ const FormIndividu = () => {
                     id="suku"
                     value={suku}
                     onChange={(e) => setSuku(e.target.value)}
+                    required
+                    autoComplete='off'
                     />
                 </div>
                 <div className="mb-3">
@@ -635,6 +658,7 @@ const FormIndividu = () => {
                     value={noHp}
                     onChange={(e) => setNoHp(e.target.value)}
                     required
+                    autoComplete='off'
                   />
                 </div>
                 <div className="mb-3">
@@ -647,6 +671,7 @@ const FormIndividu = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    autoComplete='off'
                   />
                 </div>
                 <div className="mb-3">
@@ -659,6 +684,7 @@ const FormIndividu = () => {
                     value={facebook}
                     onChange={(e) => setFacebook(e.target.value)}  
                     required
+                    autoComplete='off'
                   />
                 </div>
                 <div className="mb-3">
@@ -671,6 +697,7 @@ const FormIndividu = () => {
                     value={instagram}
                     onChange={(e) => setInstagram(e.target.value)} 
                     required
+                    autoComplete='off'
                   />
                 </div>
                 <div className="mb-3">
@@ -838,6 +865,7 @@ const FormIndividu = () => {
                         setPekerjaanUtama(e.target.value)
                       }} 
                       disabled={!otherModePekerjaan}
+                      autoComplete='off'
                     />
                     <br></br>
                   </div>
@@ -880,6 +908,7 @@ const FormIndividu = () => {
                       onChange={(e) => setPenghasilanSetahun(e.target.value)}
                       id="penghasilansetahun" 
                       required
+                      autoComplete='off'
                     />
                   </div>
                   <br></br>
@@ -1379,6 +1408,8 @@ const FormIndividu = () => {
                       id="bahasa" 
                       value={bahasaRumah}
                       onChange={(e) => setBahasaRumah(e.target.value)}
+                      required
+                      autoComplete='off'
                     />
                   </div>
                   <div className="mb-3">
@@ -1390,6 +1421,8 @@ const FormIndividu = () => {
                       id="bahasaformal" 
                       value={bahasaFormal}
                       onChange={(e) => setBahasaFormal(e.target.value)}
+                      required
+                      autoComplete='off'
                     />
                   </div>
                   <div className="mb-3">
@@ -1403,6 +1436,7 @@ const FormIndividu = () => {
                       value={kerjaBakti}
                       onChange={(e) => setKerjaBakti(e.target.value)} 
                       required
+                      autoComplete='off'
                     />
                   </div>
                   <div className="mb-3">
@@ -1416,6 +1450,7 @@ const FormIndividu = () => {
                       value={siskamling}
                       onChange={(e) => setSiskamling(e.target.value)}
                       required
+                      autoComplete='off'
                     />
                   </div>
                   <div className="mb-3">
@@ -1429,6 +1464,7 @@ const FormIndividu = () => {
                       value={pestaRakyat}
                       onChange={(e) => setPestaRakyat(e.target.value)}
                       required
+                      autoComplete='off'
                     />
                   </div>
                   <div className="col-auto">
