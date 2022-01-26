@@ -23,7 +23,7 @@ import {
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import avatar8 from './../../assets/images/avatars/profile.png'
 import { Link } from 'react-router-dom'
 import { useUser } from 'src/context/UserContext'
 
@@ -33,7 +33,7 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <img src={userState.user.avatar !== "" ? `${process.env.REACT_APP_DEV_API_URL}/public/user/${userState.user.avatar}` : avatar8} height={40} width={40} style={{
+        <img src={userState.user.avatar ? `${process.env.REACT_APP_DEV_API_URL}/public/user/${userState.user.avatar}` : avatar8} height={40} width={40} style={{
           borderRadius: "50%",
         }} />
       </CDropdownToggle>

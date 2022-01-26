@@ -10,7 +10,7 @@ const ModalAddEditUser = ({visible, setVisible, mode}) => {
     const [role, setRole] = useState(1)
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const { state: dataState, setRoles, selectUser, setEditUserMode } = useData();
+    const { state: dataState, setRoles, selectUser, setEditUserMode, setUsers } = useData();
 
     useEffect(() => {
        if (dataState.isEditUserMode) {
@@ -59,11 +59,13 @@ const ModalAddEditUser = ({visible, setVisible, mode}) => {
         }else {
             SaveUser(user)
             .then(res => {
-                console.log(res.data)
                 setIsLoading(false)
                 cleanState();
                 setVisible(false);
-                GetUsers();
+                GetUsers()
+                    .then(res => {
+                        setUsers(res.data.data)
+                    });
             }).catch(err => {
                 setIsLoading(false)
                 console.log(err.response)

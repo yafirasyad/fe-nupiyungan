@@ -19,7 +19,9 @@ export const Action = {
     Fetch: 'Fetch',
     Remove: 'Remove',
     RemoveUser: 'RemoveUser',
+    AddUser: 'AddUser',
     AddNote: 'AddNote',
+    RemoveRole: 'RemoveRole',
     Clean: 'Clean',
 }
 
@@ -36,6 +38,11 @@ export const DataReducer = (state, action) => {
                 individu: action.payload.individu,
                 kk: action.payload.kk
             }
+        case Action.AddUser:
+            return {
+                ...state,
+                users: [...state.users, action.payload.user]
+            }
         case Action.RemoveUser:
             return {
                 ...state,
@@ -45,6 +52,11 @@ export const DataReducer = (state, action) => {
             return {
                 ...state,
                 notes: [...state.notes, action.payload.note]
+            }
+        case Action.RemoveRole:
+            return {
+                ...state,
+                roles: state.roles.filter(role => role.id !== action.payload.id)
             }
         case Action.RemoveNote:
             return {
@@ -86,9 +98,27 @@ const setRoles = (dispatch) => {
     }
 }
 
+const selectRole = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.Set, payload: { key: 'selectedRole', data } })
+    }
+}
+
+const removeRole = (dispatch) => {
+    return (id) => {
+        dispatch({ type: Action.RemoveRole, payload: { id: id } })
+    }
+}
+
 const removeUser = (dispatch) => {
     return (id) => {
         dispatch({ type: Action.RemoveUser, payload: { id: id } })
+    }
+}
+
+const addUser = (dispatch) => {
+    return (data) => {
+        dispatch({ type: Action.AddUser, payload: { user: data } })
     }
 }
 
@@ -150,6 +180,7 @@ const addNote = (dispatch) => {
         dispatch({ type: Action.AddNote, payload: { note: data } })
     }
 }
+
 const removeNote = (dispatch) => {
     return (id) => {
         dispatch({ type: Action.RemoveNote, payload: { id: id } })
@@ -171,11 +202,14 @@ export const DataProvider = ({ children, initialState, reducer }) => {
         removeUser: removeUser(dispatch),
         setEditUserMode: setEditUserMode(dispatch),
         setRoles: setRoles(dispatch),
+        selectRole: selectRole(dispatch),
         setNotes: setNotes(dispatch),
         cleanState: cleanState(dispatch),
         setAddNoteMode: setAddNoteMode(dispatch),
         removeNote: removeNote(dispatch),
         addNote: addNote(dispatch),
+        addUser: addUser(dispatch),
+        removeRole: removeRole(dispatch),
     }
     return <context.Provider value={value}>{children}</context.Provider>
 }
