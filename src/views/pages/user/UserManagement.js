@@ -47,7 +47,7 @@ const UserManagement = () => {
                 setIsLoading(false)
             })
     }, [])
-
+    
     const renderTable = (item, index) => {
         return (
             <>
@@ -135,7 +135,7 @@ const UserManagement = () => {
             </CCol>
         </CRow>
         <CRow>
-        <h2>Data Individu</h2>
+        <h2>Data User</h2>
         <CRow>
         <CButton 
             color="primary"

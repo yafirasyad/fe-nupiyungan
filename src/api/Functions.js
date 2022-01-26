@@ -118,6 +118,15 @@ export const GetRoles = async () => {
     })
 }
 
+export const UpdateRole = async (id, data) => {
+    return await httpClient.put(`/roles/${id}`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+    })
+}
+
 export const GetAccess = async () => {
     return await httpClient.get(`/access`, {
         headers: {

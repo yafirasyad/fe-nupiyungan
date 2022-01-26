@@ -420,6 +420,9 @@ const FormIndividu = () => {
               <CForm onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <h3>Data Individu</h3>
+                  <p style={{
+                    fontSize: '20px',
+                  }}>Pastikan semua data terisi</p>
                   <br></br>
                   <CFormLabel htmlFor="nomorkkdataindividu">
                     <h6>Nomor Kartu Keluarga (16 Digit)</h6>

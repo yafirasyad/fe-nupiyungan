@@ -30,11 +30,12 @@ import ModalAddEditRole from 'src/components/custom/ModalAddEditRole'
 const RoleManagement = () => {
     const [query, setQuery] = useState('')
     const [addEditMode, setAddEditMode] = useState(false)
+    const [mode, setMode] = useState('add')
     const [selectedData, setSelectedData] = useState({})
     const [deleteMode, setDeleteMode] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [unauthorized, setUnauthorized] = useState(false)
-    const { state: dataState, setRoles, selectUser, setEditUserMode } = useData();
+    const { state: dataState, setRoles, selectRole, setEditUserMode, removeRole } = useData();
     
     useEffect(() => {
         GetRoles()
@@ -64,7 +65,8 @@ const RoleManagement = () => {
                     marginLeft: '2px', 
                   }}
                   onClick={() => {
-                    selectUser(item)
+                    selectRole(item)
+                    setMode('edit')
                     setAddEditMode(true)
                     setEditUserMode(true)
                   }}
@@ -97,6 +99,7 @@ const RoleManagement = () => {
         .then(res => {
           console.log(res.data)
           setDeleteMode(false)
+          removeRole(selectedData.id)
         }).catch(err => {
           console.log(err.response)
         })
@@ -106,7 +109,7 @@ const RoleManagement = () => {
         <>
         {/* <ModalAddEditUser visible={addEditMode} setVisible={setAddEditMode} /> */}
         <ModalDelete visible={deleteMode} item={selectedData.id} setVisible={setDeleteMode} deleteFunc={deleteFunc} />
-        <ModalAddEditRole visible={addEditMode} setVisible={setAddEditMode} />
+        <ModalAddEditRole visible={addEditMode} setVisible={setAddEditMode} mode={mode} />
         <CRow>
             <CCol xs>
             <CCard className="mb-4">
@@ -137,7 +140,10 @@ const RoleManagement = () => {
                 width: '100px',
                 marginBottom: '10px',
             }}
-            onClick={() => setAddEditMode(true)}
+            onClick={() => {
+              setAddEditMode(true)
+              setMode('add')
+            }}
         >
             Add Role
         </CButton>
