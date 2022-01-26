@@ -13,7 +13,7 @@ const Select = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const [desa, setDesa] = useState(1)
-  const [dusun, setDusun] = useState()
+  const [dusun, setDusun] = useState(1)
   const [noKk, setNoKk] = useState('')
   const [namaKepala, setNamaKepala] = useState('')
   const [tempatTinggal, setTempatTinggal] = useState('')
