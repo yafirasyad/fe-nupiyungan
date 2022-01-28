@@ -46,7 +46,9 @@ const FormEditKk = () => {
     const [aksesLahan, setAksesLahan] = useState('Mudah')
     const [aksesSekolah, setAksesSekolah] = useState('Mudah')
     const [aksesKesehatan, setAksesKesehatan] = useState('Mudah')
-  
+    const [kotakNu, setKotakNu] = useState(0)
+    const [noKotak, setNoKotak] = useState('')
+
     // Akses Pendidikan
     const [paud, setPaud] = useState({
       fasilitas: 'PAUD',
@@ -259,7 +261,7 @@ const FormEditKk = () => {
   
     const handleSubmit = (e) => {
       e.preventDefault()
-      // setIsLoading(true)
+      setIsLoading(true)
       const akses_fasilitas_kesehatan = [
         rs,
         rsb,
@@ -294,6 +296,8 @@ const FormEditKk = () => {
         luas_rumah: luasRumah,
         jenis_lantai: lantai,
         dinding: dinding,
+        kotak_nu: kotakNu,
+        no_kotak: kotakNu == 1 ? noKotak : '',
         atap: atap,
         jendela: jendela,
         mck: mck,
@@ -320,31 +324,14 @@ const FormEditKk = () => {
         kondisi_rumah: kondisiRumah,
         bantuan_pendidikan: bantuanPendidikan,
       }
-
-      console.log(family)
       UpdateDataKk(dataState.selectedDataKk.id, family)
         .then(res => {
             console.log('aman')
+            setIsLoading(false)
         }).catch(err => {
             console.log(err.response)
+            setIsLoading(false)
         })
-    //   httpClient.post('/families',
-    //     family,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //       }
-    //     }
-    //    ).then(res => {
-    //     setIsLoading(false)
-    //     setModalMessage('Data berhasil ditambahkan')
-    //     setIsModalVisible(true)
-    //    }).catch(err => {
-    //     setIsLoading(false)
-    //     setModalMessage('Data gagal ditambahkan')
-    //     setIsModalVisible(true)
-    //    })
     }
   
     const cleanState = () => {
@@ -377,6 +364,8 @@ const FormEditKk = () => {
       setAksesLahan('Mudah')
       setAksesSekolah('Mudah')
       setAksesKesehatan('Mudah')
+      setKotakNu(false)
+      setNoKotak('')
   
       // Akses Pendidikan
       setPaud({
@@ -546,6 +535,8 @@ const FormEditKk = () => {
         setAksesKesehatan(dataState.selectedDataKk.akses_kesehatan)
         setAksesLahan(dataState.selectedDataKk.akses_lahan)
         setAksesSekolah(dataState.selectedDataKk.akses_sekolah)
+        setKotakNu(dataState.selectedDataKk.kotak_nu)
+        setNoKotak(dataState.selectedDataKk.no_kotak)
 
         setRs({
             fasilitas: 'Rumah Sakit',
@@ -718,6 +709,36 @@ const FormEditKk = () => {
                     />
                   </div>
                   <InputDesa selectedDesa={desa} setSelectedDesa={setDesa} selectedDusun={dusun} setSelectedDusun={setDusun}/>
+                  <div className="mb-3">
+                  <CFormLabel htmlFor="kotaknu">
+                    Sudah memiliki kotak NU &nbsp;
+                  </CFormLabel>
+                  <select 
+                    id="kotaknu" 
+                    name="kotaknu"
+                    value={kotakNu}
+                    onChange={(e) => {
+                      setKotakNu(e.target.value)
+                    }}
+                  >
+                    <option value={1}>Ya</option>
+                    <option value={0}>Tidak</option>
+                  </select>
+                  <br></br>
+                </div>
+                <div className="mb-3">
+                  <CFormLabel htmlFor="nokotak">
+                    <h6>No registrasi kotak NU</h6>
+                  </CFormLabel>
+                  <CFormInput 
+                    type="text" 
+                    id="nokotak"
+                    value={noKotak}
+                    onChange={(e) => setNoKotak(e.target.value)} 
+                    required={kotakNu === 1 ? true : false}
+                    disabled={kotakNu == 1 ? false : true}
+                  />
+                </div>
                   <div className="mb-3">
                     <CFormLabel htmlFor="pekerjaanutama">
                       <h6>Tempat Tinggal yang ditempati: &nbsp;</h6>

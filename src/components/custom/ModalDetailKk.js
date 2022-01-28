@@ -65,6 +65,38 @@ const ModalDetailKk = ({item, visible, setVisible}) => {
                 </CRow>
                 <CRow>
                     <CCol>
+                        <h6>Desa: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.desa?.nama_desa}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>Dusun: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.dusun?.nama_dusun}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>Memiliki kotak NU: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.kotak_nu ? 'Ya' : 'Tidak'}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>No registrasi kotak NU: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.no_kotak}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
                         <h6>Tempat tinggal: </h6>
                     </CCol>
                     <CCol>
