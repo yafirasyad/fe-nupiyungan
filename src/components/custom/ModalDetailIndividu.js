@@ -269,7 +269,7 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                 </CRow>
                 <CRow>
                     <CCol>
-                        <h6>Nik: </h6>
+                        <h6>NIK: </h6>
                     </CCol>
                     <CCol>
                         <p>{item.nik}</p>
@@ -293,10 +293,42 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                 </CRow>
                 <CRow>
                     <CCol>
+                        <h6>Pengurus NU: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.pengurus_nu}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>Banom: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.banom}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>Kaderisasi: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.kaderisasi}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
                         <h6>Nama: </h6>
                     </CCol>
                     <CCol>
                         <p>{item.nama}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>Thariqah Mutabarah: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.thariqah_mut}</p>
                     </CCol>
                 </CRow>
                 <CRow>
@@ -353,6 +385,14 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                     </CCol>
                     <CCol>
                         <p>{item.status}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
+                        <h6>Ibu Kandung: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.ibu_kandung}</p>
                     </CCol>
                 </CRow>
                 <CRow>
