@@ -50,6 +50,7 @@ const FormIndividu = () => {
   const [noKk, setNoKk] = useState('')
   const [nama, setNama] = useState('')
   const [jenisKelamin, setJenisKelamin] = useState('Laki')
+  const [thariqahMut, setThariqahMut] = useState('Ya')
   const [tempatLahir, setTempatLahir] = useState('')
   const [tanggalLahir, setTanggalLahir] = useState(new Date())
   const [status, setStatus] = useState('Kawin')
@@ -68,6 +69,10 @@ const FormIndividu = () => {
   const [siskamling, setSiskamling] = useState(0)
   const [pestaRakyat, setPestaRakyat] = useState(0)
   const [bahasaRumah, setBahasaRumah] = useState('')
+  const [ibuKandung, setIbuKandung] = useState('')
+  const [pengurusNu, setPengurusNu] = useState('')
+  const [banom, setBanom] = useState('Muslimat')
+  const [kaderisasi, setKaderisasi] = useState('PPWK')
   const [bahasaFormal, setBahasaFormal] = useState('')
   const [jamsostek, setJamsostek] = useState(0)
   const [jamsoskes, setJamsoskes] = useState(0)
@@ -136,6 +141,7 @@ const FormIndividu = () => {
     data.append('no_kk', noKk)
     data.append('nama', nama)
     data.append('jenis_kelamin', jenisKelamin)
+    data.append('thariqah_mut', thariqahMut)
     data.append('tempat_lahir', tempatLahir)
     data.append('tanggal_lahir', tanggalLahir)
     data.append('status', status)
@@ -145,6 +151,9 @@ const FormIndividu = () => {
     data.append('no_hp', noHp)
     data.append('email', email)
     data.append('kartu_nu', kartuNu)
+    data.append('pengurus_nu', pengurusNu)
+    data.append('kaderisasi', kaderisasi)
+    data.append('banom', banom)
     data.append('golongan_darah', golonganDarah)
     data.append('facebook', facebook)
     data.append('instagram', instagram)
@@ -156,6 +165,7 @@ const FormIndividu = () => {
     data.append('siskamling', siskamling)
     data.append('pesta_rakyat', pestaRakyat)
     data.append('bahasa_rumah', bahasaRumah)
+    data.append('ibu_kandung', ibuKandung)
     data.append('bahasa_formal', bahasaFormal)
     data.append('jaminan_sosial_ketenagakerjaan', jamsostek)
     data.append('jaminan_sosial_kesehatan', jamsoskes)
@@ -282,6 +292,7 @@ const FormIndividu = () => {
     setNoKk('')
     setNama('')
     setJenisKelamin('Laki')
+    setThariqahMut('Ya')
     setTempatLahir('')
     setTanggalLahir(new Date())
     setStatus('Kawin')
@@ -300,11 +311,15 @@ const FormIndividu = () => {
     setSiskamling(0)
     setPestaRakyat(0)
     setBahasaRumah('')
+    setIbuKandung('')
     setBahasaFormal('')
     setJamsostek(0)
     setJamsoskes(0)
     setGolonganDarah('')
     setKartuNu('')
+    setPengurusNu('PB')
+    setBanom('Muslimat')
+    setKaderisasi('PPWK')
 
     // Penyakit
     setPenyakit({
@@ -351,7 +366,11 @@ const FormIndividu = () => {
       setNoKk(dataState.selectedDataIndividu.no_kk)
       setNama(dataState.selectedDataIndividu.nama)
       setJenisKelamin(dataState.selectedDataIndividu.jenis_kelamin)
+      setThariqahMut(dataState.selectedThariqahMut.thariqah_mut)
       setKartuNu(dataState.selectedDataIndividu.kartu_nu)
+      setPengurusNu(dataState.selectedDataIndividu.pengurus_nu)
+      setKaderisasi(dataState.selectedDataIndividu.kaderisasi)
+      setBanom(dataState.selectedDataIndividu.banom)
       setGolonganDarah(dataState.selectedDataIndividu.golongan_darah)
       setTempatLahir(dataState.selectedDataIndividu.tempat_lahir)
       setTanggalLahir(new Date(dataState.selectedDataIndividu.tanggal_lahir))
@@ -371,6 +390,7 @@ const FormIndividu = () => {
       setSiskamling(dataState.selectedDataIndividu.siskamling)
       setPestaRakyat(dataState.selectedDataIndividu.pesta_rakyat)
       setBahasaRumah(dataState.selectedDataIndividu.bahasa_rumah)
+      setIbuKandung(dataState.selectedIbuKandung.ibu_kandung)
       setBahasaFormal(dataState.selectedDataIndividu.bahasa_formal)
       setJamsostek(dataState.selectedDataIndividu.jaminan_sosial_ketenagakerjaan)
       setJamsoskes(dataState.selectedDataIndividu.jaminan_sosial_kesehatan)
@@ -464,6 +484,21 @@ const FormIndividu = () => {
                     autoComplete='off'
                   />
                 </div>
+                 <div className="mb-3">
+                  <CFormLabel htmlFor="thariqahmut">
+                    <h6>Thariqah Mu'tabarah &nbsp;</h6>
+                  </CFormLabel>
+                  <select 
+                    id="ThariqahMut" 
+                    name="ThariqahMut" 
+                    value={thariqahMut}
+                    onChange={(e) => setThariqahMut(e.target.value)}
+                    required
+                  >
+                    <option value="Ya">Ya</option>
+                    <option value="Tidak">Tidak</option>
+                  </select>
+                </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="kartunu">
                     <h6>Foto  (jpg/jpeg/png Max.size 2Mb)</h6>
@@ -521,6 +556,19 @@ const FormIndividu = () => {
                   />
                 </div>
                 <div className="mb-3">
+                    <CFormLabel htmlFor="ibukandung">
+                      <h6>Nama Ibu Kandung</h6>
+                    </CFormLabel>
+                    <CFormInput 
+                      type="text" 
+                      id="ibukandung" 
+                      value={ibuKandung}
+                      onChange={(e) => setIbuKandung(e.target.value)}
+                      required
+                      autoComplete='off'
+                    />
+                  </div>
+                <div className="mb-3">
                   <CFormLabel htmlFor="kartunu">
                     <h6>No Kartu NU</h6>
                   </CFormLabel>
@@ -532,6 +580,65 @@ const FormIndividu = () => {
                     required
                     autoComplete='off'
                   />
+                </div>
+                  <div className="mb-3">
+                  <CFormLabel htmlFor="pengurusNu">
+                    <h6>Pengurus NU &nbsp;</h6>
+                  </CFormLabel>
+                  <select 
+                    id="pengurusNu" 
+                    name="pengurusNu"
+                    value={pengurusNu}
+                    onChange={(e) => setPengurusNu(e.target.value)}
+                  >
+                    <option value="PB">PB</option>
+                    <option value="PW">PW</option>
+                    <option value="PC">PC</option>
+                    <option value="MWC">MWC</option>
+                    <option value="PR">PR</option>
+                    <option value="PAR">PAR</option>
+                    <option value="Tidak">Tidak</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <CFormLabel htmlFor="kaderisasi">
+                    <h6>Kaderisasi &nbsp;</h6>
+                  </CFormLabel>
+                  <select 
+                    id="kaderisasi" 
+                    name="kaderisasi"
+                    value={kaderisasi}
+                    onChange={(e) => setKaderisasi(e.target.value)}
+                  >
+                    <option value="PPWK">PPWK</option>
+                    <option value="MKNU">MKNU</option>
+                    <option value="PKPNUBanom">PKPNUBanom</option>
+                    <option value="Tidak">Tidak</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <CFormLabel htmlFor="banom">
+                    <h6>Banom &nbsp;</h6>
+                  </CFormLabel>
+                  <select 
+                    id="banom" 
+                    name="banom"
+                    value={banom}
+                    onChange={(e) => setBanom(e.target.value)}
+                  >
+                    <option value="Muslimat">Muslimat</option>
+                    <option value="IPNU">IPNU</option>
+                    <option value="IPPNU">IPPNU</option>
+                    <option value="Pergunu">Pergunu</option>
+                    <option value="JATMAN">JATMAN</option>
+                    <option value="GP ANSOR">GP ANSOR</option>
+                    <option value="ISNU">ISNU</option>
+                    <option value="SNNU">SNNU</option>
+                    <option value="Fatayat">Fatayat</option>
+                    <option value="JQH NU">JQH NU</option>
+                    <option value="Pagarnusa">Pagarnusa</option>
+                    <option value="Tidak">Tidak</option>
+                  </select>
                 </div>
                 <div className="mb-3">
                   <CFormLabel htmlFor="golongandarah">

@@ -102,7 +102,6 @@ const DataKK = () => {
       <>
       <CTableRow>
         <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
-        <CTableDataCell>{item.no_kk}</CTableDataCell>
         <CTableDataCell>{item.nama_kepala}</CTableDataCell>
         <CTableDataCell>{item.tempat_tinggal}</CTableDataCell>
         <CTableDataCell>{item.desa.nama_desa}</CTableDataCell>
@@ -683,8 +682,7 @@ const DataKK = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell scope="col">#</CTableHeaderCell>
-              <CTableHeaderCell scope="col">No KK</CTableHeaderCell>
+              <CTableHeaderCell scope="col">No</CTableHeaderCell>
               <CTableHeaderCell scope="col">Nama Kepala Keluarga</CTableHeaderCell>
               <CTableHeaderCell scope="col">Tempat Tinggal</CTableHeaderCell>
               <CTableHeaderCell scope="col">Desa</CTableHeaderCell>

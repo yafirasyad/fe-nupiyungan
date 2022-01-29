@@ -122,7 +122,6 @@ const DataIndividu = () => {
         <>
         <CTableRow>
           <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
-          <CTableDataCell>{item.nik}</CTableDataCell>
           <CTableDataCell>{item.nama}</CTableDataCell>
           <CTableDataCell>{item.jenis_kelamin}</CTableDataCell>
           <CTableDataCell>{item.no_hp}</CTableDataCell>
@@ -225,6 +224,7 @@ const DataIndividu = () => {
             <ExcelColumn label="Nik" value="nik" />
             <ExcelColumn label="Nama" value="nama" />
             <ExcelColumn label="Jenis Kelamin" value="jenis_kelamin" />
+            <ExcelColumn label="Thariqah Mutabarah" value="thariqah_mut" />
             <ExcelColumn label="Tempat Lahir" value="tempat_lahir" />
             <ExcelColumn label="Desa" value={(col) => col.desa.nama_desa} />
             <ExcelColumn label="Dusun" value={(col) => col.dusun.nama_dusun} />
@@ -244,6 +244,11 @@ const DataIndividu = () => {
             <ExcelColumn label="Penghasilan Setahun" value="penghasilan_setahun" />
             <ExcelColumn label="Pendidikan" value="pendidikan" />
             <ExcelColumn label="Bahasa Rumah" value="bahasa_rumah" />
+            <ExcelColumn label="Nama Ibu Kandung" value="ibu_kandung" />
+            <ExcelColumn label="Nomor Kartu NU" value="kartu_nu" />
+            <ExcelColumn label="Pengurus NU" value="pengurus_nu" />
+            <ExcelColumn label="Kaderisasi" value="kaderisasi" />
+            <ExcelColumn label="Banom" value="banom" />
             <ExcelColumn label="Bahasa Formal" value="bahasa_formal" />
             <ExcelColumn label="Kerja Bakti" value="kerja_bakti" />
             <ExcelColumn label="Siskamling" value="siskamling" />
@@ -327,8 +332,8 @@ const DataIndividu = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell scope="col">#</CTableHeaderCell>
-              <CTableHeaderCell scope="col">NIK</CTableHeaderCell>
+              <CTableHeaderCell scope="col">No</CTableHeaderCell>
+              {/* <CTableHeaderCell scope="col">NIK</CTableHeaderCell> */}
               <CTableHeaderCell scope="col">Nama</CTableHeaderCell>
               <CTableHeaderCell scope="col">Jenis Kelamin</CTableHeaderCell>
               <CTableHeaderCell scope="col">No HP</CTableHeaderCell>
