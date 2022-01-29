@@ -70,7 +70,7 @@ const FormIndividu = () => {
   const [pestaRakyat, setPestaRakyat] = useState(0)
   const [bahasaRumah, setBahasaRumah] = useState('')
   const [ibuKandung, setIbuKandung] = useState('')
-  const [pengurusNu, setPengurusNu] = useState('')
+  const [pengurusNu, setPengurusNu] = useState('PB')
   const [banom, setBanom] = useState('Muslimat')
   const [kaderisasi, setKaderisasi] = useState('PPWK')
   const [bahasaFormal, setBahasaFormal] = useState('')
