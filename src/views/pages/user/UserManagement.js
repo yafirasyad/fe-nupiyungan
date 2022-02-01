@@ -25,6 +25,9 @@ import ModalAddEditUser from 'src/components/custom/ModalAddEditUser'
 import ModalDelete from 'src/components/custom/ModalDelete'
 import { useData } from 'src/context/DataContext'
 import Spinner from 'src/components/custom/Spinner'
+import { isTokenExpired } from 'src/util/Api'
+import { Redirect } from 'react-router-dom/cjs/react-router-dom.min'
+import { useUser } from 'src/context/UserContext'
 
 const UserManagement = () => {
     const [query, setQuery] = useState('')
@@ -33,14 +36,16 @@ const UserManagement = () => {
     const [deleteMode, setDeleteMode] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [unauthorized, setUnauthorized] = useState(false)
+    const { logoutUser } = useUser();
     const { state: dataState, setUsers, removeUser, selectUser, setEditUserMode } = useData();
-    
+
     useEffect(() => {
         GetUsers()
             .then(res => {
                 setUsers(res.data.data)
                 setIsLoading(false)
             }).catch(err => {
+                isTokenExpired(err.response.data.errors, logoutUser)
                 if (err.response.status === 401) {
                     setUnauthorized(true)
                 }

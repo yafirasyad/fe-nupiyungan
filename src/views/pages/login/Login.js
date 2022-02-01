@@ -74,8 +74,7 @@ const Login = () => {
     console.log(isLogin())
     return <Redirect to='/dashboard' />
   }
-  console.log('----------------------------------------------------')
-  console.log(process.env.REACT_APP_DEV_API_URL)
+  
   return (
     <div className="min-vh-100 d-flex flex-row align-items-center">
       <img
