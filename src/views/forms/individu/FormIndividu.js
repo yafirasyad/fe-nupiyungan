@@ -70,7 +70,7 @@ const FormIndividu = () => {
   const [pestaRakyat, setPestaRakyat] = useState(0)
   const [bahasaRumah, setBahasaRumah] = useState('')
   const [ibuKandung, setIbuKandung] = useState('')
-  const [pengurusNu, setPengurusNu] = useState('')
+  const [pengurusNu, setPengurusNu] = useState('PB')
   const [banom, setBanom] = useState('Muslimat')
   const [kaderisasi, setKaderisasi] = useState('PPWK')
   const [bahasaFormal, setBahasaFormal] = useState('')
@@ -91,7 +91,7 @@ const FormIndividu = () => {
           }else{
             setFotoErr("")
           }
-      }else {
+      }else if(!dataState.isEditMode){
         setFotoErr('Foto wajib diisi')
       }
     }
@@ -366,7 +366,7 @@ const FormIndividu = () => {
       setNoKk(dataState.selectedDataIndividu.no_kk)
       setNama(dataState.selectedDataIndividu.nama)
       setJenisKelamin(dataState.selectedDataIndividu.jenis_kelamin)
-      setThariqahMut(dataState.selectedThariqahMut.thariqah_mut)
+      setThariqahMut(dataState.selectedDataIndividu.thariqah_mut)
       setKartuNu(dataState.selectedDataIndividu.kartu_nu)
       setPengurusNu(dataState.selectedDataIndividu.pengurus_nu)
       setKaderisasi(dataState.selectedDataIndividu.kaderisasi)
@@ -390,7 +390,7 @@ const FormIndividu = () => {
       setSiskamling(dataState.selectedDataIndividu.siskamling)
       setPestaRakyat(dataState.selectedDataIndividu.pesta_rakyat)
       setBahasaRumah(dataState.selectedDataIndividu.bahasa_rumah)
-      setIbuKandung(dataState.selectedIbuKandung.ibu_kandung)
+      setIbuKandung(dataState.selectedDataIndividu.ibu_kandung)
       setBahasaFormal(dataState.selectedDataIndividu.bahasa_formal)
       setJamsostek(dataState.selectedDataIndividu.jaminan_sosial_ketenagakerjaan)
       setJamsoskes(dataState.selectedDataIndividu.jaminan_sosial_kesehatan)
