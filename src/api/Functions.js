@@ -1,5 +1,5 @@
 import { httpClient } from "src/util/Api"
-
+import { useUser } from "src/context/UserContext"
 
 export const DeleteDataIndividu = async (id) => {
     return await httpClient.delete(`/persons/${id}`, {

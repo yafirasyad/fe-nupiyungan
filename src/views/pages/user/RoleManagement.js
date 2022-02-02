@@ -26,6 +26,8 @@ import ModalDelete from 'src/components/custom/ModalDelete'
 import { useData } from 'src/context/DataContext'
 import Spinner from 'src/components/custom/Spinner'
 import ModalAddEditRole from 'src/components/custom/ModalAddEditRole'
+import { isTokenExpired } from 'src/util/Api'
+import { useUser } from 'src/context/UserContext'
 
 const RoleManagement = () => {
     const [query, setQuery] = useState('')
@@ -36,6 +38,7 @@ const RoleManagement = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [unauthorized, setUnauthorized] = useState(false)
     const { state: dataState, setRoles, selectRole, setEditUserMode, removeRole } = useData();
+    const { logoutUser } = useUser();
     
     useEffect(() => {
         GetRoles()
@@ -43,6 +46,7 @@ const RoleManagement = () => {
             setRoles(res.data.data)
             setIsLoading(false)
           }).catch(err => {
+            isTokenExpired(err.response.data.errors, logoutUser)
             if (err.response.status === 401) {
               setUnauthorized(true)
             }

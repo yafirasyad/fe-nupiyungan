@@ -16,6 +16,7 @@ export const defaultState = {
 export const Action = {
     Set: 'Set',
     Remove: 'Remove',
+    Logout: 'Logout',
 }
 
 export const UserReducer = (state, action) => {
@@ -26,6 +27,11 @@ export const UserReducer = (state, action) => {
                 user: action.payload.user
             }
         case Action.Remove:
+            return {
+                ...state,
+                user: defaultState.user
+            }
+        case Action.Logout:
             return {
                 ...state,
                 user: defaultState.user
@@ -43,6 +49,13 @@ const setUser = (dispatch) => {
     }
 }
 
+const logoutUser = (dispatch) => {
+    return () => {
+        localStorage.removeItem('token')
+        dispatch({ type: Action.Logout })
+    }
+}
+
 export const useUser = () => useContext(context)
 
 export const UserProvider = ({children, initialState, reducer}) => {
@@ -50,6 +63,7 @@ export const UserProvider = ({children, initialState, reducer}) => {
     const value = {
         state,
         setUser: setUser(dispatch),
+        logoutUser: logoutUser(dispatch),
     }
     return <context.Provider value={value}>{children}</context.Provider>
 }

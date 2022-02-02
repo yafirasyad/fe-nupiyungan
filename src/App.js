@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useUser } from './context/UserContext'
 import './scss/style.scss'
 import "react-datepicker/dist/react-datepicker.css";
 import Logout from './views/pages/logout/Logout'
+
+
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -36,7 +38,8 @@ const App = () => {
             <Route exact path="/logout" name="Logout Page" render={() => <Logout />}/>
             <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
             <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
-            <Route path="/" name="Home" render={(props) => <DefaultLayout {...props} />} />
+            <Route path="/" name="Home" render={(props) => 
+            localStorage.getItem('token') ? <DefaultLayout {...props} /> : <Redirect to="/logout" />} />
           </Switch>
         </React.Suspense>
       </HashRouter>

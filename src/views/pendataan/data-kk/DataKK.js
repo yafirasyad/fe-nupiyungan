@@ -45,7 +45,7 @@ import {
   cilUser,
   cilUserFemale,
 } from '@coreui/icons'
-import { httpClient } from 'src/util/Api'
+import { httpClient, isTokenExpired } from 'src/util/Api'
 import Spinner from 'src/components/custom/Spinner'
 import ModalDetailKk from 'src/components/custom/ModalDetailKk'
 import ModalDelete from 'src/components/custom/ModalDelete'
@@ -57,6 +57,7 @@ import { Link } from 'react-router-dom'
 import ReactExport from "react-export-excel";
 import moment from 'moment'
 import { Desa } from 'src/util/Type'
+import { useUser } from 'src/context/UserContext'
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -74,7 +75,7 @@ const DataKK = () => {
   const itemsPerPage = 2
   const [page, setPage] = useState(1)
   const {state: dataState, setDataKk, setEditMode, selectDataIndividu, selectDataKk} = useData()
-  
+  const { logoutUser } = useUser()
   
   const getData = () => {
     httpClient.get('/families', {
@@ -86,6 +87,7 @@ const DataKK = () => {
       setDataKk(res.data.data)
       setIsLoading(false)
     }).catch(err => { 
+      isTokenExpired(err.response.data.errors, logoutUser)
       if(err.response.status === 401) {
         setUnauthorized(true)
       }

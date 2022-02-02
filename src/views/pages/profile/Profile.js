@@ -4,6 +4,7 @@ import { GetUsersInfo, UpdateUserEmailName } from 'src/api/Functions'
 import ModalChangePassword from 'src/components/custom/ModalChangePassword'
 import ModalUploadAvatar from 'src/components/custom/ModalUploadAvatar'
 import { useUser } from 'src/context/UserContext'
+import { isTokenExpired } from 'src/util/Api'
 import avatarImg from './../../../assets/images/avatars/profile.png'
 
 const Profile = () => {
@@ -14,7 +15,7 @@ const Profile = () => {
     const [changePassMode, setChangePassMode] = useState(false)
     const [uploadAvatarMode, setUploadAvatarMode] = useState(false)
     const {state: userState, setUser } = useUser()
-    
+    const { logoutUser } = useUser()
     useEffect(() => {
         GetUsersInfo()
             .then(res => {
@@ -30,6 +31,7 @@ const Profile = () => {
                 setName(res.data.data.name)
                 setEmail(res.data.data.email)
             }).catch(err => {
+                isTokenExpired(err.response.data.errors, logoutUser)
                 console.log(err.response.data)
             })
     }, [])

@@ -52,7 +52,7 @@ import avatar3 from 'src/assets/images/avatars/3.jpg'
 import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
-import { httpClient } from 'src/util/Api'
+import { httpClient, isTokenExpired } from 'src/util/Api'
 import ModalDetailIndividu from 'src/components/custom/ModalDetailIndividu'
 import ModalDelete from 'src/components/custom/ModalDelete'
 import Spinner from 'src/components/custom/Spinner'
@@ -89,6 +89,7 @@ const DataIndividu = () => {
   const [query, setQuery] = useState('')
   const itemsPerPage = 15
   const [page, setPage] = useState(1)
+  const { logoutUser } = useUser()
   const {state: dataState, setDataIndividu, setEditMode, selectDataIndividu} = useData()
 
   useEffect(() => {
@@ -107,9 +108,8 @@ const DataIndividu = () => {
       setDataIndividu(res.data.data)
       setIsLoading(false)
     }).catch(err => {
-      console.log(err.response)
+      isTokenExpired(err.response.data.errors, logoutUser)
       if (err.response.status === 401) {
-        console.log('unauthorized')
         setUnauthorized(true);
       }
       setIsLoading(false)

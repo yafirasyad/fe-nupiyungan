@@ -6,3 +6,9 @@ export const httpClient = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
+export const isTokenExpired = (err, cb) => {
+    if (err === "Expired token") {
+        cb()
+    }
+}

@@ -43,26 +43,20 @@ import {
   cilUser,
   cilUserFemale,
 } from '@coreui/icons'
-
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
 import { useData } from 'src/context/DataContext.js'
 import { DeleteNote, GetNotes, GetStats, GetUsersInfo } from 'src/api/Functions.js'
 import { useUser } from 'src/context/UserContext.js'
 import NotesCard from 'src/components/custom/NotesCard.js'
 import ModalAddNote from 'src/components/custom/ModalAddNote.js'
 import ModalDelete from 'src/components/custom/ModalDelete.js'
+import { isTokenExpired } from 'src/util/Api.js'
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
 
-  const { state: userState, setUser } = useUser()
+  const { state: userState, setUser, logoutUser } = useUser()
   const { state: dataState, setNotes, removeNote } = useData()
   const [addNoteMode, setAddNoteMode] = useState(false)
   const [deleteMode, setDeleteMode] = useState(false)
@@ -92,7 +86,7 @@ const Dashboard = () => {
         console.log(err.response)
       })
     }).catch(err => {
-      console.log(err.response)
+      isTokenExpired(err.response.data.errors, logoutUser)
     })
   }
 
