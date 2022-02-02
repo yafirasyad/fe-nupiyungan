@@ -2,12 +2,14 @@ import { CFormLabel } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { GetDesa } from 'src/api/Functions'
 import { useData } from 'src/context/DataContext'
+import { useUser } from 'src/context/UserContext'
+import { isTokenExpired } from 'src/util/Api'
 
 const InputDesa = ({selectedDesa, setSelectedDesa, selectedDusun, setSelectedDusun}) => {
     const [desa, setDesa] = useState([])
     const [dusunOption, setDusunOption] = useState()
     const { state: dataState, setEditMode } = useData();
-    
+    const { logoutUser } = useUser();
     useEffect(() => {
         GetDesa()
             .then(res => {
@@ -16,6 +18,7 @@ const InputDesa = ({selectedDesa, setSelectedDesa, selectedDusun, setSelectedDus
                 setDesa(desaData)
                 setDusunOption(dusunData)
             }).catch(err => {
+                isTokenExpired(err.response.data.errors, logoutUser)
                 console.log(err.response)
             })
     }, [])
