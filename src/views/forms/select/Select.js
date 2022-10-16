@@ -18,6 +18,7 @@ const Select = () => {
   const [namaKepala, setNamaKepala] = useState('')
   const [tempatTinggal, setTempatTinggal] = useState('')
   const [luasLahan, setLuasLahan] = useState(0)
+  const [luasLahanPertanian, setLuasLahanPertanian] = useState(0)
   const [luasRumah, setLuasRumah] = useState(0)
   const [lantai, setLantai] = useState('')
   const [dinding, setDinding] = useState('')
@@ -290,6 +291,7 @@ const Select = () => {
       nama_kepala: namaKepala,
       tempat_tinggal: tempatTinggal,
       luas_lahan: luasLahan,
+      luas_lahan_pertanian: luasLahanPertanian,
       luas_rumah: luasRumah,
       jenis_lantai: lantai,
       dinding: dinding,
@@ -347,6 +349,7 @@ const Select = () => {
     setNamaKepala('')
     setTempatTinggal('')
     setLuasLahan(0)
+    setLuasLahanPertanian(0)
     setLuasRumah(0)
     setLantai('')
     setDinding('')
@@ -695,6 +698,18 @@ const Select = () => {
                     id="luasrumah" 
                     value={luasRumah}
                     onChange={(e) => setLuasRumah(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <CFormLabel htmlFor="luaslahan">
+                    <h6>Luas Lahan Pertanian (m2)</h6>
+                  </CFormLabel>
+                  <CFormInput 
+                    type="text" 
+                    id="luaslahan" 
+                    value={luasLahanPertanian}
+                    onChange={(e) => setLuasLahanPertanian(e.target.value)}
                     required
                   />
                 </div>

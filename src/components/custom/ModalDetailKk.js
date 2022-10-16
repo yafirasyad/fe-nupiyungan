@@ -121,6 +121,14 @@ const ModalDetailKk = ({item, visible, setVisible}) => {
                 </CRow>
                 <CRow>
                     <CCol>
+                        <h6>Luas lahan pertanian: </h6>
+                    </CCol>
+                    <CCol>
+                        <p>{item.luas_lahan_pertanian}</p>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol>
                         <h6>Jenis lantai: </h6>
                     </CCol>
                     <CCol>

@@ -7,10 +7,13 @@ import ModalSubmitState from 'src/components/custom/ModalSubmitState'
 import InputDesa from 'src/components/custom/InputDesa'
 import { useData } from 'src/context/DataContext'
 import { UpdateDataKk } from 'src/api/Functions'
+import { useHistory } from 'react-router-dom'
 
 
 const FormEditKk = () => {
+    const history = useHistory()
     const [isLoading, setIsLoading] = useState(false)
+    const [updateSuccess, setUpdateSuccess] = useState(false)
     const [modalMessage, setModalMessage] = useState('')
     const [isModalVisible, setIsModalVisible] = useState(false)
     const {state: dataState} = useData() 
@@ -21,6 +24,7 @@ const FormEditKk = () => {
     const [namaKepala, setNamaKepala] = useState('')
     const [tempatTinggal, setTempatTinggal] = useState('')
     const [luasLahan, setLuasLahan] = useState(0)
+    const [luasLahanPertanian, setLuasLahanPertanian] = useState(0)
     const [luasRumah, setLuasRumah] = useState(0)
     const [lantai, setLantai] = useState('')
     const [dinding, setDinding] = useState('')
@@ -293,6 +297,7 @@ const FormEditKk = () => {
         nama_kepala: namaKepala,
         tempat_tinggal: tempatTinggal,
         luas_lahan: luasLahan,
+        luas_lahan_pertanian: luasLahanPertanian,
         luas_rumah: luasRumah,
         jenis_lantai: lantai,
         dinding: dinding,
@@ -327,9 +332,14 @@ const FormEditKk = () => {
       UpdateDataKk(dataState.selectedDataKk.id, family)
         .then(res => {
             console.log('aman')
+            setUpdateSuccess(true)
+            setModalMessage('Data berhasil diubah')
+            setIsModalVisible(true)
             setIsLoading(false)
         }).catch(err => {
             console.log(err.response)
+            setModalMessage('Data gagal diubah')
+            setIsModalVisible(true)
             setIsLoading(false)
         })
     }
@@ -510,6 +520,7 @@ const FormEditKk = () => {
         setNamaKepala(dataState.selectedDataKk.nama_kepala)
         setTempatTinggal(dataState.selectedDataKk.tempat_tinggal)
         setLuasLahan(dataState.selectedDataKk.luas_lahan)
+        setLuasLahanPertanian(dataState.selectedDataKk.luas_lahan_pertanian)
         setLuasRumah(dataState.selectedDataKk.luas_rumah)
         setLantai(dataState.selectedDataKk.jenis_lantai)
         setDinding(dataState.selectedDataKk.dinding)
@@ -673,6 +684,9 @@ const FormEditKk = () => {
         <ModalSubmitState visible={isModalVisible} setVisible={setIsModalVisible} message={modalMessage} onClose={() => {
           setIsModalVisible(false)
           cleanState()
+          if (updateSuccess) {
+            history.push('/kk')
+          }
         }} />
         <CCol xs={12}>
           <DocsCallout name="Form Control" href="forms/form-control" />
@@ -861,6 +875,18 @@ const FormEditKk = () => {
                       id="luasrumah" 
                       value={luasRumah}
                       onChange={(e) => setLuasRumah(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="luaslahan">
+                      <h6>Luas Lahan Pertanian (m2)</h6>
+                    </CFormLabel>
+                    <CFormInput 
+                      type="text" 
+                      id="luaslahan" 
+                      value={luasLahanPertanian}
+                      onChange={(e) => setLuasLahanPertanian(e.target.value)}
                       required
                     />
                   </div>
