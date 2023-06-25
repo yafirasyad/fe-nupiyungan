@@ -264,7 +264,7 @@ const ModalDetailIndividu = ({item, visible, setVisible}) => {
                         <h6>Foto: </h6>
                     </CCol>
                     <CCol>
-                        <img src={item.foto ? `${process.env.REACT_APP_DEV_API_URL}/public/person/${item.foto}` : ''} height={200} width={200}/>
+                        <img src={item.foto ? `${process.env.REACT_APP_DEV_API_URL}/person/${item.foto}` : ''} height={200} width={200}/>
                     </CCol>
                 </CRow>
                 <CRow>

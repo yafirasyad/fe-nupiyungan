@@ -54,7 +54,7 @@ const ModalUploadAvatar = ({visible, setVisible}) => {
                 <div style={{
                     textAlign: 'center',
                 }}>
-                    {errorMsg.length > 0 && errorMsg.map((err, index) => (
+                    {errorMsg && errorMsg.length > 0 && errorMsg.map((err, index) => (
                         <p style={{
                             color: 'red',
                         }}>{err}</p>

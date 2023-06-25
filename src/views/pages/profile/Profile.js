@@ -37,7 +37,6 @@ const Profile = () => {
     }, [])
 
     const handleSubmit = () => {
-        console.log('submit')
         UpdateUserEmailName(userState.user.id, {
             name,
             email
@@ -71,7 +70,7 @@ const Profile = () => {
                 }}>
                     <CRow>
                         <div>
-                            <img src={avatar ? `${process.env.REACT_APP_DEV_API_URL}/public/user/${avatar}` : avatarImg} height={200} width={200} style={{
+                            <img src={avatar ? `${process.env.REACT_APP_DEV_API_URL}/user/${avatar}` : avatarImg} height={200} width={200} style={{
                                 borderRadius: "50%",
                             }}/>
                         </div>
